@@ -1,8 +1,8 @@
 {
-  "baseUrl": "https://app.dev.rebelbase.co",
+  "baseUrl": "https://app.staging.rebelbase.co",
   "viewportHeight": 1024,
   "viewportWidth": 1536,
-  "defaultCommandTimeout": 150000,
+  "defaultCommandTimeout": 120000,
   "scrollBehavior": "nearest",
   "experimentalFetchPolyfill": true,
   "experimentalStudio": true,

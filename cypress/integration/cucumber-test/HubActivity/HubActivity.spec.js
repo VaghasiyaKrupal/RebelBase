@@ -23,53 +23,53 @@ After(() => {
   cy.wait(2000)
 })
 
-// // C177 Visit Dev Hub [Hub Activity]
-// Given('Verify profile and cookies', () => {
-//   cy.url().should('include', '/profile/2466');
-//   cy.getCookie('token').should('exist');
-// })
+// C177 Visit Dev Hub [Hub Activity]
+Given('Verify profile and cookies', () => {
+  cy.url().should('include', '/profile/2466');
+  cy.getCookie('token').should('exist');
+})
 
-// When('Go to the Activity page', () => {
-//   cy.visit('/hubs/26/activity');
-// })
+When('Go to the Activity page', () => {
+  cy.visit('/hubs/26/activity');
+})
 
-// And('Close the notification', () => {
-//   cy.waitForReact(7000, '#root');
-//   cy.xpath(brainPageSelectors.notificationDismiss).click();
-// })
+And('Close the notification', () => {
+  cy.waitForReact(7000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
+})
 
-// Then('Verify Dev Hub', () => {
-//   cy.contains('Dev Hub');
-// });
+Then('Verify Dev Hub', () => {
+  cy.contains('Dev Hub');
+});
 
-// // C178 Edit Hub Description[Hub Activity]
-// Given('Verify profile page and cookies', () => {
-//   cy.url().should('include', '/profile/2466');
-//   cy.getCookie('token').should('exist');
-// })
+// C178 Edit Hub Description[Hub Activity]
+Given('Verify profile page and cookies', () => {
+  cy.url().should('include', '/profile/2466');
+  cy.getCookie('token').should('exist');
+})
 
-// When('Go to Activity page', () => {
-//   cy.visit('/hubs/26/activity');
-//   cy.waitForReact(5000, '#root');
-//   cy.xpath(brainPageSelectors.notificationDismiss).click();
-// })
+When('Go to Activity page', () => {
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
+})
 
-// And('Close the notification', () => {
-//   cy.xpath(brainPageSelectors.notificationDismiss).click();
-// })
+And('Close the notification', () => {
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
+})
 
-// And('Change hub title', () => {
-//   cy.get(eventPageSelectors.editPen).click();
-//   cy.get(hubActivityPageSelector.pageTitle).contains('Change Hub Details');
-// })
+And('Change hub title', () => {
+  cy.get(eventPageSelectors.editPen).click();
+  cy.get(hubActivityPageSelector.pageTitle).contains('Change Hub Details');
+})
 
-// Then('Change hub description', () => {
-//   cy.get(hubActivityPageSelector.descriptionTextbox)
-//     .clear()
-//     .type('Testing Hub' + Cypress.config('randomname'));
-//   cy.xpath(hubActivityPageSelector.saveButton).contains('Save').click();
-//   cy.get(hubGroupPageSelector.popupNotes).contains('Hub details updated.');
-// });
+Then('Change hub description', () => {
+  cy.get(hubActivityPageSelector.descriptionTextbox)
+    .clear()
+    .type('Testing Hub' + Cypress.config('randomname'));
+  cy.xpath(hubActivityPageSelector.saveButton).contains('Save').click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Hub details updated.');
+});
 
 // Edit Membership [Hub Activity]
 Given('Verify profile page and cookies', () => {
@@ -114,10 +114,8 @@ And('Edit Membership', () => {
   cy.contains('Edit Membership');
   cy.get('.checkbox-wrapper').find('#support').check({ force: true });
   cy.get(hubActivityPageSelector.editLink).contains('edit support role card').click();
+  cy.get('.rw-multiselect-tag-btn').find('span').click({multiple:true});
   cy.get('.rw-input-reset').clear();
-  cy.get('.rw-multiselect-tag-btn').find('span').click({
-    force: true
-  });
   cy.get('.rw-input-reset').type('Tech Support');
   cy.get('.rw-list-option').click();
   cy.get('span').get('.rw-select').click({
@@ -156,12 +154,9 @@ Given('Verify profile page and cookies', () => {
   cy.getCookie('token').should('exist');
 })
 
-When('Go to Activity page', () => {
+When('Go to Activity pages', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-})
-
-And('Close notification', () => {
   cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
@@ -181,7 +176,7 @@ Given('Verify profile page and cookies', () => {
   cy.getCookie('token').should('exist');
 })
 
-When('Go to Activity page', () => {
+When('Visit Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
 })
@@ -216,13 +211,15 @@ Given('Verify profile page and cookies', () => {
   cy.getCookie('token').should('exist');
 })
 
-When('Go to Activity page', () => {
+When('Redirect to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Make announcement unsticky', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get('.activity__nav div button').eq(1)
+    .click();
   cy.get('#long-button').eq(0).click()
   cy.get('ul li button').contains('Unstick').click({ force: true })
 });
@@ -233,13 +230,16 @@ Given('Verify profile page and cookies', () => {
   cy.getCookie('token').should('exist');
 })
 
-When('Go to Activity page', () => {
+When('Go to Activity pages', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Make announcement sticky', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get('.activity__nav div button').eq(1)
+    .click();
+    cy.wait(1000)
   cy.get('#long-button').eq(0).click()
   cy.get('ul li button').contains('Sticky').click({ force: true })
 });
@@ -253,10 +253,10 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Verify announcement not deleted', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.get('#long-button').eq(0).click()
   cy.get('ul li button').contains('Delete').click({ force: true })
   cy.contains('Are you sure you want to delete this?');
@@ -278,10 +278,10 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Create post', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.xpath(hubActivityPageSelector.addYourThought).contains('Add your thoughts').click({
     force: true
   });
@@ -300,10 +300,10 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Go to post page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.get('.activity__nav div button').eq(2).click();
 })
 
@@ -316,10 +316,10 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Verify post is not edit', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.get('.activity__nav div button').eq(2)
     .click();
   cy.get('#long-button').eq(0).click()
@@ -348,10 +348,10 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Verify post is not deleted', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.get('#long-button').eq(0).click()
   cy.get('ul li button').contains('Delete').click({ force: true })
   cy.contains('Are you sure you want to delete this?');
@@ -437,10 +437,10 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
+  cy.xpath(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Go to Question page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.get('.activity__nav div button').eq(3).click()
 });
 
@@ -478,8 +478,10 @@ When('Go to Activity page', () => {
 })
 
 And('Reply to answer', () => {
+  cy.wait(2000)
   cy.get('.activity__nav div button').eq(3).click()
-  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click();
+  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click({force:true});
+  cy.wait(1000)
   cy.xpath('//button[normalize-space()="0 Replies"]').click()
   cy.get(smokeTestPageSelector.postTextbox)
     .eq(1)
@@ -508,8 +510,10 @@ When('Go to Activity page', () => {
 })
 
 Then('Delete Replay', () => {
+  cy.wait(2000)
   cy.get('.activity__nav div button').eq(3).click()
-  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click();
+  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click({force:true});
+  cy.wait(1000)
   cy.xpath('//button[normalize-space()="2 Replies"]').click()
   cy.xpath('(//button[@id="long-button"])[3]').click({ force: true })
   cy.get('ul li button').contains('Delete').click({ force: true })
@@ -530,8 +534,9 @@ When('Go to Activity page', () => {
 })
 
 Then('Add more answer', () => {
+  cy.wait(2000)
   cy.get('.activity__nav div button').eq(3).click()
-  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click();
+  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click({force:true});
   cy.get(smokeTestPageSelector.postTextbox)
     .clear()
     .type('Add more answer...')
@@ -551,8 +556,9 @@ When('Go to Activity page', () => {
 })
 
 And('Upvote answer', () => {
+  cy.wait(2000)
   cy.get('.activity__nav div button').contains('Q+A').click({ force: true })
-  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click();
+  cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click({force:true});
   cy.get(hubActivityPageSelector.upVoteAnswer).click({ multiple: true });
 });
 
@@ -568,7 +574,7 @@ When('Go to Activity page', () => {
   cy.xpath(brainPageSelectors.notificationDismiss).click()
 })
 
-And('Ask a question', () => {
+And('Ask question', () => {
   cy.xpath(hubActivityPageSelector.addYourThought).contains('Add your thoughts').click({
     force: true
   });
@@ -583,7 +589,7 @@ And('Ask a question', () => {
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Question created successfully')
 });
 
-And('Answer to question', () => {
+And('Answer question', () => {
   cy.xpath(brainPageSelectors.notificationDismiss).click();
   cy.get('.activity__nav div button').contains('Q+A').click({ force: true })
   cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click();
@@ -596,7 +602,7 @@ And('Answer to question', () => {
   cy.xpath(hubActivityPageSelector.postButton).click();
 })
 
-And('Reply to answer', () => {
+And('Reply answer', () => {
   cy.xpath('//button[normalize-space()="0 Replies"]').click()
   cy.get(smokeTestPageSelector.postTextbox)
     .eq(1)
@@ -604,17 +610,17 @@ And('Reply to answer', () => {
   cy.xpath(hubActivityPageSelector.replyButton).click();
 })
 
-And('Delete reply', () => {
+And('Delete reply from question', () => {
   cy.xpath('(//button[@id="long-button"])[3]').click({ force: true })
   cy.get('ul li button').contains('Delete').click({ force: true })
 })
 
-And('Delete answer', () => {
+And('Delete answer from question', () => {
   cy.xpath('(//button[@id="long-button"])[2]').click({ force: true })
   cy.get('ul li button').contains('Delete').click({ force: true })
 })
 
-Then('Delete question', () => {
+Then('Delete Question', () => {
   cy.get('#long-button').eq(0).click()
   cy.get('ul li button').contains('Delete').click({ force: true })
   cy.contains('Are you sure you want to delete this?');

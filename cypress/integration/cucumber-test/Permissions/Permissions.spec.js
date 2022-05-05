@@ -52,7 +52,12 @@ And('Add Alternative Email and remove it', () => {
   cy.xpath(permissionsPageSelector.addEmailButton).click();
   cy.get(permissionsPageSelector.emailTextbox).type('testhubadmin+5@rrebelbase.co');
   cy.xpath(permissionsPageSelector.addButton).click();
-  cy.xpath(brainPageSelectors.closeModelButton).click();
+  cy.wait(1000)
+  cy.get('body').then((body) => {
+    if (body.find('.alt-emails-modal__btn-container > .btn-main').length > 0) {
+      cy.xpath(brainPageSelectors.closeModelButton).click();
+    }
+  })
   cy.get(hubGroupPageSelector.popupNotes).click();
   cy.xpath(permissionsPageSelector.removeButton).contains('remove').click();
 })
@@ -86,7 +91,7 @@ Given('Login to the member account', () => {
   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
-When('Changing basic account settings', () => {
+When('Changing basic settings', () => {
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.get(smokeTestPageSelector.devHub).should('be.visible');
   cy.get(smokeTestPageSelector.headerDropdown).click();
@@ -321,13 +326,13 @@ Then('Verify member permission', () => {
 });
 
 // User is event member but not a hub member
-Given('Login to event member account', function () {
+Given('Login to the event member account', function () {
   cy.login('testhubadmin+8@rebelbase.co', Cypress.env('password'));
 })
 
 When('Create project', () => {
   cy.xpath(eventPageSelectors.allMyEventLink).click();
-  cy.get('[data-testid="AddIcon"]').click();
+  cy.get('[data-testid="AddIcon"]').first().click();
   cy.get(smokeTestPageSelector.addProjectButton).click();
   cy.get(smokeTestPageSelector.projectNameTextbox)
     .clear()

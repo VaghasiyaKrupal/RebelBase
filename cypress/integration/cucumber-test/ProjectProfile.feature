@@ -1,6 +1,6 @@
 Feature: Project profile
 
-    Scenario: Test project support member permissions
+    Scenario: Login and go to project page [Project Profile]
         Given Login to the rebelbase portal and verify cookies
         When Go to project page
         Then Verify project title
@@ -59,39 +59,40 @@ Feature: Project profile
         When Go to project page and verify project title
         Then Verify All the builder's are visible irrespective of permission level's
 
-    Scenario: If user is part of hub then he should  be able to see builder's which have permission level for everyone as well as for hub, events and groups [Project Profile]
+    Scenario: If user is part of hub then he should be able to see builder's which have permission level for everyone as well as for hub, events and groups [Project Profile]
         Given Login to event member account
         When Verify profile page and cookies
         And Go to project page and verify project title
         Then Verify permission
 
-    Scenario: If user is part of event then he should  be able to see builder's which have permission level for everyone, for events and for hub, events and groups [Project Profile]
+    Scenario: If user is part of event then he should be able to see builder's which have permission level for everyone, for events and for hub, events and groups [Project Profile]
         Given Login to event member account
         When Verify profile
         And Go to project page and verify project title
         Then Verify project permission
 
-    Scenario: Other user's should not be able to see builder's page of project's they are not part of  [Project Profile]
-        Given Login to rebelbase portal and verify cookies
-        When Go to project page
-        And Verify title
-        Then Go to project's builder page and verify permission
+    # Scenario: Other user's should not be able to see builder's page of project's they are not part of  [Project Profile]
+    #     Given Login to rebelbase portal and verify cookies
+    #     When Go to respective project page
+    #     And Verify title
+    #     Then Go to project's builder page and verify permission
 
-    Scenario: Other user's should only be able to see answer's with permission level for everyone [Project Profile]
-        Given Login to rebelbase portal
-        When Verify profile, cookies
-        And Go to project page and verify project title
-        Then Verify permission for project
+    # Raise ticket for below
+    # Scenario: Other user's should only be able to see answer's with permission level for everyone [Project Profile]
+    #     Given Login to rebelbase portal
+    #     When Verify profile, cookies
+    #     And Go to project page and verify project title
+    #     Then Verify permission for project
 
     Scenario: Logged out user's should not be able to edit anything [Project Profile]
         Given Go to browse page
         When Verify url and href
         Then Verify if any of the edit-pen exist on page
 
-    Scenario: Logged out user's should not be able to edit anything [Project Profile]
+    Scenario: Logged out user's should only be able to see builder's with permission level for everyone [Project Profile]
         Given Visit project page on Rebelbase portal
         When Verify project title
-        Then Verify permission
+        Then Verify permission from project page
 
     Scenario: Logged out user's should not be able to see builder's page [Project Profile]
         Given Login to rebelbase portal
@@ -104,14 +105,14 @@ Feature: Project profile
         When Redirect to login when clicked on kudos
         And Show login link when click on notes and redirect to login page
         Then Show sign up link when click on notes and redirect to sign up page
-
-    Scenario: Teammates should not be able to give kudos
-        Given Login to team mate member account
-        When Verify profile and cookies
-        Then Go to project page and give kudos
+    
+    # Scenario: Teammates should not be able to give kudos
+    #     Given Login to team mate member account
+    #     When Verify profile is as aspected and cookies
+    #     Then Go to project page and give kudos
 
     Scenario: User's can remove their notes but not other's
-        Given Login to rebelbase portal
+        Given Login to product portal
         When Go to project page
         And Add notes
         Then Delete notes
@@ -171,7 +172,7 @@ Feature: Project profile
         And Go to project page
         Then Check for duplicate email id
 
-    Scenario: Duplicate users in team
+    Scenario: Profilepage
         Given Login to rebelbase portal
         When Edit about
         And Add experience

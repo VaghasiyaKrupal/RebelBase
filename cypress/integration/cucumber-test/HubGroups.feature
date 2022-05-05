@@ -1,16 +1,14 @@
 Feature: Hub Group
 
   Scenario: Group Overview member
-    Given Visit RebelBase portal
-    When Login using username1 email
-    And Verify profile URL and user token
+    Given Login using username1 email
+    When Verify profile URL and user token
     And Visit Group page
     Then Verify past created groups is exist
 
   Scenario: Checking group with no schedule members login
-    Given Visit RebelBase portal
-    When Login using username2 email
-    And Verify profile URL and user login token
+    Given Login using username2 email
+    When Verify profile URL and user login token
     And Visit Group page
     Then Check group schedule
 
@@ -23,39 +21,34 @@ Feature: Hub Group
     Then Search created group and delete it
 
   Scenario: Checking group with schedule members login
-    Given Visit rebelbase portal
-    When Login sing eventMember email
-    And Verify profile and token
+    Given Login sing eventMember email
+    When Verify profile and token
     And Go to group page
     Then Verify exist group
 
   Scenario: Group Overview from Admin
-    Given Visit rebelbase portal
-    When Login to the username email
-    And Verify profile and login user token
+    Given Login to the username email
+    When Verify profile and login user token
     And Jump to group page
     Then Verify add group button is visible
 
   Scenario: Check Group without Schedule from Admin
-    Given Visit rebelbase portal
-    When Login to rebel base portal
-    And Verify profile, user token
+    Given Login to rebel base portal
+    When Verify profile, user token
     And Navigate to group page
     And Verify create group button is visible
     Then Redirect to test dev group
 
   Scenario: Group with Schedule [Admin]
-    Given Visit rebelbase portal
-    When Login to rebelbase
-    And Verify loggedin user token and profile url
+    Given Login to rebelbase
+    When Verify loggedin user token and profile url
     And Visite to group page
     And Verify plush button is visible
     Then Redirect to the test dev group
   
   Scenario: Invite new user to hub from group and create and add project to group
-    Given Visit rebelbase portal
-    When Access rebelbase portal
-    And Redirect to group page for devhub
+    Given Access rebelbase portal
+    When Redirect to group page for devhub
     And Go to test dev group
     And Add member to the group
     And Logout to the account

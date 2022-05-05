@@ -34,6 +34,6 @@ const hubGroupPageSelector = {
     addManagerPlushSign: "//button/span[@class='plusSign']/parent::button",
     projectDeactiveHover: ':nth-child(1) > div.group-overview__title-wrap > div > div > button:nth-child(1)',
     deactivateButton: "//div[@class='ReactModalPortal']//button[contains(text(),'Deactivate')]",
-
+    groupName:'[name="group_name"]'
 }
 export { hubGroupPageSelector }

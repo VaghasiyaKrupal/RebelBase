@@ -51,40 +51,38 @@ module.exports = (on, config) => {
   };
   */
 
-  /// <reference types="Cypress" />
-  const debug = require("debug");
-  const path = require("path");
-  
-  const gmail_tester = require("gmail-tester");
-  
-  
-  module.exports = (on, config) => {
-    // on("before:browser:launch", (browser = {}, args) => {
-    //   if (browser.name === "chrome") {
-    //     args.push("--remote-debugging-port=9221");
-    //     return args;
-    //   }
-    //});
-    on("task", {
-      "gmail:get-messages": async args => {
-        const messages = await gmail_tester.get_messages(
-          path.resolve(__dirname, "credentials.json"),
-          path.resolve(__dirname, "token.json"),
-          args.options
-        );
-        console.log(messages);
-        return messages;
-      }
-    });
-  
-    on("task", { "setUserId": (val) => { return (userId = val); }});
-  
-    on("task", {"getUserId": () => { return userId; }});
-  };
+/// <reference types="Cypress" />
+const debug = require("debug");
+const path = require("path");
 
+const gmail_tester = require("gmail-tester");
 
-const cucumber = require('cypress-cucumber-preprocessor').default
+const cucumber = require('cypress-cucumber-preprocessor').default;
 
 module.exports = (on, config) => {
-  on('file:preprocessor', cucumber())
-}
+
+  // on("before:browser:launch", (browser = {}, args) => {
+  //   if (browser.name === "chrome") {
+  //     args.push("--remote-debugging-port=9221");
+  //     return args;
+  //   }
+  //});
+
+  on('file:preprocessor', cucumber());
+  
+  on("task", {
+    "gmail:get-messages": async args => {
+      const messages = await gmail_tester.get_messages(
+        path.resolve(__dirname, "credentials.json"),
+        path.resolve(__dirname, "token.json"),
+        args.options
+      );
+      console.log(messages);
+      return messages;
+    }
+  });
+
+  on("task", { "setUserId": (val) => { return (userId = val); } });
+
+  on("task", { "getUserId": () => { return userId; } });
+};

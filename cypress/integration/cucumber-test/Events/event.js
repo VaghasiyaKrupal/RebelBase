@@ -10,382 +10,386 @@ import { eventData } from "../../pageObject/pageData/eventData";
 
 
 const eventname = `testevent${Math.random()}`;
+const eventname1 = `testevent1${Math.random()}`;
 
 After(() => {
   cy.wait(2000)
 })
 
-// Event details can be seen without login to application
-Given('Visit rebelbase event page', () => {
-  cy.visit('/events/1449')
-})
+// // Event details can be seen without login to application
+// Given('Visit rebelbase event page', () => {
+//   cy.visit('/events/1449')
+// })
 
-And('Verify event title', () => {
-  cy.get(eventPageSelectors.pageTitle).should('have.text', 'cypresstestevent');
-})
+// And('Verify event title', () => {
+//   cy.get(eventPageSelectors.pageTitle).should('have.text', 'cypresstestevent');
+// })
 
-And('Verify competitor is visible', () => {
-  cy.xpath(eventPageSelectors.compititor).should('be.visible');
-})
+// And('Verify competitor is visible', () => {
+//   cy.xpath(eventPageSelectors.compititor).should('be.visible');
+// })
 
-Then('Verify participants', () => {
-  cy.xpath(eventPageSelectors.seeAllLink).should('be.visible');
-})
+// Then('Verify participants', () => {
+//   cy.xpath(eventPageSelectors.seeAllLink).should('be.visible');
+// })
 
-// Create event and invite members
-Given('Login to rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'))
-})
+// // Create event and invite members
+// Given('Login to rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'))
+// })
 
-When('Visit event page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Visit event page', () => {
+//   cy.xpath(brainPageSelectors.notificationDismiss).click()
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Create new event', () => {
-  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
-  cy.readFile('cypress/fixtures/example.json').then((profile) => {
-    profile.eventName = eventname,
-      cy.writeFile('cypress/fixtures/exapmle.json', profile)
-  })
-  cy.get(smokeTestPageSelector.eventNameTextbox)
-    .clear()
-    .type(eventname);
-  cy.get(smokeTestPageSelector.fromDate)
-    .clear()
-    .type('Dec 16, 2021');
-  cy.get(smokeTestPageSelector.fromTime)
-    .clear()
-    .type('7:30am')
-  cy.get(smokeTestPageSelector.toDate)
-    .clear()
-    .type('Dec 06, 2022')
-  cy.get(smokeTestPageSelector.toTime)
-    .clear()
-    .type('7:30am')
-  cy.get(smokeTestPageSelector.autoCompleteTextbox)
-    .clear().type('pune');
-  cy.get(smokeTestPageSelector.locationResultInput).click();
-  cy.get('.createEvent__field__type').select('competition');
-  cy.get('.createEvent').click();
-  cy.get(':nth-child(2) > .createEvent__round-choice').click();
-  cy.get(':nth-child(3) > .createEvent__round-choice').click();
-  cy.get('.createEvent > .btn-wrap > .btn-main').click();
-})
+// And('Create new event', () => {
+//   cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+//   cy.readFile('cypress/fixtures/exapmle.json').then((profile) => {
+//     profile.eventName = eventname,
+//       cy.writeFile('cypress/fixtures/exapmle.json', profile)
+//   })
+//   cy.get(smokeTestPageSelector.eventNameTextbox)
+//     .clear()
+//     .type(eventname);
+//   cy.get(smokeTestPageSelector.fromDate)
+//     .clear()
+//     .type('Dec 16, 2021');
+//   cy.get(smokeTestPageSelector.fromTime)
+//     .clear()
+//     .type('7:30am')
+//   cy.get(smokeTestPageSelector.toDate)
+//     .clear()
+//     .type('Dec 06, 2022')
+//   cy.get(smokeTestPageSelector.toTime)
+//     .clear()
+//     .type('7:30am')
+//   cy.get(smokeTestPageSelector.autoCompleteTextbox)
+//     .clear().type('pune');
+//   cy.get(smokeTestPageSelector.locationResultInput).click();
+//   cy.get('.createEvent__field__type').select('competition');
+//   cy.get('.createEvent').click();
+//   cy.get(':nth-child(2) > .createEvent__round-choice').click();
+//   cy.get(':nth-child(3) > .createEvent__round-choice').click();
+//   cy.get('.createEvent > .btn-wrap > .btn-main').click();
+// })
 
-And('Inviting member to the event', () => {
-  cy.xpath(eventPageSelectors.inviteButton).click()
-  cy.get('select').select('Competitor');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub+1@gmail.com');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.get('select').select('Competitor');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub+2@gmail.com');
-  cy.get(eventPageSelectors.inviteTopersonalize).click();
-  cy.wait(1000)
-  cy.get('.invite-to-hub__message > textarea').click();
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.get('select').select('2');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub+3@gmail.com');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.get('select').select('2');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('testhubadmin+4@rebelbase.co');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.get('select').select('5');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub+5@gmail.com');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.get('select').select('6');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub+6@gmail.com');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.get('select').select('3');
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub+7@gmail.com');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.xpath(brainPageSelectors.closeModelButton).click();
-  cy.reload()
-})
+// And('Inviting member to the event', () => {
+//   cy.xpath(eventPageSelectors.inviteButton).click()
+//   cy.get('select').select('Competitor');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub+1@gmail.com');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.get('select').select('Competitor');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub+2@gmail.com');
+//   cy.get(eventPageSelectors.inviteTopersonalize).click();
+//   cy.wait(1000)
+//   cy.get('.invite-to-hub__message > textarea').click();
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.get('select').select('2');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub+3@gmail.com');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.get('select').select('2');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('testhubadmin+4@rebelbase.co');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.get('select').select('5');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub+5@gmail.com');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.get('select').select('6');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub+6@gmail.com');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.get('select').select('3');
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub+7@gmail.com');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.xpath(brainPageSelectors.closeModelButton).click();
+//   cy.reload()
+// })
 
-Then('Update event', () => {
-  cy.get('.ePage__wrap > .edit-pen__btn').click({ force: true });
-  cy.xpath(smokeTestPageSelector.deleteButtom).click();
-  cy.xpath(eventPageSelectors.noButton).click();
-  cy.xpath(eventPageSelectors.updateEventButton).click()
-  cy.get('.popUp__note').contains('Event Updated.')
-});
+// Then('Update event', () => {
+//   cy.get('.ePage__wrap > .edit-pen__btn').click({ force: true });
+//   cy.xpath(smokeTestPageSelector.deleteButtom).click();
+//   cy.xpath(eventPageSelectors.noButton).click();
+//   cy.xpath(eventPageSelectors.updateEventButton).click()
+//   cy.get('.popUp__note').contains('Event Updated.')
+// });
 
-// Add event description,edit event details, add post,file upload
-Given('Login to the rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
+// // Add event description,edit event details, add post,file upload
+// Given('Login to the rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'));
+//   cy.xpath(brainPageSelectors.notificationDismiss).click();
+// })
 
-When('Go to the event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Go to the event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Add event description', () => {
-  cy.get('h3').contains(eventname).click();
-  cy.get(eventPageSelectors.editPen).eq(0).click({ force: true });
-  cy.get(eventPageSelectors.descriptionField).eq(1).clear().type(eventData.eventDescription)
-  cy.xpath(eventPageSelectors.updateEventButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).contains('Event Updated.')
-})
+// And('Add event description', () => {
+//   cy.get('h3').contains(eventname).click();
+//   cy.get(eventPageSelectors.editPen).eq(0).click({ force: true });
+//   cy.get(eventPageSelectors.descriptionField).eq(1).clear().type(eventData.eventDescription)
+//   cy.xpath(eventPageSelectors.updateEventButton).click();
+//   cy.get(hubGroupPageSelector.popupNotes).contains('Event Updated.')
+// })
 
-And('Add sponsor and upload file', () => {
-  cy.log('add sponser to event');
-  cy.get(eventPageSelectors.sponsorPlusButton).click();
-  cy.get(eventPageSelectors.sponserNameTextbox)
-    .clear()
-    .type('rebelbase.co');
-  cy.get(eventPageSelectors.sponsorWebsiteTextbox)
-    .clear()
-    .type('http://rebelbase.co');
-  cy.fixture("rebelbaselogo.png").then((fileContent) => {
-    cy.get(eventPageSelectors.fileType).attachFile({
-      fileContent,
-      fileName: "rebelbaselogo.png",
-      encoding: "base64",
-      mimeType: "image/png",
-    });
-  });
-  cy.xpath(eventPageSelectors.addSponsorButton).contains('Add Sponsor').click();
-})
+// And('Add sponsor and upload file', () => {
+//   cy.log('add sponser to event');
+//   cy.get(eventPageSelectors.sponsorPlusButton).click();
+//   cy.get(eventPageSelectors.sponserNameTextbox)
+//     .clear()
+//     .type('rebelbase.co');
+//   cy.get(eventPageSelectors.sponsorWebsiteTextbox)
+//     .clear()
+//     .type('http://rebelbase.co');
+//   cy.fixture("rebelbaselogo.png").then((fileContent) => {
+//     cy.get(eventPageSelectors.fileType).attachFile({
+//       fileContent,
+//       fileName: "rebelbaselogo.png",
+//       encoding: "base64",
+//       mimeType: "image/png",
+//     });
+//   });
+//   cy.xpath(eventPageSelectors.addSponsorButton).contains('Add Sponsor').click();
+// })
 
-And('Add post in event', () => {
-  cy.log('add post in event')
-  cy.get(eventPageSelectors.postTextbox)
-    .click()
-    .type(eventData.postMessage)
-  cy.xpath(eventPageSelectors.postButton).click();
-  cy.get(eventPageSelectors.stickyCheckbox).click();
-  cy.get('h4').eq(0).click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// And('Add post in event', () => {
+//   cy.log('add post in event')
+//   cy.get(eventPageSelectors.postTextbox)
+//     .click()
+//     .type(eventData.postMessage)
+//   cy.xpath(eventPageSelectors.postButton).click();
+//   cy.get(eventPageSelectors.stickyCheckbox).click();
+//   cy.get('h4').eq(0).click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-Then('Edit event details', () => {
-  cy.log('Edit event details')
-  cy.contains(eventname).click();
-  cy.get(eventPageSelectors.editPen).eq(0).click();
-  cy.get(eventPageSelectors.eventTodate)
-    .clear()
-    .type('Dec 06, 2022')
-  cy.get('.createEvent__question--right > .form__input').select('competition');
-  cy.xpath(eventPageSelectors.updateEventButton).contains('Update Event').click({ force: true });
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
-  cy.xpath(eventPageSelectors.postButton).click();
-  cy.get(eventPageSelectors.postTextbox).click();
-  cy.xpath(eventPageSelectors.postButton).click();
-  cy.get(smokeTestPageSelector.headerDropdown).click();
-  cy.get(smokeTestPageSelector.logoutButton).click();
-});
+// Then('Edit event details', () => {
+//   cy.log('Edit event details')
+//   cy.contains(eventname).click();
+//   cy.get(eventPageSelectors.editPen).eq(0).click();
+//   cy.get(eventPageSelectors.eventTodate)
+//     .clear()
+//     .type('Dec 06, 2022')
+//   cy.get('.createEvent__question--right > .form__input').select('competition');
+//   cy.xpath(eventPageSelectors.updateEventButton).contains('Update Event').click({ force: true });
+//   cy.xpath(brainPageSelectors.notificationDismiss).click()
+//   cy.xpath(eventPageSelectors.postButton).click();
+//   cy.get(eventPageSelectors.postTextbox).click();
+//   cy.xpath(eventPageSelectors.postButton).click();
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+// });
 
-// Change project is not allowed during round is in progress
-Given('Login to the rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
-When('Go to the hub event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// // Change project is not allowed during round is in progress
+// Given('Login to the rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'));
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
+// When('Go to the hub event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Check for round is in progress', () => {
-  cy.get('h3').contains('cypresstestevent').click();
-  cy.xpath(eventPageSelectors.roundOne).click({ force: true });
-  cy.xpath(eventPageSelectors.startRoundButton).should("not.exist")
-  cy.get(smokeTestPageSelector.headerDropdown).click();
-  cy.get(smokeTestPageSelector.logoutButton).click();
-})
+// And('Check for round is in progress', () => {
+//   cy.get('h3').contains('cypresstestevent').click();
+//   cy.xpath(eventPageSelectors.roundOne).click({ force: true });
+//   cy.xpath(eventPageSelectors.startRoundButton).should("not.exist")
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+// })
 
-Then('Select project should not be exist', () => {
-  cy.login(Cypress.env('username1'), Cypress.env('password'));
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-  cy.get('h3').contains('cypresstestevent').click();
-  cy.xpath(eventPageSelectors.selectProjectButton).should("not.exist");
-});
+// Then('Select project should not be exist', () => {
+//   cy.login(Cypress.env('username1'), Cypress.env('password'));
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+//   cy.get('h3').contains('cypresstestevent').click();
+//   cy.xpath(eventPageSelectors.selectProjectButton).should("not.exist");
+// });
 
-// Judge can edit in bio from event page
-Given('Login to the rebel base portal', function () {
-  cy.login('testhubadmin+2@rebelbase.co', 'testtest')
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
-})
+// // Judge can edit in bio from event page
+// Given('Login to the rebel base portal', function () {
+//   cy.login('testhubadmin+2@rebelbase.co', 'testtest')
+//   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+// })
 
-When('Go to the event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Go to the event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Go to event details page', () => {
-  cy.get('h3').contains('cypresstestevent').click();
-})
+// And('Go to event details page', () => {
+//   cy.get('h3').contains('cypresstestevent').click();
+// })
 
-Then('Edit bio from event details page', () => {
-  cy.xpath(eventPageSelectors.editYourBioButton).click({ force: true });
-  cy.get(eventPageSelectors.bioTitle)
-    .clear()
-    .type('test4juddebio')
-  cy.get(eventPageSelectors.bioDescription)
-    .clear()
-    .type('cypress automation')
-  cy.xpath(eventPageSelectors.updateButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).contains(eventData.bioUpdateMessage);
-});
+// Then('Edit bio from event details page', () => {
+//   cy.xpath(eventPageSelectors.editYourBioButton).click({ force: true });
+//   cy.get(eventPageSelectors.bioTitle)
+//     .clear()
+//     .type('test4juddebio')
+//   cy.get(eventPageSelectors.bioDescription)
+//     .clear()
+//     .type('cypress automation')
+//   cy.xpath(eventPageSelectors.updateButton).click();
+//   cy.get(hubGroupPageSelector.popupNotes).contains(eventData.bioUpdateMessage);
+// });
 
-// Judge accept invitation redirect to welcome page
-Given('Login to the rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
-})
+// // Judge accept invitation redirect to welcome page
+// Given('Login to the rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'));
+//   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+// })
 
-When('Go to the hub event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Go to the hub event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Invite judge to the event', () => {
-  cy.get('h3').contains(eventname).click();
-  cy.xpath(eventPageSelectors.inviteButton).click();
-  // cy.xpath(eventPageSelectors.inviteParticipentButton).click();
-  cy.get('select').select('4');
-  cy.get('.invite').click();
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('rebelbasetesthub@gmail.com');
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.xpath(brainPageSelectors.closeModelButton).click();
-})
+// And('Invite judge to the event', () => {
+//   cy.get('h3').contains(eventname).click();
+//   cy.xpath(eventPageSelectors.inviteButton).click();
+//   // cy.xpath(eventPageSelectors.inviteParticipentButton).click();
+//   cy.get('select').select('4');
+//   cy.get('.invite').click();
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type('rebelbasetesthub@gmail.com');
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.xpath(brainPageSelectors.closeModelButton).click();
+// })
 
-And('Login to the invited user account', () => {
-  cy.get(smokeTestPageSelector.headerDropdown).click();
-  cy.get(smokeTestPageSelector.logoutButton).click();
-  cy.login(Cypress.env('emailuser'), Cypress.env('password'));
-})
+// And('Login to the invited user account', () => {
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+//   cy.login(Cypress.env('emailuser'), Cypress.env('password'));
+// })
 
-Then('Accept invitation and redirect to the welcome page', () => {
-  cy.wait(2000)
-  cy.get(hubGroupPageSelector.inboxIcon).click();
-  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
-  cy.url().should('include', '/welcome-judge');
-  cy.get(eventPageSelectors.bioTitle)
-    .clear()
-    .type('rebeljudge');
-  cy.get(eventPageSelectors.bioDescription).click();
-  cy.xpath(eventPageSelectors.submitButton).click();
-});
+// Then('Accept invitation and redirect to the welcome page', () => {
+//   cy.wait(4000)
+//   cy.get(hubGroupPageSelector.inboxIcon).click();
+//   cy.wait(2000)
+//   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+//   cy.url().should('include', '/welcome-judge');
+//   cy.get(eventPageSelectors.bioTitle)
+//     .clear()
+//     .type('rebeljudge');
+//   cy.get(eventPageSelectors.bioDescription).click();
+//   cy.xpath(eventPageSelectors.submitButton).click();
+// });
 
-// Compititor accept invitation redirect to select project
-Given('Login rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
-})
+// // Compititor accept invitation redirect to select project
+// Given('Login rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'));
+//   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+// })
 
-When('Go to the event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Go to the event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Invite comititor to the event', () => {
-  cy.get('h3').contains(eventname).click();
-  cy.xpath(eventPageSelectors.inviteButton).click({ force: true });
-  // cy.xpath(eventPageSelectors.inviteParticipentButton).click();
-  cy.get('select').select('Competitor');
-  cy.get('.invite').click();
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type(eventData.compititorEmail);
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.xpath(brainPageSelectors.closeModelButton).click();
-})
+// And('Invite comititor to the event', () => {
+//   cy.get('h3').contains(eventname).click();
+//   cy.xpath(eventPageSelectors.inviteButton).click({ force: true });
+//   // cy.xpath(eventPageSelectors.inviteParticipentButton).click();
+//   cy.get('select').select('Competitor');
+//   cy.get('.invite').click();
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type(eventData.compititorEmail);
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.xpath(brainPageSelectors.closeModelButton).click();
+// })
 
-And('Login to the user account', () => {
-  cy.get(smokeTestPageSelector.headerDropdown).click();
-  cy.get(smokeTestPageSelector.logoutButton).click();
-  cy.login(eventData.compititorEmail, Cypress.env('password'));
-})
+// And('Login to the user account', () => {
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+//   cy.login(eventData.compititorEmail, Cypress.env('password'));
+// })
 
-Then('Accept invitation and redirect to the select project page', () => {
-  cy.wait(2000)
-  cy.get(hubGroupPageSelector.inboxIcon).click();
-  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
-  cy.url().should('include', '/select-project');
-  cy.xpath(brainPageSelectors.closeModelButton).click()
-});
+// Then('Accept invitation and redirect to the select project page', () => {
+//   cy.wait(4000)
+//   cy.get(hubGroupPageSelector.inboxIcon).click();
+//   cy.wait(2000)
+//   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+//   cy.url().should('include', '/select-project');
+//   cy.xpath(brainPageSelectors.closeModelButton).click()
+// });
 
-// Support accept invitation redirect to welcome resource
-Given('Login to the rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
-})
+// // Support accept invitation redirect to welcome resource
+// Given('Login to the rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'));
+//   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+// })
 
-When('Go to event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Go to event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Invite support to the event', () => {
-  cy.get('h3').contains(eventname).click();
-  cy.xpath(eventPageSelectors.inviteButton).click({ force: true });
-  // cy.xpath(eventPageSelectors.inviteParticipentButton).click();
-  cy.get('select').select('Support');
-  cy.get('.invite').click();
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type(eventData.supportEmail);
-  cy.get('.btn-wrap > .btn-main').click();
-  cy.xpath(brainPageSelectors.closeModelButton).click();
-})
+// And('Invite support to the event', () => {
+//   cy.get('h3').contains(eventname).click();
+//   cy.xpath(eventPageSelectors.inviteButton).click({ force: true });
+//   // cy.xpath(eventPageSelectors.inviteParticipentButton).click();
+//   cy.get('select').select('Support');
+//   cy.get('.invite').click();
+//   cy.get(brainPageSelectors.inviteModelTextbox)
+//     .clear()
+//     .type(eventData.supportEmail);
+//   cy.get('.btn-wrap > .btn-main').click();
+//   cy.xpath(brainPageSelectors.closeModelButton).click();
+// })
 
-And('Login to the invited user account', () => {
-  cy.get(smokeTestPageSelector.headerDropdown).click();
-  cy.get(smokeTestPageSelector.logoutButton).click();
-  cy.login(eventData.supportEmail, Cypress.env('password'));
-  cy.wait(2000)
-})
+// And('Login to the invited user account', () => {
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+//   cy.login(eventData.supportEmail, Cypress.env('password'));
+//   cy.wait(2000)
+// })
 
-Then('Accept invitation and redirect to the welcome resource', () => {
-  cy.wait(2000)
-  cy.get(hubGroupPageSelector.inboxIcon).click();
-  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
-  cy.url().should('include', '/select-project');
-  cy.xpath(brainPageSelectors.closeModelButton).click()
-});
+// Then('Accept invitation and redirect to the welcome resource', () => {
+//   cy.wait(2000)
+//   cy.get(hubGroupPageSelector.inboxIcon).click();
+//   cy.wait(2000)
+//   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+//   cy.url().should('include', '/select-project');
+//   cy.xpath(brainPageSelectors.closeModelButton).click()
+// });
 
-// Delete Event
-Given('Login to the rebelbase portal', function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
-})
+// // Delete Event
+// Given('Login to the rebelbase portal', function () {
+//   cy.login(Cypress.env('username'), Cypress.env('password'));
+//   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+// })
 
-When('Go to the event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
-  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
-})
+// When('Go to the event page', () => {
+//   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+//   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+// })
 
-And('Invite support to event', () => {
-  cy.get('h3').contains(eventname).click();
-  cy.get('.ePage__wrap > .edit-pen__btn > .edit-pen').click({ force: true });
-})
+// And('Invite support to event', () => {
+//   cy.get('h3').contains(eventname).click();
+//   cy.get('.ePage__wrap > .edit-pen__btn > .edit-pen').click({ force: true });
+// })
 
-Then('Delete Event', () => {
-  cy.get('.btn-alarm').click();
-  cy.get('.react-confirm-alert-button-group > :nth-child(1)').click();
-  cy.url().should('include', '/events');
-});
+// Then('Delete Event', () => {
+//   cy.get('.btn-alarm').click();
+//   cy.get('.react-confirm-alert-button-group > :nth-child(1)').click();
+//   cy.url().should('include', '/events');
+// });
 
 // Create event and send invitation
 Given('Login to the rebelbase portal', function () {
@@ -402,7 +406,7 @@ And('Create Event', () => {
   cy.xpath(smokeTestPageSelector.newEventButton).click();
   cy.get(smokeTestPageSelector.eventNameTextbox)
     .clear()
-    .type('cypressscoreevent');
+    .type(eventname1);
   cy.get('[title="Select date"]').eq(0).click(); // Click on datepicker icon
   cy.get('#rw_1_calendar_active_cell').eq(0).click(); // select current date
   cy.get('[title="Select time"]').eq(0).click(); // Click on clock icon
@@ -464,8 +468,10 @@ Given('Login to the Judge 1 account', function () {
 When('Accept invitation', () => {
   cy.wait(2000)
   cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
   cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
+  cy.wait(2000)
   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true })
 });
 
@@ -493,8 +499,10 @@ Given('Login to the Judge 2 account', function () {
 When('Accept invitation from judge 2', () => {
   cy.wait(2000)
   cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
   cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
+  cy.wait(1000)
   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true })
 });
 
@@ -522,6 +530,7 @@ Given('Login to the Judge 3 account', function () {
 When('Accept invitation', () => {
   cy.wait(2000)
   cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
   cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true })
@@ -551,6 +560,7 @@ Given('Login to the compititot 1 account', function () {
 
 When('Accept invitation', () => {
   cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
   cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
 });
@@ -559,6 +569,7 @@ And('Select project', () => {
   // cy.xpath(brainPageSelectors.notificationDismiss).click()
   cy.get('.projCommit > h4').should('have.text', 'Select Project to compete in');
   cy.get('.projCommit > ul > :nth-child(1)').click();
+  // cy.get('.projCommit > ul > :nth-child(2)').click();
   cy.xpath(eventPageSelectors.submitMyProjectButton).click();
   cy.wait(1000)
   cy.xpath(brainPageSelectors.notificationDismiss).click()
@@ -570,15 +581,15 @@ Then('Logout to the account', () => {
 });
 
 // Change project for event and verify
-Given('Login to the compititot account', function () {
+Given('Login to the compititor account', function () {
   cy.login(Cypress.env('otherUser'), Cypress.env('password'));
   cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 When('Go to my event page', () => {
   cy.xpath(eventPageSelectors.allMyEventLink).click();
-  cy.get('h3').contains('cypressscoreevent').click();
-  cy.get('.ePage__title__name').contains('cypressscoreevent')
+  cy.get('h3').contains(eventname1).click();
+  cy.get('.ePage__title__name').contains(eventname1)
 })
 
 And('Change project', () => {
@@ -603,6 +614,7 @@ Given('Login to the compititot 2 account', function () {
 
 When('Accept invitation', () => {
   cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
   cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
   cy.wait(1000)
@@ -631,6 +643,7 @@ Given('Login to the compititot 3 account', function () {
 
 When('Accept invitation from compititor 3', () => {
   cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
   cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
   cy.wait(1000)
@@ -660,10 +673,10 @@ Given('Login to the Rebelbase portal', function () {
 When('Go to event details', () => {
   cy.xpath(eventPageSelectors.allMyEventLink).click();
   cy.wait(1000)
-  cy.get('h3').contains('cypressscoreevent').click();
+  cy.get('h3').contains(eventname1).click();
   cy.xpath(eventPageSelectors.roundOne).click();
   cy.get(eventPageSelectors.pageTitle).click();
-  cy.get(eventPageSelectors.pageTitle).last().should('have.text', 'cypressscoreevent');
+  cy.get(eventPageSelectors.pageTitle).last().should('have.text', eventname1);
   cy.xpath(eventPageSelectors.roundOne).click();
 })
 
@@ -703,7 +716,7 @@ When('Go to the hub event page', () => {
 })
 
 And('Score one project', () => {
-  cy.get('h3').contains('cypressscoreevent').click();
+  cy.get('h3').contains(eventname1).click();
   cy.get('.btn-wrap > .btn-main').click();
   cy.get('.side > :nth-child(3)').click();
   cy.get('[for="q1-1"] > span')
@@ -746,7 +759,13 @@ And('Score one project', () => {
   cy.get('[for="q12-5"] > span')
     .click()
     .should('have.css', 'border-left', '0px none rgb(255, 255, 255)')
-  cy.get(eventPageSelectors.doneButton).click();
+  cy.xpath(eventPageSelectors.doneButton).click();
+  cy.wait(1000)
+  cy.get('body').then((body) => {
+    if (body.find('.react-confirm-alert div div button:nth-child(2)').length > 0) {
+      cy.xpath(eventPageSelectors.saveAndLeaveButton).click()
+    }
+  })
 })
 
 And('Score second project', () => {
@@ -815,7 +834,7 @@ When('Go to the event page', () => {
 })
 
 And('Score first event', () => {
-  cy.get('h3').contains('cypressscoreevent').click();
+  cy.get('h3').contains(eventname1).click();
   cy.get('.btn-wrap > .btn-main').click();
   cy.get('.side > :nth-child(3)').click();
   cy.wait(1000)
@@ -894,7 +913,7 @@ When('Go to event page details', () => {
 })
 
 And('Scored first event', () => {
-  cy.get('h3').contains('cypressscoreevent').click();
+  cy.get('h3').contains(eventname1).click();
   cy.get('.btn-wrap > .btn-main').click();
   cy.get('.side > :nth-child(3)').click();
   cy.wait(1000)
@@ -966,8 +985,8 @@ When('Go to the hub page event', () => {
 })
 
 And('Close round', () => {
-  cy.get('h3').contains('cypressscoreevent').click();
-  cy.get('.ePage__title__name').should('have.text', 'cypressscoreevent');
+  cy.get('h3').contains(eventname1).click();
+  cy.get('.ePage__title__name').should('have.text', eventname1);
   cy.xpath(eventPageSelectors.roundOne).click({ force: true });
   cy.xpath(eventPageSelectors.closeThisRound).click();
   cy.xpath(eventPageSelectors.reOpenRoundButton).should('be.visible');

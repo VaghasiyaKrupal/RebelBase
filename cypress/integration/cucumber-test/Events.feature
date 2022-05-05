@@ -1,64 +1,64 @@
 Feature: Event
 
-  Scenario: Event details can be seen without login to application
-    Given Visit rebelbase event page
-    When Verify event title
-    And Verify competitor is visible
-    Then Verify participants
+  # Scenario: Event details can be seen without login to application
+  #   Given Visit rebelbase event page
+  #   When Verify event title
+  #   And Verify competitor is visible
+  #   Then Verify participants
 
-  Scenario: Create event and invite members
-    Given Login to rebelbase portal
-    When Visit event page
-    And Create new event
-    And Inviting member to the event
-    Then Update event
+  # Scenario: Create event and invite members
+  #   Given Login to rebelbase portal
+  #   When Visit event page
+  #   And Create new event
+  #   And Inviting member to the event
+  #   Then Update event
 
-  Scenario: Add event description, Edit event details, Add post, File upload
-    Given Login to the rebelbase portal
-    When Go to the event page
-    And Add event description
-    And Add sponsor and upload file
-    And Add post in event
-    Then Edit event details
+  # Scenario: Add event description, Edit event details, Add post, File upload
+  #   Given Login to the rebelbase portal
+  #   When Go to the event page
+  #   And Add event description
+  #   And Add sponsor and upload file
+  #   And Add post in event
+  #   Then Edit event details
 
-  Scenario: Change project is not allowed during round is in progress
-    Given Login to the rebelbase portal
-    When Go to the hub event page
-    And Check for round is in progress
-    Then Select project should not be exist
+  # Scenario: Change project is not allowed during round is in progress
+  #   Given Login to the rebelbase portal
+  #   When Go to the hub event page
+  #   And Check for round is in progress
+  #   Then Select project should not be exist
 
-  Scenario: Judge can edit in bio from event page
-    Given Login to the rebel base portal
-    When Go to the event page
-    And Go to event details page
-    Then Edit bio from event details page
+  # Scenario: Judge can edit in bio from event page
+  #   Given Login to the rebel base portal
+  #   When Go to the event page
+  #   And Go to event details page
+  #   Then Edit bio from event details page
 
-  Scenario: Judge accept invitation redirect to welcome page
-    Given Login to the rebelbase portal
-    When Go to the hub event page
-    And Invite judge to the event
-    And Login to the invited user account
-    Then Accept invitation and redirect to the welcome page
+  # Scenario: Judge accept invitation redirect to welcome page
+  #   Given Login to the rebelbase portal
+  #   When Go to the hub event page
+  #   And Invite judge to the event
+  #   And Login to the invited user account
+  #   Then Accept invitation and redirect to the welcome page
 
-  Scenario: Compititor accept invitation redirect to select project
-    Given Login rebelbase portal
-    When Go to the event page
-    And Invite comititor to the event
-    And Login to the user account
-    Then Accept invitation and redirect to the select project page
+  # Scenario: Compititor accept invitation redirect to select project
+  #   Given Login rebelbase portal
+  #   When Go to the event page
+  #   And Invite comititor to the event
+  #   And Login to the user account
+  #   Then Accept invitation and redirect to the select project page
 
-  Scenario: Support accept invitation redirect to welcome resource
-    Given Login to the rebelbase portal
-    When Go to event page
-    And Invite support to the event
-    And Login to the invited user account
-    Then Accept invitation and redirect to the welcome resource
+  # Scenario: Support accept invitation redirect to welcome resource
+  #   Given Login to the rebelbase portal
+  #   When Go to event page
+  #   And Invite support to the event
+  #   And Login to the invited user account
+  #   Then Accept invitation and redirect to the welcome resource
 
-  Scenario: Delete Event
-    Given Login to the rebelbase portal
-    When Go to the event page
-    And Invite support to event
-    Then Delete Event
+  # Scenario: Delete Event
+  #   Given Login to the rebelbase portal
+  #   When Go to the event page
+  #   And Invite support to event
+  #   Then Delete Event
 
   Scenario: Create event and send invitation
     Given Login to the rebelbase portal
@@ -92,7 +92,7 @@ Feature: Event
     Then Logout to the account
 
   Scenario: Change project for event and verify
-    Given Login to the compititot account
+    Given Login to the compititor account
     When Go to my event page
     And Change project
     Then Logout to the account
@@ -127,7 +127,7 @@ Feature: Event
     When Go to the event page
     And Score first event
     And scoring second event
-    Then Logout to account
+    Then Logout to the account
 
   Scenario: Judge 3 score event
     Given Login to the judge 3 account

@@ -86,7 +86,7 @@ Feature: Sign-up test
         And Verify token from sended email
         And Creating new user account
         Then Accept invitation for created user
-
+    
     Scenario: new user signup and accept event invitation [signUpFlowTest]
         Given forget password
         Then Verify forgot password mail is send

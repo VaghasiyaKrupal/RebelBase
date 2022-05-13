@@ -45,7 +45,7 @@ Feature: Hub Group
     And Visite to group page
     And Verify plush button is visible
     Then Redirect to the test dev group
-  
+  @focus
   Scenario: Invite new user to hub from group and create and add project to group
     Given Access rebelbase portal
     When Redirect to group page for devhub
@@ -68,7 +68,7 @@ Feature: Hub Group
     When Visit DevHub group page
     And Go to group and set schedule
     Then Verify schedule is save
-
+  @focus    
   Scenario: Add search and delete member from group
     Given Access to the rebelbase
     When Navigate group page
@@ -84,7 +84,7 @@ Feature: Hub Group
     And Redirect to created group page
     And Add manager in group
     Then Delete manager from group
-
+  
   Scenario: Invite to user not part of group
     Given Logged in to the rebelbase portal
     When Redirect to group page from DevHub

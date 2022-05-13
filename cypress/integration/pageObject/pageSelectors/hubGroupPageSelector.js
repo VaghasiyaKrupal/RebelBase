@@ -11,6 +11,7 @@ const hubGroupPageSelector = {
     memberSearchTextbox: 'input[placeholder="search for member in "]',
     inviteMemberTextbox: 'input[placeholder="search for member in Dev Hub"]',
     supportRole: '[for="grant_support_field"] > .select-role__name',
+    searchMember:'[placeholder="search for  Member"]',
     popupNotes: '.popUp__note',
     firstExistGroup: '.group-overview__title-wrap > h4',
     saveScheduleButton: "//button[contains(text(),'save schedule')]",
@@ -34,6 +35,7 @@ const hubGroupPageSelector = {
     addManagerPlushSign: "//button/span[@class='plusSign']/parent::button",
     projectDeactiveHover: ':nth-child(1) > div.group-overview__title-wrap > div > div > button:nth-child(1)',
     deactivateButton: "//div[@class='ReactModalPortal']//button[contains(text(),'Deactivate')]",
-    groupName:'[name="group_name"]'
+    groupName:'[name="group_name"]',
+    addMemberBtn:"//button[contains(text(),'add members')]",
 }
 export { hubGroupPageSelector }

@@ -16,7 +16,7 @@ Given('I access the brain section page', () => {
 })
 
 When('I send hub invitation from brain page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click(); // Click on the Notification dismiss button
+  cy.get(brainPageSelectors.notificationDismiss).click(); // Click on the Notification dismiss button
   cy.xpath(brainPageSelectors.inviteMemberButton).click(); // Click on invite member button
   cy.get(brainPageSelectors.inviteModelTextbox)
     .clear()
@@ -33,12 +33,12 @@ And('Send nudge and delete invitation', () => {
   cy.get(brainPageSelectors.sendNudgeButton).eq(0).click(); // Click on send nudge button from pop-up
   cy.wait(500)
   cy.get(brainPageSelectors.notification).contains(brainPageData.invitationResentMessage).should('be.visible'); // Verifing notication text
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get(brainPageSelectors.deleteButton) // Click on the delete button from the pop-up
     .eq(0)
     .click();
   cy.get(brainPageSelectors.notification).contains(brainPageData.invitationDeleteMessage); // Verifing notification
-  cy.xpath(brainPageSelectors.notificationDismiss).click(); // Close the notification
+  cy.get(brainPageSelectors.notificationDismiss).click(); // Close the notification
 })
 
 And('Reend invitation', () => {
@@ -58,7 +58,7 @@ And('Reend invitation', () => {
 
 And('Resend nudge', () => {
   cy.get(brainPageSelectors.sendNudgeButton).eq(0).click(); // Click on the send nudge button from model
-  cy.xpath(brainPageSelectors.notificationDismiss).click(); // Close the notification
+  cy.get(brainPageSelectors.notificationDismiss).click(); // Close the notification
   cy.xpath(brainPageSelectors.closeModelButton).click(); // Click on cross button to close model
 });
 
@@ -69,7 +69,7 @@ Given('I access the brain section page', () => {
 })
 
 When('Close Notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click(); // Close the notification
+  cy.get(brainPageSelectors.notificationDismiss).click(); // Close the notification
 })
 
 And('Nevigate to RebelBase Hub 101', () => {

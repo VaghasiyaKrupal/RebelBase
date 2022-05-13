@@ -1,6 +1,6 @@
 Feature: Settings
 
-    Scenario: Send,snudge delete project invitation from setting page
+    Scenario: Send, nudge delete project invitation from setting page
         Given Login to rebelbase portal
         When Go to setting page
         Then Send Invitation and nudge

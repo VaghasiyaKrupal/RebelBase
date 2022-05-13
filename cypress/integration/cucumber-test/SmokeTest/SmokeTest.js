@@ -1,8 +1,16 @@
 import { Given, When, Then } from 'cypress-cucumber-preprocessor/steps'
 import { brainPageSelectors } from '../../pageObject/pageSelectors/brainPageSelectors'
 import { builderPageSelectors } from '../../pageObject/pageSelectors/builderPageSelectors'
+import { hubGroupPageSelector } from '../../pageObject/pageSelectors/hubGroupPageSelector'
 import { smokeTestPageSelector } from '../../pageObject/pageSelectors/smokeTestPageSelector'
 
+Cypress.on('uncaught:exception', (err, runnable) => {
+    // returning false here prevents Cypress from
+    // failing the test
+    return false
+})
+
+// Login to app staging rebelbase
 Given('User is at the login page', () => {
     cy.visit('/')
 })
@@ -20,6 +28,7 @@ Then('User is able to successfully login to the Website', () => {
     cy.url().should('include', '/profile');
 })
 
+// create project
 Given('User is logged in', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
 })
@@ -52,20 +61,20 @@ Then('User is able to successfully create project', () => {
     cy.xpath(brainPageSelectors.closeModelButton).click({ force: true });
 })
 
-
+// create group
 Given('admin User is logged in', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
 })
 
 When('clicked on + button and add details', () => {
-    cy.xpath(brainPageSelectors.notificationDismiss).click({ force: true });
+    cy.get(brainPageSelectors.notificationDismiss).click({ force: true });
     cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
     cy.xpath(smokeTestPageSelector.groupLink).click();
     cy.get(smokeTestPageSelector.addGroupButton).click();
-    cy.get(smokeTestPageSelector.groupNameTextbox)
+    cy.get(hubGroupPageSelector.groupName)
         .clear({ force: true })
         .type(Cypress.config('randomname'));
-    cy.xpath(smokeTestPageSelector.selectAllButton).click();
+    // cy.xpath(smokeTestPageSelector.selectAllButton).click();
 })
 
 And('User clicks on create group button', () => {
@@ -75,20 +84,21 @@ And('User clicks on create group button', () => {
 Then('User is able to successfully create group', () => {
     cy.get(smokeTestPageSelector.groupHeading).should('have.text', Cypress.config('randomname'));
     cy.visit('hubs/26/groups');
-    cy.xpath(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click()
     cy.get(smokeTestPageSelector.searchBar)
-        .clear()
+        .clear({ force: true })
         .type(Cypress.config('randomname'));
     cy.get(smokeTestPageSelector.projectHover).click({ force: true });
     cy.xpath(smokeTestPageSelector.deleteButtom).click();
 })
 
+// add activity
 Given('User is logged in', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
 })
 
 When('clicked on add activity button and add details', () => {
-    cy.xpath(brainPageSelectors.notificationDismiss).click({ force: true });
+    cy.get(brainPageSelectors.notificationDismiss).click({ force: true });
     cy.get(smokeTestPageSelector.devHub).click();
     cy.xpath(smokeTestPageSelector.activityLink).click();
     cy.wait(1000)
@@ -105,12 +115,13 @@ Then('User is able to create post', () => {
     cy.xpath(smokeTestPageSelector.postButton).click();
 })
 
+// create event
 Given('User is logged in', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
 })
 
 When('clicked on new event button and add details', () => {
-    cy.xpath(brainPageSelectors.notificationDismiss).click({ force: true });
+    cy.get(brainPageSelectors.notificationDismiss).click({ force: true });
     cy.get(smokeTestPageSelector.devHub).click();
     cy.xpath(smokeTestPageSelector.eventLink).first().click();
     cy.xpath(smokeTestPageSelector.newEventButton).click();
@@ -147,6 +158,7 @@ Then('User is able to successfully create event', () => {
     cy.get(smokeTestPageSelector.logoutButton).click();
 })
 
+// Signup application
 Given('User is on signup page', () => {
     cy.visit('/');
 })

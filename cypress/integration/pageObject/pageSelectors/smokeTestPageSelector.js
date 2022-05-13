@@ -15,6 +15,7 @@ const smokeTestPageSelector = {
     groupLink: "//span[contains(text(),'Groups')]",
     activityLink: "//span[contains(text(),'Activities')]",
     eventLink: "//span[contains(text(),'Events')]",
+    memberLink:"//span[contains(text(),'Members')]",
     addGroupButton: '.group-overview__add-btn',
     groupNameTextbox: '[placeholder="Name of Group *"]',
     selectAllButton: "//span[contains(text(),'select all')]",

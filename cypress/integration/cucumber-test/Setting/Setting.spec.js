@@ -22,7 +22,7 @@ Given('Login to rebelbase portal', function () {
 })
 
 When('Go to setting page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('[data-testid="ArrowDropDownIcon"]').click();
   cy.get('[data-testid="SettingsIcon"]').click();
 })
@@ -34,10 +34,10 @@ Then('Send Invitation and nudge', () => {
     .clear()
     .type('testhubadmin+2@rebelbase.co');
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-  cy.get('.inviteTeam__btn__nudge').click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get('.inviteTeam__btn__nudge').first().click();
   cy.get(hubGroupPageSelector.popupNotes).click();
-  cy.get('.btn-delete').click();
+  cy.get('.btn-delete').first().click();
   cy.xpath(brainPageSelectors.closeModelButton).click();
 });
 
@@ -47,7 +47,7 @@ Given('Login to rebelbase portal', function () {
 })
 
 When('Go to setting page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('[data-testid="ArrowDropDownIcon"]').click();
   cy.get('[data-testid="SettingsIcon"]').click();
 })
@@ -80,7 +80,7 @@ Given('Login to the rebelbase portal', function () {
 })
 
 When('Expand language', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('[data-testid="ArrowDropDownIcon"]').click();
   cy.get('[data-testid="ExpandMoreIcon"]').click();
 })

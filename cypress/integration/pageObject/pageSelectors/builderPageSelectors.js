@@ -30,5 +30,6 @@ const builderPageSelectors = {
     reviewPublishButton:' //a[text()="Review + Publish"]',
     publishDropdown:'label.sidebar__published__drpdwn',
     publishItem:'//button[text()="edit publish settings"]',
+    goButton:' //a[text()="Go >"]',
 }
 export { builderPageSelectors }

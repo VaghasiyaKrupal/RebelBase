@@ -35,7 +35,7 @@ When('Go to the Activity page', () => {
 
 And('Close the notification', () => {
   cy.waitForReact(7000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Verify Dev Hub', () => {
@@ -51,11 +51,11 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Change hub title', () => {
@@ -83,7 +83,7 @@ When('Go to Activity', () => {
 })
 
 And('Edit role', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('.hub__topHeader__dropdown-wrap')
     .find('.hub__topHeader__dropdown__links')
     .contains('Edit my role(s)')
@@ -133,7 +133,7 @@ And('Edit Membership', () => {
 Then('Verify edited details', () => {
   cy.get(' div > div > button.btn-x').eq(2).should('be.visible');
   cy.get(' div > div > button.btn-x').eq(2).click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('.hub__topHeader__dropdown-wrap')
     .find('.hub__topHeader__dropdown__links')
     .contains('Edit my role(s)')
@@ -157,7 +157,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity pages', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Make Announcement', () => {
@@ -182,7 +182,7 @@ When('Visit Activity page', () => {
 })
 
 And('Cancel announcement after edit', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('.activity__nav div button').eq(1)
     .click();
   cy.get('#long-button').eq(0).click()
@@ -214,7 +214,7 @@ Given('Verify profile page and cookies', () => {
 When('Redirect to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Make announcement unsticky', () => {
@@ -233,7 +233,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity pages', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Make announcement sticky', () => {
@@ -253,7 +253,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Verify announcement not deleted', () => {
@@ -278,7 +278,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Create post', () => {
@@ -300,7 +300,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Go to post page', () => {
@@ -316,7 +316,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Verify post is not edit', () => {
@@ -348,7 +348,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Verify post is not deleted', () => {
@@ -373,7 +373,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 Then('Ask a question', () => {
@@ -400,7 +400,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Check cancel edit', () => {
@@ -437,7 +437,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Go to Question page', () => {
@@ -453,7 +453,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Add answer', () => {
@@ -474,7 +474,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Reply to answer', () => {
@@ -506,7 +506,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Delete Replay', () => {
@@ -530,7 +530,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Add more answer', () => {
@@ -552,7 +552,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 And('Upvote answer', () => {
@@ -571,7 +571,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 And('Ask question', () => {
@@ -590,7 +590,7 @@ And('Ask question', () => {
 });
 
 And('Answer question', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get('.activity__nav div button').contains('Q+A').click({ force: true })
   cy.get('div:nth-child(4)>div>div>button:nth-child(2)').eq(0).click();
   cy.get(smokeTestPageSelector.postTextbox)
@@ -639,7 +639,7 @@ Given('Verify profile page and cookies', () => {
 When('Go to Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 And('Create offer', () => {
@@ -651,7 +651,7 @@ And('Create offer', () => {
     .type('cypress offer');
   cy.xpath(hubActivityPageSelector.offerButton).click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Offer created successfully');
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Reply to offer', () => {
@@ -686,7 +686,7 @@ Given('Verify profile page and cookies', () => {
 When('User at Activity page', () => {
   cy.visit('/hubs/26/activity');
   cy.waitForReact(5000, '#root');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 And('Edit admin role card', () => {

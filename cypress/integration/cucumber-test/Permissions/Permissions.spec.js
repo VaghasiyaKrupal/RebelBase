@@ -15,7 +15,7 @@ const projectName = "cypressautomation-" + Math.random().toString(36).substring(
 // Test project support member permissions
 Given('Login to the supporter account', () => {
   cy.login(Cypress.env('supporter'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 When('Verify supporter email', () => {
@@ -45,7 +45,7 @@ And('Changing basic account settings', () => {
     .type('pune,');
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.get(permissionsPageSelector.valueSaveButton).click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 And('Add Alternative Email and remove it', () => {
@@ -88,7 +88,7 @@ Then('Create project and redirect to project page', () => {
 // Check project members permissons
 Given('Login to the member account', () => {
   cy.login(Cypress.env('member'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 When('Changing basic settings', () => {
@@ -141,17 +141,17 @@ Then('Invite user to team', () => {
     .type('testhubadmin+6@rebelbase.co');
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'This email has already been sent an invitation!');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(':nth-child(1) > .pending--btn-wrap > .inviteTeam__btn__nudge').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation resent!');
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ multiple: true });
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.xpath(brainPageSelectors.closeModelButton).click();
 });
 
 // Check rebelbase members permissons
 Given('Login to the Rebelbase member account', () => {
   cy.login(Cypress.env('rebelbasemember'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Go to setting page', () => {
@@ -191,7 +191,7 @@ Then('Verify settings permission', () => {
 // Check Hub event member permissons
 Given('Login to event member account', () => {
   cy.login(Cypress.env('eventMember'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 When('Verify permission from settings', () => {

@@ -11,7 +11,7 @@ const email = Cypress.config('email')
 const randomname = Cypress.config('randomname')
 const projectName = "cypressautomationgroup" + Math.random().toString(36).substring(2);
 
-After(()=>{
+After(() => {
   cy.wait(1000)
 })
 
@@ -69,7 +69,7 @@ Given('Login using username email', () => {
 })
 
 When('Visit Group screen', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
@@ -88,7 +88,7 @@ And('Verify created group', () => {
 
 And('Redirect to group page', () => {
   cy.visit('hubs/26/groups', { timeout: 300000 });
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Search created group and delete it', () => {
@@ -110,7 +110,7 @@ When('Verify profile and token', () => {
 })
 
 And('Go to group page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
@@ -140,7 +140,7 @@ When('Verify profile and login user token', () => {
 })
 
 And('Jump to group page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
@@ -166,7 +166,7 @@ When('Verify profile, user token', () => {
 })
 
 And('Navigate to group page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
@@ -212,7 +212,7 @@ When('Verify loggedin user token and profile url', () => {
 })
 
 And('Visite to group page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
@@ -247,13 +247,10 @@ Then('Redirect to the test dev group', () => {
 // Invite new user to hub from group and create and add project to group
 Given('Access rebelbase portal', () => {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  // cy.xpath(smokeTestPageSelector.emailTextbox).type(Cypress.env('username'));
-  // cy.xpath(smokeTestPageSelector.passwordTextbox).type(Cypress.env('password'));
-  // cy.get(smokeTestPageSelector.loginButton).click();
 })
 
 When('Redirect to group page for devhub', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
@@ -269,11 +266,11 @@ And('Go to test dev group', () => {
 And('Add member to the group', () => {
   cy.get(hubGroupPageSelector.addMemberButton).click({ force: true });
   cy.get(hubGroupPageSelector.inviteMemberTextbox).clear();
-  cy.xpath(hubGroupPageSelector.inviteThemButton).click();
-  cy.get(brainPageSelectors.inviteModelTextbox).clear();
-  cy.get(hubGroupPageSelector.supportRole).click();
+  // cy.xpath(hubGroupPageSelector.inviteThemButton).click();
+  // cy.get(brainPageSelectors.inviteModelTextbox).clear();
+  // cy.get(hubGroupPageSelector.supportRole).click();
   cy.wait(1000)
-  cy.get(brainPageSelectors.inviteModelTextbox).type('testhubadmin+8@rebelbase.co{enter}');
+  cy.get(hubGroupPageSelector.inviteMemberTextbox).type('testhubadmin+8@rebelbase.co{enter}');
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.get(brainPageSelectors.inviteModelTextbox)
     .clear()
@@ -325,7 +322,7 @@ Then('Accept invitation', () => {
   // cy.get('.popUp__note').contains('Invitation accepted successfully');
   // cy.get('.createHub > :nth-child(1) > h2').contains('Welcome to Dev Hub!');
   // cy.xpath(brainPageSelectors.closeModelButton).click();
-  // cy.xpath(brainPageSelectors.notificationDismiss).click();
+  // cy.get(brainPageSelectors.notificationDismiss).click();
 });
 
 // Duplicate group name
@@ -350,14 +347,14 @@ And('Verify api response', () => {
 })
 
 And('Redirected to group page', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
 
 And('Creating group', () => {
   cy.get(smokeTestPageSelector.addGroupButton).click();
-  cy.get(smokeTestPageSelector.groupNameTextbox)
+  cy.get(hubGroupPageSelector.groupName)
     .clear()
     .type('test dev group');
   cy.xpath(smokeTestPageSelector.createGroupButton).click();
@@ -403,7 +400,7 @@ Then('Verify schedule is save', () => {
 // Add search and delete member from group
 Given('Access to the rebelbase', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Navigate group page', () => {
@@ -412,7 +409,7 @@ When('Navigate group page', () => {
 })
 
 And('Go to group details page and delete member', () => {
-  cy.get(hubGroupPageSelector.groupHeading).first().click({ force: true });
+  cy.get(hubGroupPageSelector.groupHeading).contains('test dev group').click({ force: true });
   cy.xpath(hubGroupPageSelector.editPen).click({ force: true });
   cy.wait(4000)
   cy.get('body').then((body) => {
@@ -425,12 +422,12 @@ And('Go to group details page and delete member', () => {
   cy.get('.btn-delete').click();
   cy.get('.btn-first-choice').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', "Member(s) deleted successfully.");
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ force: true });
+  cy.get(brainPageSelectors.notificationDismiss).click({ force: true });
 })
 
 And('Adding member to the group', () => {
-  cy.xpath(hubGroupPageSelector.editPen).click();
-  cy.get(hubGroupPageSelector.addMemberButton).click({force:true});
+  // cy.xpath(hubGroupPageSelector.editPen).click();
+  cy.get(hubGroupPageSelector.addMemberButton).click({ force: true });
   cy.get(hubGroupPageSelector.inviteMemberTextbox).type('test');
   cy.get(hubGroupPageSelector.radioCheck).first().click();
   cy.get(hubGroupPageSelector.radioCheck).last().click();
@@ -445,13 +442,13 @@ Then('Deleting member from group', () => {
   cy.get('.btn-delete').click();
   cy.get('.btn-first-choice').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', "Member(s) deleted successfully.");
-  cy.xpath(brainPageSelectors.notificationDismiss).click({ force: true });;
+  cy.get(brainPageSelectors.notificationDismiss).click({ force: true });;
 });
 
 // Add delete manager in group
 Given('Getting access on the rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Jumped to group page', () => {
@@ -461,7 +458,7 @@ When('Jumped to group page', () => {
 
 And('Add new groups', () => {
   cy.get(smokeTestPageSelector.addGroupButton).click();
-  cy.get(smokeTestPageSelector.groupNameTextbox)
+  cy.get(hubGroupPageSelector.groupName)
     .clear()
     .type(randomname);
   cy.xpath(smokeTestPageSelector.createGroupButton).click();
@@ -473,7 +470,7 @@ And('Verifing created group', () => {
 
 And('Redirect to created group page', () => {
   cy.visit('hubs/26/groups', { timeout: 300000 });
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get(smokeTestPageSelector.searchBar)
     .clear()
     .type(randomname)
@@ -496,7 +493,7 @@ Then('Delete manager from group', () => {
   cy.xpath(hubGroupPageSelector.addMenagerButton).click()
   cy.get(hubGroupPageSelector.radioCheck).first().click();
   cy.visit('hubs/26/groups', { timeout: 300000 });
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
   cy.get(smokeTestPageSelector.searchBar)
     .clear()
     .type(randomname)
@@ -510,7 +507,7 @@ Then('Delete manager from group', () => {
 // Invite to user not part of group
 Given('Logged in to the rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Redirect to group page from DevHub', () => {
@@ -520,7 +517,7 @@ When('Redirect to group page from DevHub', () => {
 
 And('Adding group', () => {
   cy.get(smokeTestPageSelector.addGroupButton).click();
-  cy.get(smokeTestPageSelector.groupNameTextbox)
+  cy.get(hubGroupPageSelector.groupName)
     .clear()
     .type('test dev group');
   cy.xpath(smokeTestPageSelector.createGroupButton).click();
@@ -530,28 +527,30 @@ And('Adding group', () => {
 
 Then('Checking for duplicate group name', () => {
   cy.get('.ReactModal__Overlay').click();
-  cy.get(smokeTestPageSelector.groupNameTextbox)
+  cy.get(hubGroupPageSelector.groupName)
     .clear()
     .type('testgroup1');
-  cy.xpath(hubGroupPageSelector.inviteThemButton).click();
-  cy.get(brainPageSelectors.inviteModelTextbox)
-    .clear()
-    .type('testhubadmin+123@rebelbase.co');
-  cy.get(':nth-child(5) > .invite-to-hub__group__label').click();
-  cy.xpath(smokeTestPageSelector.sendInviteButton).click();
-  cy.get(brainPageSelectors.feedbackNotification).click();
-  cy.get(brainPageSelectors.feedbackNotification).click();
-  cy.get(brainPageSelectors.feedbackNotification).click();
-  cy.get(brainPageSelectors.feedbackNotification).should('be.visible');
-  cy.get(hubGroupPageSelector.modelCloseButton).click();
-  cy.xpath(smokeTestPageSelector.createGroupButton).click();
-  cy.url().should('include', '/groups');
+  cy.xpath(smokeTestPageSelector.createGroupButton).click()
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text',hubGroupPageData.groupNameExistMessage)
+  // cy.xpath(hubGroupPageSelector.inviteThemButton).click();
+  // cy.get(brainPageSelectors.inviteModelTextbox)
+  //   .clear()
+  //   .type('testhubadmin+123@rebelbase.co');
+  // cy.get(':nth-child(5) > .invite-to-hub__group__label').click();
+  // cy.xpath(smokeTestPageSelector.sendInviteButton).click();
+  // cy.get(brainPageSelectors.feedbackNotification).click();
+  // cy.get(brainPageSelectors.feedbackNotification).click();
+  // cy.get(brainPageSelectors.feedbackNotification).click();
+  // cy.get(brainPageSelectors.feedbackNotification).should('be.visible');
+  // cy.get(hubGroupPageSelector.modelCloseButton).click();
+  // cy.xpath(smokeTestPageSelector.createGroupButton).click();
+  // cy.url().should('include', '/groups');
 });
 
 // Deactivate group
 Given('Get access Rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Redirect the group page', () => {
@@ -573,7 +572,7 @@ Then('Deactivate group', () => {
 // Delete group
 Given('Username login to the rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Visit directly to group page', () => {
@@ -588,6 +587,6 @@ And('Search for group', () => {
 })
 
 Then('Delete group', () => {
-  cy.get(smokeTestPageSelector.projectHover).click({force:true});
+  cy.get(smokeTestPageSelector.projectHover).click({ force: true });
   cy.xpath(smokeTestPageSelector.deleteButtom).click();
 });

@@ -86,7 +86,7 @@ Then('Verify email or password validation', () => {
 
 // Autofill email address if exist in url [loginFlowTest]
 Given('Visit url', () => {
-  cy.visit(`https://staging.rebelbase.co/accept/project-invitation/?token=${Cypress.env('token')}&email_address=${Cypress.env('username')}`);
+  cy.visit(`/accept/project-invitation/?token=${Cypress.env('token')}&email_address=${Cypress.env('username')}`);
 })
 
 When('Verify email textbox value', () => {
@@ -142,7 +142,7 @@ When('Verify user is not able to accept invitation', () => {
 And('Enter password and click on login button', () => {
   cy.get(smokeTestPageSelector.signUpPassword).type(Cypress.env('password'));
   cy.get('.login__btn').click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 Then('Verify profile url and invitation expired notification', () => {
@@ -161,7 +161,7 @@ Then('Verify profile url and invitation expired notification', () => {
 //   cy.get(smokeTestPageSelector.signUpEmail).type(Cypress.env('username2'));
 //   cy.get(smokeTestPageSelector.signUpPassword).type(Cypress.env('password'));
 //   cy.get(smokeTestPageSelector.loginButton).click()
-//   cy.xpath(brainPageSelectors.notificationDismiss).click()
+//   cy.get(brainPageSelectors.notificationDismiss).click()
 // })
 
 // And('Verify landing profile url', () => {
@@ -183,7 +183,7 @@ Given('Visit page url with email exist in url', () => {
 
 When('Verify emailid is prefilled', () => {
   cy.get(smokeTestPageSelector.signUpEmail).should('have.value', Cypress.env('emailuser'));
-  // cy.xpath(brainPageSelectors.notificationDismiss).click()
+  // cy.get(brainPageSelectors.notificationDismiss).click()
   cy.get(hubGroupPageSelector.popupNotes)
     .should('have.text', 'Please signup or login before trying to accept an invitation to create a Hub.');
 })
@@ -195,7 +195,7 @@ And('Enter password and login to account', () => {
 
 Then('Verify email notification message', () => {
   cy.location('pathname').should('equal', '/profile/4410');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  // cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get(hubGroupPageSelector.popupNotes)
     .should('have.text', `Please verify your email address: ${Cypress.env('emailuser')}`);
 });
@@ -203,7 +203,7 @@ Then('Verify email notification message', () => {
 // log in with different email and try to accept event invitation token [loginFlowTest]
 Given('Login to rebelbase url', () => {
   cy.visit(
-    `https://staging.rebelbase.co/accept/hub-event-invitation/?token=${Cypress.env(
+    `/accept/hub-event-invitation/?token=${Cypress.env(
       'eventinvitation'
     )}&email_address=${Cypress.env('emailuser')}`
   );
@@ -221,7 +221,7 @@ When('Enter different email and try to login', () => {
 
 And('Verify url from profile', () => {
   cy.location('pathname').should('equal', '/profile/2469');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 Then('Should invitation expired notification', () => {
@@ -232,7 +232,7 @@ Then('Should invitation expired notification', () => {
 // log in with invalid event invitation token [loginFlowTest]
 Given('Visit with existed email in url', () => {
   cy.visit(
-    `https://staging.rebelbase.co/accept/hub-event-invitation/?token=${Cypress.env(
+    `/accept/hub-event-invitation/?token=${Cypress.env(
       'token2'
     )}&email_address=${Cypress.env('emailuser')}`
   );
@@ -244,7 +244,7 @@ When('Enter username, password and login', () => {
     .type(Cypress.env('emailuser'));
   cy.get(smokeTestPageSelector.signUpPassword).type(Cypress.env('password'));
   cy.get(smokeTestPageSelector.loginButton).click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 Then('Should show invitation has expired notification', () => {
@@ -273,7 +273,7 @@ When('Should show You will not be able to accept the invitation using this email
 
 And('Verify user profile url', () => {
   cy.location('pathname').should('equal', '/profile/2469');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 Then('Should shows invitation has expired in the notification', () => {
@@ -298,7 +298,7 @@ Then('Should shows invitation has expired in the notification', () => {
 
 // Then('Verify email varification notification', () => {
 //   cy.get(hubGroupPageSelector.popupNotes).should('have.text', `Please verify your email address: ${Cypress.env('username2')}`);
-//   cy.xpath(brainPageSelectors.notificationDismiss).click()
+//   cy.get(brainPageSelectors.notificationDismiss).click()
 //   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invalid token!');
 // });
 
@@ -345,7 +345,7 @@ And('Login to the same account', () => {
   cy.get(smokeTestPageSelector.signUpEmail).type(randomEmail);
   cy.get(smokeTestPageSelector.signUpPassword).type(Cypress.env('password'));
   cy.get(smokeTestPageSelector.loginButton).click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 Then('Should show tell-up about yourself', () => {
@@ -466,7 +466,7 @@ When('Send support member invitation', () => {
 And('Verify user token', () => {
   cy.task("gmail:get-messages", {
     options: {
-      from: "info@rebelbase.co",
+      from: "noreply@rebelbase.co",
       subject: "Join CypressTestProject01 team on RebelBase",
       include_body: true,
       // before: new Date(2021, 9, 24, 12, 31, 13), // Before September 24rd, 2019 12:31:13
@@ -583,7 +583,7 @@ Then('Accept new project invitation', () => {
 
   cy.task("gmail:get-messages", {
     options: {
-      from: "info@rebelbase.co",
+      from: "noreply@rebelbase.co",
       subject: "test invited you to join the Dev Hub hub on RebelBase",
       include_body: true,
       // before: new Date(2021, 9, 24, 12, 31, 13), // Before September 24rd, 2019 12:31:13

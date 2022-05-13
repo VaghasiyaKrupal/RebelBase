@@ -18,11 +18,7 @@ Given("Visit builder answer page", () => {
 })
 
 When('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
-
-And('Prop project ID', () => {
-  cy.react(builderPageSelectors.BuildersQuillForm, { props: { projectId: 1511 } });
+  cy.get(brainPageSelectors.notificationDismiss).click({force:true});
 })
 
 Then('Find paragraph from answer', () => {
@@ -36,15 +32,7 @@ Given('Visit builder answer page', () => {
 })
 
 When('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
-
-And('Get project ID', () => {
-  cy.react('BuildersQuillForm', {
-    props: {
-      projectId: 1511
-    }
-  });
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 Then('Find Lorem Ipsum from answer', () => {
@@ -58,11 +46,7 @@ Given('Visit builder answer page', () => {
 })
 
 When('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
-
-And('Prop project ID', () => {
-  cy.react(builderPageSelectors.BuildersQuillForm, { props: { projectId: 1511 } });
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Enter builder answer with random text', () => {
@@ -80,7 +64,7 @@ Then('Click on the save + next button', () => {
   cy.xpath(builderPageSelectors.saveAndNextButton).click();
   cy.location('pathname').should(
     'equal',
-    '/project/1511/builders/1/topics/4/answer'
+    '/project/1511/builders/1/overview'
   );
   cy.wait(2000)
   cy.contains(builderPageData.saveAnswer);
@@ -93,14 +77,11 @@ Given('Visit builder topic 4 answer page', () => {
 })
 
 When('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
-
-And('Prop project ID', () => {
-  cy.react(builderPageSelectors.BuildersQuillForm, { props: { projectId: 1511 } });
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Enter builder answer with random text', () => {
+  cy.wait(2000)
   cy.get(builderPageSelectors.qlEditor).clear();
   cy.get(builderPageSelectors.qlEditor)
     .find('p')
@@ -130,11 +111,7 @@ Given("Visit builder topic 5 answer page", () => {
 })
 
 When('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
-
-And('Prop project ID', () => {
-  cy.react(builderPageSelectors.BuildersQuillForm, { props: { projectId: 1511, }, });
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Enter builder answer with random text', () => {
@@ -169,15 +146,7 @@ Given("Visit builder topic 44 answer page", () => {
 })
 
 When('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
-})
-
-And('Prop project ID', () => {
-  cy.react(builderPageSelectors.BuildersQuillForm, {
-    props: {
-      projectId: 1511,
-    },
-  });
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Enter random answer', () => {
@@ -226,7 +195,7 @@ When('Verify page is loaded successfully', () => {
 })
 
 And('Close the notification', () => {
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 })
 
 And('Go to the builder page', () => {
@@ -288,12 +257,12 @@ Then('Enter answer and save it', () => {
     force: true
   });
   cy.get(builderPageSelectors.toolTipInput).clear();
-  cy.get(builderPageSelectors.toolTipInput).type(builderPageSelectors.ansLink);
+  cy.get(builderPageSelectors.toolTipInput).type(builderPageData.ansLink);
   cy.get(builderPageSelectors.qlAction).click();
   cy.get(':nth-child(4) > li').first().click();
   cy.get(builderPageSelectors.saveAnswerButton).click();
   cy.get('.btm-nav > .btn-main').click();
-  cy.xpath(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click();
 });
 
 // change track on builder page > it should change builders types
@@ -333,9 +302,9 @@ Then('Verify next track', () => {
 });
 
 // change track on project builder page and complete one type of builder answers
-Given('Visit builder page on rebelbase portal', function () {
+Given('Visit builder page on rebel base portal', function () {
   cy.visit('/');
-  cy.xpath(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Go to project builder page', () => {
@@ -368,16 +337,16 @@ And('Complete answer one type of answer', () => {
   cy.get(builderPageSelectors.qlEditor).click();
   cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
   cy.xpath(builderPageSelectors.saveAndNextButton).click();
-  cy.xpath(builderPageSelectors.revisitButton).eq(2).click();
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.saveAndNextButton).click();
+  cy.xpath(builderPageSelectors.goButton).click();
+  cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.saveAndNextButton).click();
 })
 
 And('Go to review and publish page and publish answer', () => {
@@ -409,15 +378,15 @@ And('Re check answer', () => {
   cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
   cy.get(builderPageSelectors.qlEditor).click();
   cy.xpath(builderPageSelectors.saveAndNextButton).click();
-  cy.xpath(builderPageSelectors.revisitButton).eq(2).click();
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  cy.xpath(builderPageSelectors.goButton).click();
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
+  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
   cy.xpath(builderPageSelectors.saveAndNextButton).click();
 })
 

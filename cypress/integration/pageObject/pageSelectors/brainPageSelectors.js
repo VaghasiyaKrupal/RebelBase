@@ -1,5 +1,5 @@
 const brainPageSelectors = {
-    notificationDismiss: '//span[@class="notification-dismiss"]',
+    notificationDismiss: '.notification-dismiss',
     inviteMemberButton: '//span[contains(text(),"Invite Members")]',
     inviteModelTextbox: 'input[placeholder="Add multiple email addresses one at a time"]',
     selectProjectFromModel: '.invite-to-hub__group__label',

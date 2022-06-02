@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "chai": "^4.3.4",
-    "cypress": "^9.5.4",
+    "cypress": "^10.0.1",
     "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-file-upload": "^5.0.8",
     "cypress-mailosaur": "^2.3.3",
@@ -41,7 +41,8 @@
     "cy": "./node_modules/.bin/cypress",
     "smokeTest": "cypress run  --record --key 1835c7b6-d7e1-4441-99cb-b8467f785f36 --spec ./cypress/integration/smoketest.spec.js  --reporter junit",
     "moduleTest": "cypress run  --record --key 1835c7b6-d7e1-4441-99cb-b8467f785f36 --spec ./cypress/integration/**/*.js --parallel --ci-build-id 1 --reporter junit",
-    "prod_smokeTest": "cypress run  --record --key 1835c7b6-d7e1-4441-99cb-b8467f785f36 --spec ./cypress/integration/prod_smokeTest.spec.js"
+    "prod_smokeTest": "cypress run  --record --key 1835c7b6-d7e1-4441-99cb-b8467f785f36 --spec ./cypress/integration/prod_smokeTest.spec.js",
+    "mobile_test": "cypress run --browser chrome --config viewportHeight=668,viewportWidth=400 --spec ./cypress/integration/cucumber-test/*.feature"
   },
   "keywords": [
     "cypress",

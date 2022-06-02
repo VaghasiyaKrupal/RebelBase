@@ -38,6 +38,37 @@ const randomEmail13 = `rebelbasetesthub13+${new Date().getTime()}@gmail.com`;
 const randomEmail14 = `rebelbasetesthub14+${new Date().getTime()}@gmail.com`;
 const randomEmail15 = `rebelbasetesthub15+${new Date().getTime()}@gmail.com`;
 
+// Test Enable user to set email interval in settings
+Given('Login to the rebel base account', () => {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click()
+})
+
+When('Go to setting', () => {
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(permissionsPageSelector.selectSetting).click();
+})
+
+And('Change My Activity Updates notification', () => {
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(0).click()
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(0).should('have.css', 'color', 'rgb(25, 164, 177)')
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(1).click()
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(1).should('have.css', 'color', 'rgb(25, 164, 177)')
+})
+
+And('Change Hub Activity Updates notification', () => {
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(3).click()
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(3).should('have.css', 'color', 'rgb(25, 164, 177)')
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(4).click()
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(4).should('have.css', 'color', 'rgb(25, 164, 177)')
+})
+
+Then('Logout from account',()=>{
+  cy.get('[data-testid=ArrowDropDownIcon]').click();
+  cy.get('[data-testid=LogoutIcon]').click();
+  cy.url().should('include', '/auth/login')
+})
+
 // Sign up and try to accept invalid project invitation token
 Given('Signup user with token', () => {
   // const randomEmail = `rebelbasetesthub+${new Date().getTime()}@gmail.com`;
@@ -291,7 +322,7 @@ When('Verify validation on location model', () => {
   cy.get(':nth-child(1) > :nth-child(2) > .form-control').type(randomEmail6);
   cy.get(smokeTestPageSelector.autoCompleteTextbox).type('Pune, Maharashtra, India');
   cy.get(smokeTestPageSelector.locationResultInput).click();
-  cy.get('select').select('Energy');
+  cy.get('select').select('Energy').should('have.value','15');
   cy.xpath(smokeTestPageSelector.createButtom).click();
 
   // // cy.visit('/way-find');
@@ -404,7 +435,7 @@ Given('Sent invitation', () => {
   cy.get(smokeTestPageSelector.inviteEmailTextbox)
     .clear()
     .type(randomEmail8);
-  cy.get('select').select('Member')
+  cy.get('select').select('Member').should('have.value','3')
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.xpath(brainPageSelectors.closeModelButton).click()
 
@@ -784,7 +815,7 @@ Given('Verify email is auto filled into textbox', () => {
   });
 });
 
-// new  user signup and accept hub invitation [Hub]
+// new user signup and accept hub invitation [Hub]
 Given("Sign Up New user", function () {
   cy.login(Cypress.env('username'), Cypress.env('password'))
   cy.url().should('include', '/profile/2466');
@@ -874,7 +905,8 @@ Given("login for Invite participant", function () {
   cy.login(Cypress.env('username'), Cypress.env('password'))
   cy.url().should('include', '/profile/2466');
   cy.getCookie('token').should('exist');
-  cy.visit('/events/127');
+  cy.visit('/events/1467', { timeout: 300000 });
+  cy.get(brainPageSelectors.notificationDismiss).click()
 })
 
 When('Invite Participant', () => {
@@ -884,8 +916,8 @@ When('Invite Participant', () => {
   cy.get(brainPageSelectors.inviteModelTextbox)
     .clear()
     .type(randomEmail14)
-  cy.xpath(smokeTestPageSelector.sendInviteButton).click();
-  cy.get(brainPageSelectors.feedbackNotification).should('have.text', 'Succesfully sent invite to:')
+  cy.get('.btn-wrap > .btn-main').click();
+  cy.get(brainPageSelectors.feedbackNotification).should('have.text', 'Succesfully sent invite to:' + randomEmail14 + ' ')
   cy.xpath(brainPageSelectors.closeModelButton).click();
 
   cy.get('[data-testid=ArrowDropDownIcon]').click();
@@ -926,16 +958,12 @@ And('Verify token from sended email', () => {
 })
 
 And('Creating new user account', () => {
-  //  cy.visit(
-  //   `auth/sign-up?type=hub_event_invitation&amp;token=${token}&email=${randomEmail}`
-  // );
-  //cy.wait(3000);
   cy.get(smokeTestPageSelector.signUpFirstName)
     .clear()
-    .type(randomEmail15);
+    .type(randomEmail14);
   cy.get(smokeTestPageSelector.signUpLastName)
     .clear()
-    .type(randomEmail15);
+    .type(randomEmail14);
   cy.get(smokeTestPageSelector.signUpPassword)
     .clear()
     .type('testtest');
@@ -949,16 +977,19 @@ And('Creating new user account', () => {
 
 Then('Accept invitation for created user', () => {
   cy.url().should('include', '/profile');
-  cy.get(smokeTestPageSelector.autoCompleteTextbox)
-    .clear()
-    .type('pune');
+  cy.get(smokeTestPageSelector.autoCompleteTextbox).type('pune');
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.xpath(smokeTestPageSelector.readyButton).click();
-  cy.xpath(brainPageSelectors.skipForNowButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.xpath(hubGroupPageSelector.skipForNowButton).click();
   cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(brainPageSelectors.notificationDismiss).last().click()
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
 });
 
+// forget password
 Given('forget password', () => {
   const startStr = 'x3IhzZ5YUFU3xRWkCJI4aLVPC-2BOoHahfDU-2BROGlySass0TTVgllosmDa-2FaVEbjjZN-2FuCMhKKtmBUzbdxwO9z-2F'
   const endStr = '-3D'
@@ -978,8 +1009,6 @@ When('Verify forgot password mail is send', () => {
       from: "noreply@rebelbase.co",
       subject: "Reset your RebelBase account password",
       include_body: true,
-      // before: new Date(2021, 9, 24, 12, 31, 13), // Before September 24rd, 2019 12:31:13
-      //  after: new Date(2021, 7, 23) // After August 23, 2019
     }
   }).then(emails => {
     assert.isAtLeast(
@@ -1004,5 +1033,9 @@ When('Verify forgot password mail is send', () => {
     cy.log(`accept/reset-password?token=${token}-3D`)
 
     cy.visit(`accept/reset-password?token=${token}-3D`)
+    cy.get(smokeTestPageSelector.signUpPassword).type(Cypress.env('password'))
+    cy.get(smokeTestPageSelector.confirmPasswordTextbox).type(Cypress.env('password'))
+    cy.get('.forgot-pass__btn').click()
+    cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Password successfully reset!')
   })
 })

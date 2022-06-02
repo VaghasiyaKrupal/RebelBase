@@ -8,6 +8,7 @@ import { hubGroupPageSelector } from "../../pageObject/pageSelectors/hubGroupPag
 import { eventPageSelectors } from "../../pageObject/pageSelectors/eventPageSelectors";
 import { eventData } from "../../pageObject/pageData/eventData";
 import { hubActivityPageSelector } from "../../pageObject/pageSelectors/hubActivityPageSelector";
+import { permissionsPageSelector } from "../../pageObject/pageSelectors/permissionPageSelector";
 
 const { exists } = require("fs");
 
@@ -736,3 +737,193 @@ Then('Send invitation', () => {
   cy.xpath(brainPageSelectors.sendInviteButton).click();
   cy.xpath(brainPageSelectors.closeModelButton).click();
 });
+
+// Check announcement notification on web application
+Given('Verify profile page and cookies', () => {
+  cy.url().should('include', '/profile/2466');
+  cy.getCookie('token').should('exist');
+})
+
+When('Go to Activity page', () => {
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+})
+
+And('Make announcement for web application', () => {
+  cy.xpath(hubActivityPageSelector.addYourThought).contains('Add your thoughts').click({
+    force: true
+  });
+  cy.xpath(hubActivityPageSelector.selectAnnouncment).click({ force: true })
+  cy.get(smokeTestPageSelector.postTextbox)
+    .clear()
+    .type('cypress automation announcement')
+  cy.xpath(hubActivityPageSelector.announceButton).click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Announcement created successfully')
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+});
+
+And('Login and give kudos to announcment',()=>{
+  cy.login(Cypress.env('emailuser'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get('.activity__nav div button').eq(1)
+    .click();
+  cy.xpath("//button[contains(text(),'0 Kudos')]").eq(0).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check activity notification for announcement',()=>{
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains('rebelbasetesthub rebelbasetesthub gave a kudos to your Announcement in the Dev Hub hub')
+})
+
+// Check Q+A notification on web application
+Given('Verify profile page and cookies', () => {
+  cy.url().should('include', '/profile/2466');
+  cy.getCookie('token').should('exist');
+})
+
+When('Go to Activity page', () => {
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+})
+
+And('Make question for web application', () => {
+  cy.xpath(hubActivityPageSelector.addYourThought).contains('Add your thoughts').click({
+    force: true
+  });
+  cy.xpath(hubActivityPageSelector.selectQuestion).click({ force: true })
+  cy.get(hubActivityPageSelector.questionTitle).type('Cypress Question')
+  cy.get(smokeTestPageSelector.postTextbox)
+    .clear()
+    .type('cypress automation question')
+  cy.xpath(hubActivityPageSelector.askButton).click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Question created successfully')
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+});
+
+And('Login and give kudos to question',()=>{
+  cy.login(Cypress.env('emailuser'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get('.activity__nav div button').eq(3)
+    .click();
+  cy.xpath("//button[contains(text(),'0 Kudos')]").eq(0).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check activity notification for question',()=>{
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains('rebelbasetesthub rebelbasetesthub gave a kudos to your Question in the Dev Hub hub')
+})
+
+// Check idea notification on web application
+Given('Verify profile page and cookies', () => {
+  cy.url().should('include', '/profile/2466');
+  cy.getCookie('token').should('exist');
+})
+
+When('Go to Activity page', () => {
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+})
+
+And('Make idea for web application', () => {
+  cy.xpath(hubActivityPageSelector.addYourThought).contains('Add your thoughts').click({
+    force: true
+  });
+  cy.xpath(hubActivityPageSelector.selectIdea).click({ force: true })
+  cy.get('[name="idea"]').type('Test idea')
+  cy.get(smokeTestPageSelector.postTextbox)
+    .clear()
+    .type('cypress automation idea')
+  cy.xpath('//button[text()="Add"]').click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Idea created successfully')
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+});
+
+And('Login and give kudos to idea',()=>{
+  cy.login(Cypress.env('emailuser'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get('.activity__nav div button').eq(4)
+    .click();
+  cy.xpath("//button[contains(text(),'0 Kudos')]").eq(0).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check activity notification for idea',()=>{
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains('rebelbasetesthub rebelbasetesthub gave a kudos to your Idea in the Dev Hub hub')
+})
+
+// Check offer notification on web application
+Given('Verify profile page and cookies', () => {
+  cy.url().should('include', '/profile/2466');
+  cy.getCookie('token').should('exist');
+})
+
+When('Go to Activity page', () => {
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+})
+
+And('Make offer for web application', () => {
+  cy.xpath(hubActivityPageSelector.addYourThought).contains('Add your thoughts').click({
+    force: true
+  });
+  cy.xpath(hubActivityPageSelector.selectOffer).click({ force: true })
+  cy.get(smokeTestPageSelector.postTextbox)
+    .clear()
+    .type('cypress automation offer')
+  cy.xpath(hubActivityPageSelector.offerButton).click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Offer created successfully')
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+});
+
+And('Login and give kudos to Offer',()=>{
+  cy.login(Cypress.env('emailuser'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get('.activity__nav div button').eq(5)
+    .click();
+  cy.xpath("//button[contains(text(),'0 Kudos')]").eq(0).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check activity notification for Offer',()=>{
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.visit('/hubs/26/activity');
+  cy.waitForReact(5000, '#root');
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains('rebelbasetesthub rebelbasetesthub gave a kudos to your Offer in the Dev Hub hub')
+})

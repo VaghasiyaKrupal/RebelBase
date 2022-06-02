@@ -18,9 +18,6 @@ After(() => {
 // Group Overview member
 Given('Login using username1 email', () => {
   cy.login(Cypress.env('username1'), Cypress.env('password'))
-  // cy.xpath(smokeTestPageSelector.emailTextbox).type(hubGroupPageData.emailID);
-  // cy.xpath(smokeTestPageSelector.passwordTextbox).type(hubGroupPageData.password);
-  // cy.get(smokeTestPageSelector.loginButton).click()
 })
 
 When('Verify profile URL and user token', () => {
@@ -42,9 +39,6 @@ Then('Verify past created groups is exist', () => {
 // checking group with no schedule members login
 Given('Login using username2 email', () => {
   cy.login(Cypress.env('username2'), Cypress.env('password'))
-  // cy.xpath(smokeTestPageSelector.emailTextbox).type(Cypress.env('username2'));
-  // cy.xpath(smokeTestPageSelector.passwordTextbox).type(Cypress.env('password'));
-  // cy.get(smokeTestPageSelector.loginButton).click();
 })
 
 When('Verify profile URL and user login token', () => {
@@ -83,7 +77,9 @@ And('Add group', () => {
 })
 
 And('Verify created group', () => {
-  cy.get(smokeTestPageSelector.groupHeading).should('have.text', projectName);
+  cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
+  cy.get(hubGroupPageSelector.projectTab).should('have.text', 'Projects');
+  cy.get(hubGroupPageSelector.groupMemberTab).should('have.text', 'Group Members');
 })
 
 And('Redirect to group page', () => {
@@ -129,9 +125,6 @@ Then('Verify exist group', () => {
 // Group Overview from Admin
 Given('Login to the username email', () => {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  // cy.xpath(smokeTestPageSelector.emailTextbox).type('testhubadmin@rebelbase.co');
-  // cy.xpath(smokeTestPageSelector.passwordTextbox).type(Cypress.env('password'));
-  // cy.get(smokeTestPageSelector.loginButton).click();
 })
 
 When('Verify profile and login user token', () => {
@@ -155,9 +148,6 @@ Then('Verify add group button is visible', () => {
 // Check Group without Schedule from Admin
 Given('Login to rebel base portal', () => {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  // cy.xpath(smokeTestPageSelector.emailTextbox).type(Cypress.env('username'));
-  // cy.xpath(smokeTestPageSelector.passwordTextbox).type(Cypress.env('password'));
-  // cy.get(smokeTestPageSelector.loginButton).click();
 })
 
 When('Verify profile, user token', () => {
@@ -180,18 +170,24 @@ And('Verify create group button is visible', () => {
 
 Then('Redirect to test dev group', () => {
   cy.contains('test dev group').click();
-  cy.url().should('include', '/hubs/26/groups/149');
-  cy.get(hubGroupPageSelector.groupNameSelector).should(
-    'have.text',
-    'test dev group'
-  );
+  const path = '.dev.';
+  cy.url().then(($url) => {
+    if ($url.includes(path)) {
+      cy.url().should('include', '/hubs/26/groups/1002');
+    } else {
+      cy.url().should('include', '/hubs/26/groups/149');
+    }
+  })
+  cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
+  cy.get(hubGroupPageSelector.projectTab).should('have.text', 'Projects');
   cy.contains('+ add project').should('not.exist');
-  cy.get(hubGroupPageSelector.addMemberButton).should('be.visible');
+  cy.get(hubGroupPageSelector.groupMemberTab).should('have.text', 'Group Members').click();
+  cy.xpath(hubGroupPageSelector.addMember).should('be.disabled');
   cy.get(hubGroupPageSelector.editPenButton).should('be.visible');
   cy.xpath(hubGroupPageSelector.setScheduleEditPen)
     .should('be.visible')
     .should('have.text', 'set schedule')
-    .and('have.attr', 'href', '/hubs/26/groups/149/schedule');
+  // .and('have.attr', 'href', '/hubs/26/groups/149/schedule');
   cy.get('.edit-pen').should('be.visible');
   cy.get('.btn-main').should('be.visible');
   cy.get(hubGroupPageSelector.memberPlusButton).should('be.visible');
@@ -201,9 +197,6 @@ Then('Redirect to test dev group', () => {
 // Group with Schedule [Admin]
 Given('Login to rebelbase', () => {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  // cy.xpath(smokeTestPageSelector.emailTextbox).type(Cypress.env('username'));
-  // cy.xpath(smokeTestPageSelector.passwordTextbox).type(Cypress.env('password'));
-  // cy.get(smokeTestPageSelector.loginButton).click();
 })
 
 When('Verify loggedin user token and profile url', () => {
@@ -226,7 +219,14 @@ And('Verify plush button is visible', () => {
 
 Then('Redirect to the test dev group', () => {
   cy.contains('test dev group').click();
-  cy.url().should('include', '/hubs/26/groups/149');
+  const path = '.dev.';
+  cy.url().then(($url) => {
+    if ($url.includes(path)) {
+      cy.url().should('include', '/hubs/26/groups/1002');
+    } else {
+      cy.url().should('include', '/hubs/26/groups/149');
+    }
+  })
   cy.get(hubGroupPageSelector.groupNameSelector).should(
     'have.text',
     'test dev group'
@@ -237,7 +237,7 @@ Then('Redirect to the test dev group', () => {
   cy.xpath(hubGroupPageSelector.setScheduleEditPen)
     .should('be.visible')
     .should('have.text', 'set schedule')
-    .and('have.attr', 'href', '/hubs/26/groups/149/schedule');
+  // .and('have.attr', 'href', '/hubs/26/groups/149/schedule');
   cy.get('.edit-pen').should('be.visible');
   cy.get('.btn-main').should('be.visible');
   cy.get(hubGroupPageSelector.memberPlusButton).should('be.visible');
@@ -362,7 +362,8 @@ And('Creating group', () => {
 })
 
 Then('Verify alert message', () => {
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text', "Group name has already been taken!")
+  cy.get(hubGroupPageSelector.popupNotes)
+    .should('have.text', "Group name has already been taken!")
 });
 
 // Add builder schedule
@@ -531,7 +532,7 @@ Then('Checking for duplicate group name', () => {
     .clear()
     .type('testgroup1');
   cy.xpath(smokeTestPageSelector.createGroupButton).click()
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text',hubGroupPageData.groupNameExistMessage)
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', hubGroupPageData.groupNameExistMessage)
   // cy.xpath(hubGroupPageSelector.inviteThemButton).click();
   // cy.get(brainPageSelectors.inviteModelTextbox)
   //   .clear()
@@ -590,3 +591,86 @@ Then('Delete group', () => {
   cy.get(smokeTestPageSelector.projectHover).click({ force: true });
   cy.xpath(smokeTestPageSelector.deleteButtom).click();
 });
+
+// create group with members from different hubs and GROUPS and events
+Given('Login to account', () => {
+  cy.login('testhubadmin+1@rebelbase.co', Cypress.env('password'))
+})
+
+When('Visit Group pages', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.groupLink).click();
+})
+
+And('Adding new groups', () => {
+  cy.get(smokeTestPageSelector.addGroupButton).click({ force: true });
+  cy.get(hubGroupPageSelector.groupName)
+    .clear()
+    .type(projectName);
+  cy.xpath(smokeTestPageSelector.createGroupButton).click();
+})
+
+And('Verify group is created successfully', () => {
+  cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
+  cy.get(hubGroupPageSelector.projectTab).should('have.text', 'Projects');
+  cy.get(hubGroupPageSelector.groupMemberTab).should('have.text', 'Group Members').click();
+})
+
+And('Adding members from different hubs and GROUPS and events', () => {
+  cy.get('button').contains('Members Directory').click()
+  cy.get('.clickable__check-round').eq(3).click()
+  cy.get('.create-group__side-cat__link').eq(0).click()
+  cy.get('.clickable__check-round').eq(0).click()
+  cy.get('.create-group__side-cat__dropdown--group>span').eq(0).click()
+  cy.get('.clickable__check-round').eq(0).click()
+  cy.xpath(hubGroupPageSelector.addMemberBtn).should('be.enabled').click({ force: true })
+})
+
+Then('Delete group after member added successfully', () => {
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click({ force: true });
+  cy.xpath(smokeTestPageSelector.groupLink).click({ force: true });
+  cy.get(smokeTestPageSelector.searchBar)
+    .clear()
+    .type(Cypress.env('groupname'));
+  cy.get(smokeTestPageSelector.projectHover).click({ force: true });
+  cy.xpath(smokeTestPageSelector.deleteButtom).click();
+})
+
+// Invite user and check invitation on web application
+Given('Login using hubuser email', () => {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click()
+})
+
+When('User is on group page', () => {
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click()
+  cy.xpath(smokeTestPageSelector.groupLink).contains('Groups').click()
+})
+
+And('Create group and verify is created successfully', () => {
+  cy.get(smokeTestPageSelector.addGroupButton).click({ force: true });
+  cy.get(hubGroupPageSelector.groupName)
+    .clear()
+    .type(projectName);
+  cy.xpath(smokeTestPageSelector.createGroupButton).click();
+  cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
+  cy.get(hubGroupPageSelector.projectTab).should('have.text', 'Projects');
+  cy.get(hubGroupPageSelector.groupMemberTab).should('have.text', 'Group Members').click();
+})
+
+And('Send invitation to user from group', () => {
+  cy.get('[placeholder="Add Hub Members by Email"]').type(Cypress.env('username1'))
+  cy.get('button').contains('Add Members').click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check invitation from web Application', () => {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)')
+    .eq(0)
+    .contains('rebelbasetesthub rebelbasetesthub gave a kudos to your Offer in the Dev Hub hub')
+})

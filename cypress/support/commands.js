@@ -25,6 +25,7 @@ Cypress.Commands.add('login', (email, password) => {
   cy.get('input[name="email"]').type(email);
   cy.get('[name="password"]').type(password);
   cy.get('.login__btn').click();
+  cy.wait(500)
 })
 
 // Cypress.Commands.add('loginViaUISession', (email, password) => {

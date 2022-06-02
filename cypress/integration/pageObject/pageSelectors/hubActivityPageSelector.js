@@ -19,5 +19,7 @@ const hubActivityPageSelector ={
     upVoteAnswer:'[data-testid="KeyboardArrowUpIcon"]',
     selectOffer:"//h3[contains(text(),'Offer')]",
     offerButton:'//button[text()="Offer"]',
+    bellIcon:'[aria-label="Invites"]',
+    selectIdea:"//h3[contains(text(),'Idea')]",
 }
 export {hubActivityPageSelector}

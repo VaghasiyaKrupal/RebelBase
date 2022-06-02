@@ -16,6 +16,138 @@ After(() => {
   cy.wait(2000)
 })
 
+//Create Assesment type event
+Given('Navigate rebelbase and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create Assesment type event', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('assessment')
+    .should('have.value', 'assessment');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+Then('Verify Assesment event title', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+})
+
+// Create meet-up type event
+Given('Navigate rebelbase and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create meet-up type event', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('meetup')
+    .should('have.value', 'meetup');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+Then('Verify meet-up event title', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+})
+
+// Create compitition type event
+Given('Navigate rebelbase and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create compitition type event', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('competition')
+    .should('have.value', 'competition')
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+Then('Verify compitition event title', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+})
+
 // Event details can be seen without login to application
 Given('Visit rebelbase event page', () => {
   cy.visit('/events/1449')
@@ -68,7 +200,9 @@ And('Create new event', () => {
   cy.get(smokeTestPageSelector.autoCompleteTextbox)
     .clear().type('pune');
   cy.get(smokeTestPageSelector.locationResultInput).click();
-  cy.get('.createEvent__field__type').select('competition');
+  cy.get('.createEvent__field__type')
+    .select('competition')
+    .should('have.value', 'competition')
   cy.get('.createEvent').click();
   cy.get(':nth-child(2) > .createEvent__round-choice').click();
   cy.get(':nth-child(3) > .createEvent__round-choice').click();
@@ -199,6 +333,7 @@ Given('Login to the rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
+
 When('Go to the hub event page', () => {
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
@@ -412,7 +547,7 @@ And('Create Event', () => {
   cy.get(smokeTestPageSelector.eventNameTextbox)
     .clear()
     .type(eventname1);
-  cy.get('#rw_1_input').type(name +" "+ day.getDate()+", "+day.getFullYear()); // Click on datepicker icon
+  cy.get('#rw_1_input').type(name + " " + day.getDate() + ", " + day.getFullYear()); // Click on datepicker icon
   cy.get('[title="Select time"]').eq(0).click(); // Click on clock icon
   cy.get('.rw-popup ul li').last().click(); // Click on time
   cy.get('[title="Select date"]').eq(1).click(); // Click on datepicker icon
@@ -429,7 +564,8 @@ And('Create Event', () => {
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.get(eventPageSelectors.selectType)
     .first()
-    .select('selection');
+    .select('selection')
+    .should('have.value', 'selection')
   cy.get(':nth-child(2) > .createEvent__round-choice').click(); // Click on yes
   cy.get(':nth-child(3) > .createEvent__round-choice').click(); // click on 3
   cy.get(eventPageSelectors.descriptionField).eq(1).click();
@@ -1044,3 +1180,66 @@ And('The details and date for Event Name have been updated', () => {
 Then('The details, location, and event type for Event Name have been updated', () => {
   cy.log('The details, location, and event type for {Event Name} have been updated')
 });
+
+// accept event invitation from web application
+Given('Navigate rebel base and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create event for web application', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('selection')
+    .should('have.value', 'selection');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+And('Verify event title and invite member', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.xpath(eventPageSelectors.inviteButton).click()
+  cy.get('select').select('General');
+  cy.get(brainPageSelectors.inviteModelTextbox)
+    .clear()
+    .type('rebelbasetesthub@gmail.com');
+  cy.get('.btn-wrap > .btn-main').click();
+  cy.xpath(brainPageSelectors.closeModelButton).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Accept event invitation from web application', function () {
+  cy.login(Cypress.env('emailuser'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Invitation accepted successfully.')
+})

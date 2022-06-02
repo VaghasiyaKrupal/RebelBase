@@ -60,14 +60,6 @@ const gmail_tester = require("gmail-tester");
 const cucumber = require('cypress-cucumber-preprocessor').default;
 
 module.exports = (on, config) => {
-
-  // on("before:browser:launch", (browser = {}, args) => {
-  //   if (browser.name === "chrome") {
-  //     args.push("--remote-debugging-port=9221");
-  //     return args;
-  //   }
-  //});
-
   on('file:preprocessor', cucumber());
   
   on("task", {

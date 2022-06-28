@@ -2,6 +2,7 @@ import { Before, After, Given, When, And, Then } from "cypress-cucumber-preproce
 import { builderPageData } from '../../pageObject/pageData/builderPageData'
 import { builderPageSelectors } from '../../pageObject/pageSelectors/builderPageSelectors'
 import { brainPageSelectors } from '../../pageObject/pageSelectors/brainPageSelectors'
+import { smokeTestPageSelector } from "../../pageObject/pageSelectors/smokeTestPageSelector";
 
 Before(() => {
   cy.loginViaUISession(Cypress.env('username'), Cypress.env('password'));
@@ -14,7 +15,7 @@ After(() => {
 // Empty builder's answer [Builder'sAnswer]
 Given("Visit builder answer page", () => {
   cy.visit('/project/1511/builders/1/topics/1/answer');
-  cy.waitForReact(10000, '#root');
+
 })
 
 When('Close the notification', () => {
@@ -28,7 +29,7 @@ Then('Find paragraph from answer', () => {
 // Builder's answer with some text [Builder'sAnswer]
 Given('Visit builder answer page', () => {
   cy.visit('/project/1511/builders/1/topics/43/answer');
-  cy.waitForReact(10000, '#root');
+
 })
 
 When('Close the notification', () => {
@@ -42,7 +43,7 @@ Then('Find Lorem Ipsum from answer', () => {
 // Save builder's answer with some random text [Builder'sAnswer]
 Given('Visit builder answer page', () => {
   cy.visit('/project/1511/builders/1/topics/4/answer');
-  cy.waitForReact(10000, '#root');
+
 })
 
 When('Close the notification', () => {
@@ -73,7 +74,7 @@ Then('Click on the save + next button', () => {
 // try to redirect to some other page without saving answer [Builder'sAnswer]
 Given('Visit builder topic 4 answer page', () => {
   cy.visit('/project/1511/builders/1/topics/4/answer');
-  cy.waitForReact(10000, '#root');
+
 })
 
 When('Close the notification', () => {
@@ -107,7 +108,7 @@ Then('Click on MyEvent from side bar', () => {
 // try to close browser without saving answer [Builder'sAnswer]
 Given("Visit builder topic 5 answer page", () => {
   cy.visit('/project/1511/builders/1/topics/5/answer');
-  cy.waitForReact(10000, '#root');
+
 })
 
 When('Close the notification', () => {
@@ -142,7 +143,7 @@ Then('Verify Notification text', () => {
 // Go to review and publish section after savng answer [Builder'sAnswer]
 Given("Visit builder topic 44 answer page", () => {
   cy.visit('/project/1511/builders/16/topics/44/answer');
-  cy.waitForReact(5000, '#root');
+  
 })
 
 When('Close the notification', () => {
@@ -397,4 +398,39 @@ Then('Re publish the answer', () => {
   cy.xpath(builderPageSelectors.publishItem)
     .click();
   cy.get('.btn-main').click();
+});
+
+// Language change
+Given('Login to the rebelbase portal', function () {
+  cy.visit('/');
+})
+
+When('Expand language', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get('[data-testid="ArrowDropDownIcon"]').click();
+  cy.get('[data-testid="ExpandMoreIcon"]').click();
+})
+
+Then('Change language and verify menu name', () => {
+  cy.get('.MuiList-root > :nth-child(5) > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').click(); // Select language
+  cy.get(':nth-child(1) > .MuiList-padding > .MuiCollapse-root > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > .nav-menu__link--builders > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Tus builders')
+  cy.get('.nav-menu__link--project-page > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Tu proyecto')
+    cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click()
+  cy.get('.nav-menu__link--activity > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Muro')
+  cy.get('.nav-menu__link--brain > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Brain')
+  cy.get('.nav-menu__link--groups > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Grupos')
+  cy.get('.nav-menu__link--events > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Eventos')
+  cy.get('.nav-menu__link--members > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Comunidad')
+  cy.get(':nth-child(2) > .MuiList-padding > .MuiCollapse-root > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > .nav-menu__link--builders > .MuiListItemText-root > .MuiTypography-root')
+    .should('have.text', 'Builders')
+  cy.get('[data-testid="ArrowDropDownIcon"]').click();
+  cy.get('#more-menu > .MuiPaper-root > .MuiList-root').click({ force: true });
+  cy.get('.MuiList-root > :nth-child(4) > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').click();
 });

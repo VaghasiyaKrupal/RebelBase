@@ -6,7 +6,7 @@ import { smokeTestPageSelector } from '../../pageObject/pageSelectors/smokeTestP
 
 // Login to app staging rebelbase
 Given('User is at the login page', () => {
-    cy.visit('/')
+    cy.visit('/',{timeout:200000})
 })
 
 When('User enters username as {string} and password as {string}', (username, password) => {
@@ -29,7 +29,6 @@ Given('User is logged in', () => {
 
 When('clicked on + button project and add details', () => {
     cy.visit('project/create-project',{timeout:200000});
-    cy.get(smokeTestPageSelector.addProjectButton).click();
     cy.get(smokeTestPageSelector.projectNameTextbox)
         .clear()
         .type(Cypress.config('randomname'));
@@ -76,8 +75,8 @@ And('User clicks on create group button', () => {
 })
 
 Then('User is able to successfully create group', () => {
-    cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
     cy.get(hubGroupPageSelector.projectTab).should('have.text', 'Projects');
+    cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
     cy.get(hubGroupPageSelector.groupMemberTab).should('have.text', 'Group Members')
     cy.visit('hubs/26/groups',{timeout:200000});
     cy.get(brainPageSelectors.notificationDismiss).click()
@@ -97,8 +96,10 @@ When('clicked on add activity button and add details', () => {
     cy.get(brainPageSelectors.notificationDismiss).click({ force: true });
     cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
     cy.xpath(smokeTestPageSelector.activityLink).click();
-    cy.wait(1000)
-    cy.contains('Add your thoughts').click({ force: true });
+    cy.wait(3000)
+    cy.get('button')
+    .should('be.visible')
+    .contains('Add your thoughts').click({ force: true });
     cy.wait(1000)
     cy.xpath(smokeTestPageSelector.post).click();
 })
@@ -189,7 +190,6 @@ And('User clicks on signup button', () => {
 Then('new User is able to sign up successfully', () => {
     cy.url().should('include', '/profile');
     cy.get(smokeTestPageSelector.autoCompleteTextbox)
-        .clear()
         .type('pune');
     cy.get(smokeTestPageSelector.locationResultInput).click();
     cy.xpath(smokeTestPageSelector.readyButton).click();

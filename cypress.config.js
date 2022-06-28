@@ -47,9 +47,6 @@ module.exports = defineConfig({
     groupname: 'cypressautomationgroup',
     hubmemberonly: 'testhubadmin+11@rebelbase.co',
     rebelbasemember: 'rebelbasetesthub+2@gmail.com',
-    'cypress-react-selector': {
-      root: '#root',
-    },
   },
   projectId: '9zvwcb',
   chromeWebSecurity: false,
@@ -60,7 +57,7 @@ module.exports = defineConfig({
       return require('./cypress/plugins/index.js')(on, config)
     },
     baseUrl: 'https://app.dev.rebelbase.co',
-    experimentalSessionAndOrigin:true,
+    experimentalSessionAndOrigin: true,
     specPattern: 'cypress/integration/**/*.feature',
   },
 })

@@ -61,7 +61,7 @@ And('Edit basic project details', () => {
     .clear()
     .type('pune');
   cy.get(smokeTestPageSelector.locationResultInput).click();
-  cy.get('#industry_id').select('12').should('have.value','12');
+  cy.get('#industry_id').select('12').should('have.value', '12');
   cy.get('#project_stage').select('planning');
   cy.get(permissionsPageSelector.valueSaveButton).click();
 })

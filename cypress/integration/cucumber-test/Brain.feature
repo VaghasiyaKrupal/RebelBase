@@ -1,12 +1,12 @@
 Feature: Brain Section
-
-  @TEST_CH-865
-  Scenario: Send hub invitation from brain page ,delete invitation and resend invitation to user
-    Given I access the brain section page
-    When I send hub invitation from brain page
-    And Send nudge and delete invitation
-    And Reend invitation
-    And Resend nudge
+  # functionality is now changes
+  # @TEST_CH-865
+  # Scenario: Send hub invitation from brain page ,delete invitation and resend invitation to user
+  #   Given I access the brain section page
+  #   When I send hub invitation from brain page
+  #   And Send nudge and delete invitation
+  #   And Reend invitation
+  #   And Resend nudge
 
   @TEST_CH-866
   Scenario: Navigate through the links using loops

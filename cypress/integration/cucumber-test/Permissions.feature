@@ -7,7 +7,7 @@ Feature: Permissions
         And Add Alternative Email and remove it
         And Verify supporter permission
         Then Create project and redirect to project page
-
+    
     Scenario: Check project members permissons
         Given Login to the member account
         When Changing basic settings
@@ -55,3 +55,4 @@ Feature: Permissions
         When Create project
         And Send invitation
         Then Go to setting page
+    

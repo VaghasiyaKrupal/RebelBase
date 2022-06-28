@@ -113,7 +113,8 @@ When('Changing basic settings', () => {
 })
 
 And('Changing project setting', () => {
-  cy.get(permissionsPageSelector.selectCypressProject1).contains('CypressTestProject01').click();
+  cy.get(permissionsPageSelector.selectCypressProject1)
+  .contains('CypressTestProject01').click();
   cy.get(eventPageSelectors.editPen).click({ force: true });
   cy.get('.settings').click();
   cy.get(permissionsPageSelector.teamMemberTextbox)
@@ -123,11 +124,13 @@ And('Changing project setting', () => {
   cy.get(permissionsPageSelector.projectStageSelection).select('planning');
   cy.get(permissionsPageSelector.valueSaveButton).click();
   cy.wait(2000);
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Project settings saved!').click();
+  cy.get(hubGroupPageSelector.popupNotes)
+  .should('have.text', 'Project settings saved!').click();
 })
 
 Then('Invite user to team', () => {
-  cy.get(':nth-child(1) > .team__pending__actions > li > .btn-second').should('have.text', 'Resend invite');
+  cy.get(':nth-child(1) > .team__pending__actions > li > .btn-second')
+  .should('have.text', 'Resend Invite');
   cy.get(':nth-child(1) > .team__pending__actions > li > .btn-second').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation resent!');
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();

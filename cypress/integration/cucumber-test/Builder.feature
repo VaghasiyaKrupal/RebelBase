@@ -9,7 +9,7 @@ Feature: Builders
   #   Given Visit builder answer page
   #   When Close the notification
   #   Then Find Lorem Ipsum from answer
-  
+
   @TEST_CH-749
   Scenario: Save builder's answer with some random text
     Given Visit builder answer page
@@ -61,7 +61,7 @@ Feature: Builders
     And Close the notification
     And Switch track from builder page
     Then Verify next track
-  
+
   @TEST_CH-757
   Scenario: change track on project builder page and complete one type of builder answers
     Given Visit builder page on rebel base portal
@@ -71,3 +71,8 @@ Feature: Builders
     And Go to review and publish page and publish answer
     And Re check answer
     Then Re publish the answer
+  
+  Scenario: Language change
+    Given Login to the rebelbase portal
+    When Expand language
+    Then Change language and verify menu name

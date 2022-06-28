@@ -37,9 +37,12 @@ const hubGroupPageSelector = {
     deactivateButton: "//div[@class='ReactModalPortal']//button[contains(text(),'Deactivate')]",
     groupName:'[name="group_name"]',
     addMemberBtn:"//button[contains(text(),'add members')]",
-    builderTab:'#hub-user-management-tab-0',
-    projectTab:'#hub-user-management-tab-1',
+    projectTab:'#hub-user-management-tab-0',
+    builderTab:'#hub-user-management-tab-1',
     groupMemberTab:'#hub-user-management-tab-2',
     addMember:'//button[text()="Add Members"]',
+    deleteButton:'[data-testid="DeleteOutlineIcon"]',
+    newNotification:'.MuiAlert-message',
+    inviteMembertoGroup:'[placeholder="Add Hub Members by Email"]'
 }
 export { hubGroupPageSelector }

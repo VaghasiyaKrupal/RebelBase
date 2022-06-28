@@ -21,7 +21,7 @@ Feature: Hub Group
     Then Search created group and delete it
   @TEST_CH-872
   Scenario: Checking group with schedule members login
-    Given Login sing eventMember email
+    Given Login using eventMember email
     When Verify profile and token
     And Go to group page
     Then Verify exist group
@@ -68,7 +68,7 @@ Feature: Hub Group
     When Visit DevHub group page
     And Go to group and set schedule
     Then Verify schedule is save
-  @TEST_CH-1298    
+  @TEST_CH-1298
   Scenario: Add search and delete member from group
     Given Access to the rebelbase
     When Navigate group page
@@ -110,10 +110,42 @@ Feature: Hub Group
     And Verify group is created successfully
     And Adding members from different hubs and GROUPS and events
     Then Delete group after member added successfully
-    
+  
   Scenario: Invite user and check invitation on web application
     Given Login using hubuser email
     When User is on group page
     And Create group and verify is created successfully
     And Send invitation to user from group
     Then Check invitation from web Application
+  
+  Scenario: Verify the user is logged in to admin account
+    Given Login to hub admin account
+    When Navigate to member page
+    Then Verify user is hub admin
+  
+  Scenario: Verify the user is logged in to member account
+    Given Login to hub member account
+    When Navigate to member page for member account
+    Then Verify user is member
+
+  Scenario: Verify unsuccessful invitation validation if multiple email are there
+    Given Login to hub admin account
+    When Navigate to member page for admin account
+    Then Verify unsuccessful invitation validation if multiple email are there
+  
+  Scenario: Verify user is automatically added to the Dev hub and group
+    Given Login to hub admin account
+    When Navigate to Group page for admin account
+    And Create group and Invite new user to the group
+    And Verify token from received email
+  
+  Scenario: Add member to the group if the user already member of the hub group
+    Given Login to hub admin account
+    When Navigate to Group page for admin account
+    And Create group and add member to the group
+  @focus
+  Scenario: Verify project tab
+    Given Login to Rebelbase portal and navigate to group page
+    When Searching for existing group
+    And Verify project is appears when the user search using project name and member name
+    And Verify default sortby is selected

@@ -25,7 +25,7 @@ Cypress.Commands.add('login', (email, password) => {
   cy.get('input[name="email"]').type(email);
   cy.get('[name="password"]').type(password);
   cy.get('.login__btn').click();
-  cy.wait(500)
+  cy.wait(700)
 })
 
 // Cypress.Commands.add('loginViaUISession', (email, password) => {
@@ -65,10 +65,12 @@ Cypress.Commands.add('loginViaUISession', (email, password) => {
     cy.get('input[name="email"]').type(email);
     cy.get('[name="password"]').type(password);
     cy.get('.login__btn').click();
+    cy.wait(700)
     cy.url().should("contain", "profile");
   }, {
     validate() {
       cy.visit('/')
+      cy.wait(700)
       cy.url().should("contain", "profile");
     }
   })

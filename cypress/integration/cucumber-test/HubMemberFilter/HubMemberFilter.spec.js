@@ -17,7 +17,7 @@ console.log(new Date(prior).toDateString()); //  "Mon Apr 06 2020"
 // Verify Hub admin is show when Owners and admin is selected
 Given('Login to the portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Redirect to Hub group member page', () => {
@@ -38,7 +38,7 @@ Then('Verify Hub admin is visible', () => {
 // Verify Hub admin is show when Owners and admin is selected
 Given('Login to the Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to Hub group member page', () => {
@@ -65,7 +65,7 @@ Then('Verify member is display when Owners and admin is selected', () => {
 // Verify Hub admin is not show when Member's only is selected
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -92,7 +92,7 @@ Then('Verify Hub admin is not display when Member only is selected', () => {
 // Verify pending invitation
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -110,7 +110,7 @@ Then('Verify pending invitation', () => {
 // Verify default show all short option is selected
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -127,7 +127,7 @@ Then('Verify default show all short option is selected', () => {
 // Resend all invitation
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -138,14 +138,14 @@ When('Go to member page', () => {
 Then('Verify resend all has been sent', () => {
     cy.get('h1').should('have.text', 'Dev Hub')
     cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Pending Invites').click()
-    cy.get('button').contains('Resend All Invites').click()
+    cy.contains('Resend All Invites').click({ force: true })
     cy.get(hubGroupPageSelector.newNotification).should('have.text', 'Your invites have been sent!')
 })
 
 // Resend single invitation
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -156,14 +156,14 @@ When('Go to member page', () => {
 Then('Verify resend single invitation has been sent', () => {
     cy.get('h1').should('have.text', 'Dev Hub')
     cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Pending Invites').click()
-    cy.get('button').contains('Resend Invite').click()
+    cy.contains('Resend Invite').eq(0).click()
     cy.get(hubGroupPageSelector.newNotification).should('have.text', 'Your invites have been sent!')
 })
 
 // Delete pending invitation
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -183,7 +183,7 @@ And('Send invitation', () => {
 
 Then('Delete pending invitation', () => {
     cy.get('button').contains('Pending Invites').click()
-    cy.get(':nth-child(1) > .MuiPaper-root > .MuiCardActionArea-root > .MuiCardContent-root > .css-70qvj9 > .css-11qjisw > .css-1mgw01l').should('have.text', 'testhubadmin+1@gmail.com')
+    cy.get('.infinite-scroll-component>div>div>div>div>div>div>div:nth-child(2)>div').eq(0).should('have.text', 'testhubadmin+1@gmail.com')
     cy.get(hubGroupPageSelector.deleteButton).first().click()
     cy.get(hubGroupPageSelector.newNotification).should('have.text', 'Your Invites have been removed')
 })
@@ -191,7 +191,7 @@ Then('Delete pending invitation', () => {
 // Verify placeholder should be decapitalized
 Given('Login to Rebelbase portal', () => {
     cy.login(Cypress.env('username'), Cypress.env('password'))
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to member page', () => {
@@ -210,15 +210,15 @@ And('Verify button and placeholder text', () => {
 })
 
 Then('Verify button and placeholder text in spanish version', () => {
-    cy.get('[data-testid="ArrowDropDownIcon"]').first().click();
+    cy.get(smokeTestPageSelector.headerDropdown).first().click();
     cy.get('[data-testid="ExpandMoreIcon"]').click();
     cy.get('.MuiList-root > :nth-child(5) > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').click(); // Select language
     cy.get('form>label').should('have.text', 'Invitar a la gente').click()
     cy.get('[placeholder="Añadir por correo electrónico"]')
-        .should('have.attr', 'placeholder','Añadir por correo electrónico')
+        .should('have.attr', 'placeholder', 'Añadir por correo electrónico')
     cy.get('[data-testid="hub-send-invite-btn"]').should('have.text', 'enviar invitación')
     cy.get('[placeholder="Buscar por nombre o email"]').should('have.attr', 'placeholder', 'Buscar por nombre o email')
-    cy.get('[data-testid="ArrowDropDownIcon"]').first().click();
+    cy.get(smokeTestPageSelector.headerDropdown).first().click();
     cy.get('#more-menu > .MuiPaper-root > .MuiList-root').click({ force: true });
     cy.get('.MuiList-root > :nth-child(4) > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').click();
 })

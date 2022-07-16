@@ -7,10 +7,24 @@ import { hubGroupPageData } from "../../pageObject/pageData/HubGroupPageData";
 import { hubGroupPageSelector } from "../../pageObject/pageSelectors/hubGroupPageSelector";
 import { eventPageSelectors } from "../../pageObject/pageSelectors/eventPageSelectors";
 import { eventData } from "../../pageObject/pageData/eventData";
+import { hubActivityPageSelector } from "../../pageObject/pageSelectors/hubActivityPageSelector";
+import { permissionsPageSelector } from "../../pageObject/pageSelectors/permissionPageSelector";
 
+
+const endStr = "&"
+const startStr = "token="
+
+function extractData(data, startStr, endStr) {
+  var subStrStart = data.indexOf(startStr) + startStr.length
+  return data.substring(subStrStart,
+    subStrStart + data.substring(subStrStart).indexOf(endStr));
+
+}
 
 const eventname = `testevent${Math.random()}`;
 const eventname1 = `testevent1${Math.random()}`;
+
+const randomMail = `rebelbasetesthub.${new Date().getTime()}@gmail.com`;
 
 After(() => {
   cy.wait(2000)
@@ -22,7 +36,7 @@ Given('Navigate rebelbase and login', function () {
 })
 
 When('Visit event page', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
@@ -66,7 +80,7 @@ Given('Navigate rebelbase and login', function () {
 })
 
 When('Visit event page', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
@@ -110,7 +124,7 @@ Given('Navigate rebelbase and login', function () {
 })
 
 When('Visit event page', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
@@ -171,7 +185,7 @@ Given('Login to rebelbase portal', function () {
 })
 
 When('Visit event page', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
@@ -254,17 +268,18 @@ And('Inviting member to the event', () => {
 })
 
 Then('Update event', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
   cy.get('.ePage__wrap > .edit-pen__btn').click({ force: true });
   cy.xpath(smokeTestPageSelector.deleteButtom).click();
   cy.xpath(eventPageSelectors.noButton).click();
   cy.xpath(eventPageSelectors.updateEventButton).click()
-  // cy.get('.popUp__note').contains('Event Updated.')
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Event Updated.')
 });
 
-// Add event description,edit event details, add post,file upload
+// Add event description, Edit event details, Add post, File upload
 Given('Login to the rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 When('Go to the event page', () => {
@@ -277,7 +292,7 @@ And('Add event description', () => {
   cy.get(eventPageSelectors.editPen).eq(0).click({ force: true });
   cy.get(eventPageSelectors.descriptionField).eq(1).clear().type(eventData.eventDescription)
   cy.xpath(eventPageSelectors.updateEventButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).contains('Event Updated.')
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Event Updated.')
 })
 
 And('Add sponsor and upload file', () => {
@@ -298,6 +313,7 @@ And('Add sponsor and upload file', () => {
     });
   });
   cy.xpath(eventPageSelectors.addSponsorButton).contains('Add Sponsor').click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text',' Sponsor added successfully. ')
 })
 
 And('Add post in event', () => {
@@ -313,14 +329,15 @@ And('Add post in event', () => {
 
 Then('Edit event details', () => {
   cy.log('Edit event details')
-  cy.contains(eventname).click();
+  cy.get('h3').contains(eventname).click();
   cy.get(eventPageSelectors.editPen).eq(0).click();
   cy.get(eventPageSelectors.eventTodate)
     .clear()
     .type('Dec 06, 2022')
   cy.get('.createEvent__question--right > .form__input').select('competition');
   cy.xpath(eventPageSelectors.updateEventButton).contains('Update Event').click({ force: true });
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Event Updated.')
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.xpath(eventPageSelectors.postButton).click();
   cy.get(eventPageSelectors.postTextbox).click();
   cy.xpath(eventPageSelectors.postButton).click();
@@ -547,7 +564,8 @@ And('Create Event', () => {
   cy.get(smokeTestPageSelector.eventNameTextbox)
     .clear()
     .type(eventname1);
-  cy.get('#rw_1_input').type(name + " " + day.getDate() + ", " + day.getFullYear()); // Click on datepicker icon
+  cy.get('[title="Select date"]').eq(0).click(); // Click on datepicker icon
+  cy.get('#rw_1_calendar_active_cell').click()
   cy.get('[title="Select time"]').eq(0).click(); // Click on clock icon
   cy.get('.rw-popup ul li').last().click(); // Click on time
   cy.get('[title="Select date"]').eq(1).click(); // Click on datepicker icon
@@ -610,9 +628,9 @@ When('Accept invitation', () => {
   cy.get(hubGroupPageSelector.inboxIcon).click();
   cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
-  cy.get(hubGroupPageSelector.popupNotes).contains('Invitation accepted successfully.')
-  cy.wait(2000)
-  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Invitation accepted successfully.')
+  // cy.wait(2000)
+  // cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 });
 
 And('Edit bio', () => {
@@ -622,7 +640,7 @@ And('Edit bio', () => {
     .clear()
     .type('test1judge');
   cy.xpath(eventPageSelectors.updateButton).click();
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 Then('Logout to the account', () => {
@@ -653,7 +671,7 @@ And('Judge 2 edit bio', () => {
     .clear()
     .type('test2judge');
   cy.xpath(eventPageSelectors.updateButton).click();
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 Then('Logout to the Judge 2 account', () => {
@@ -683,7 +701,7 @@ And('Edit bio', () => {
     .clear()
     .type('test3judge');
   cy.xpath(eventPageSelectors.updateButton).click();
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 Then('Logout to the account', () => {
@@ -706,13 +724,13 @@ When('Accept invitation', () => {
 });
 
 And('Select project', () => {
-  // cy.get(brainPageSelectors.notificationDismiss).click()
+  // cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get('.projCommit > h4').should('have.text', 'Select Project to compete in');
   cy.get('.projCommit > ul > :nth-child(1)').click();
   // cy.get('.projCommit > ul > :nth-child(2)').click();
   cy.xpath(eventPageSelectors.submitMyProjectButton).click();
   cy.wait(1000)
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 Then('Logout to the account', () => {
@@ -766,7 +784,7 @@ And('Select project', () => {
   cy.get('.projCommit > ul > :nth-child(1)').click();
   cy.xpath(eventPageSelectors.submitMyProjectButton).click();
   cy.wait(1000)
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 Then('Logout to the account', () => {
@@ -795,7 +813,7 @@ And('Select projects', () => {
   cy.get('.projCommit > ul > :nth-child(1)').click();
   cy.xpath(eventPageSelectors.submitMyProjectButton).click();
   cy.wait(1000)
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 Then('Logout to the account', () => {
@@ -852,7 +870,7 @@ Given('Login to the judge 1 account', function () {
 
 When('Go to the hub event page', () => {
   cy.xpath(eventPageSelectors.allMyEventLink).click();
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 And('Score one project', () => {
@@ -1118,10 +1136,10 @@ Then('Logout to the account', () => {
   cy.get(smokeTestPageSelector.logoutButton).click();
 });
 
-// Judge close event round and publish score and winner
+// Admin close event round and publish score and winner
 Given('Login to the rebel base', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 When('Go to the hub page event', () => {
@@ -1187,7 +1205,7 @@ Given('Navigate rebel base and login', function () {
 })
 
 When('Visit event page', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
@@ -1236,10 +1254,587 @@ And('Verify event title and invite member', () => {
 
 Then('Accept event invitation from web application', function () {
   cy.login(Cypress.env('emailuser'), Cypress.env('password'))
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.wait(5000)
   cy.get(hubGroupPageSelector.inboxIcon).click();
   cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Invitation accepted successfully.')
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+})
+
+// Check thread notification for the event
+Given('Navigate rebel base and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create event for web application', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('selection')
+    .should('have.value', 'selection');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+And('Invite all member to the event', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.xpath(eventPageSelectors.inviteButton).click()
+  cy.get('select').select('General');
+  cy.get(brainPageSelectors.inviteModelTextbox)
+    .clear()
+    .type(Cypress.env('username1'))
+    .type('{enter}')
+    .type(Cypress.env('member'))
+    .type('{enter}')
+    .type(Cypress.env('username2'))
+    .type('{enter}')
+    .type(Cypress.env('otherUser'))
+    .type('{enter}')
+    .type(Cypress.env('supporter'))
+    .type('{enter}')
+    .type(Cypress.env('eventMember'))
+    .type('{enter}')
+  cy.get('.btn-wrap > .btn-main').click();
+  cy.xpath(brainPageSelectors.closeModelButton).click()
+  cy.get('.post-form__area').type('Host message')
+  cy.get('div>button').contains('post').click()
+  cy.wait(500)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Accept event invitation from from username1', function () {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.get('.btm-actions__reply-btn').click()
+  cy.get('[placeholder="reply.."]').type('Test thread reply 1')
+  cy.get('div>button').contains('reply').click()
+  cy.wait(500)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Accept event invitation from from username2', function () {
+  cy.login(Cypress.env('username2'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.get('.btm-actions__reply-btn').click()
+  cy.get('[placeholder="reply.."]').type('Test thread reply 2')
+  cy.get('div>button').contains('reply').click()
+  cy.wait(500)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Accept event invitation from from otherUser', function () {
+  cy.login(Cypress.env('otherUser'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.get('.btm-actions__reply-btn').click()
+  cy.get('[placeholder="reply.."]').type('Test thread reply 3')
+  cy.get('div>button').contains('reply').click()
+  cy.wait(500)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Check notification for the event thread', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains('test4 test and test3 test replied to your post on the ' + eventname + ' event')
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(1).contains('test1 test replied to a post you commented on the ' + eventname + ' event')
+  cy.reload()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Login to the event member account', () => {
+  cy.login(Cypress.env('eventMember'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.get('.btm-actions__reply-btn').click()
+  cy.get('[placeholder="reply.."]').type('Test thread reply 6')
+  cy.get('div>button').contains('reply').click()
+  cy.wait(500)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check notification for evenr member when post is created', () => {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains('test6 test6, test4 test and test3 test replied to a post you commented on the ' + eventname + ' event')
+})
+
+// Check notificatin for delete event
+Given('Navigate rebel base and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create event for web application', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('selection')
+    .should('have.value', 'selection');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+And('Invite member to the event', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.xpath(eventPageSelectors.inviteButton).click()
+  cy.get('select').select('General');
+  cy.get(brainPageSelectors.inviteModelTextbox)
+    .clear()
+    .type(Cypress.env('username1'))
+    .type('{enter}')
+  cy.get('.btn-wrap > .btn-main').click();
+  cy.xpath(brainPageSelectors.closeModelButton).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Accept invitation from from username1', function () {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Delete event', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+  cy.get('h3').contains(eventname).click()
+  cy.get(eventPageSelectors.editPen).eq(0).click()
+  cy.get('.btn-alarm').click()
+  cy.get('.react-confirm-alert-body').contains('Are you sure to do this?')
+  cy.get('.react-confirm-alert-body').find('button').contains('Yes').click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Verify event deletion notification for the member', () => {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(3000)
+  cy.get(hubActivityPageSelector.bellIcon).click();
+  cy.wait(1000)
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains(eventname + " has been deleted in the Dev Hub hub")
+})
+
+// Chech notification when the user update event details
+Given('Navigate rebel base and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create event for web application', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('selection')
+    .should('have.value', 'selection');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+And('Invite member to the event', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.xpath(eventPageSelectors.inviteButton).click()
+  cy.get('select').select('General');
+  cy.get(brainPageSelectors.inviteModelTextbox)
+    .clear()
+    .type(Cypress.env('username1'))
+    .type('{enter}')
+  cy.get('.btn-wrap > .btn-main').click();
+  cy.xpath(brainPageSelectors.closeModelButton).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Accept invitation from invited user account', function () {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(5000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(2000)
+  cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Update event details', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+  cy.get('h3').contains(eventname).click()
+  cy.get(eventPageSelectors.editPen).eq(0).click({force:true})
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 17, 2021');
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 05, 2022')
+  cy.get('#-google-places-autocomplete-input').clear().type('rajkot')
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__question--right > .form__input')
+    .select('competition')
+    .should('have.value', 'competition');
+  cy.get(eventPageSelectors.descriptionField).eq(1).clear().type(eventData.eventDescription)
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Event Updated.')
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Verify event updation notification for the member', () => {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(3000)
+  cy.get(hubActivityPageSelector.bellIcon).click();
+  cy.wait(1000)
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).contains("The location, start date, end date, event type and description for " + eventname + " have been updated")
+})
+
+// Update event and check updated details
+Given('login to the app', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create event with full details', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('selection')
+    .should('have.value', 'selection');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+And('Update Event details',()=>{
+  cy.wait(2000)
+  cy.get(eventPageSelectors.editPen).eq(0).should('be.visible').click({force:true})
+  cy.get('.createEvent__question--right > .form__input')
+    .select('competition')
+    .should('have.value', 'competition');
+  cy.get(eventPageSelectors.descriptionField).eq(1).type('Test description')
+  cy.get('button').contains('Update Event').click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Event Updated.')
+})
+
+And('Check event details',()=>{
+  cy.get(eventPageSelectors.editPen).eq(0).click()
+  cy.get('.createEvent__question--right > .form__input')
+    .should('have.value', 'competition');
+  cy.get('.createEvent__question>textarea').should('have.text','Test description')
+})
+
+Then('Delete created event',()=>{
+  cy.get('.btn-alarm').click();
+  cy.get('.react-confirm-alert-button-group > :nth-child(1)').click();
+  cy.url().should('include', '/events');
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+// Signup new user and go to all event page
+Given('User is on signup page', () => {
+  cy.visit('/');
+})
+
+When('clicked on signup button and add details', () => {
+  cy.get('.login__noaccount > button').click();
+  cy.get(smokeTestPageSelector.signUpFirstName)
+      .clear()
+      .type('testtest');
+  cy.get(smokeTestPageSelector.signUpLastName)
+      .clear()
+      .type('sur');
+  cy.get(smokeTestPageSelector.signUpEmail)
+      .clear()
+      .type(Cypress.config('email'));
+  cy.get(smokeTestPageSelector.signUpPassword)
+      .clear()
+      .type('testtest');
+  cy.get(smokeTestPageSelector.signUpConfirmPassword)
+      .clear()
+      .type('testtest');
+  cy.get('#allowAll').click();
+  cy.get('#promotionalEmails').click();
+})
+
+And('User clicks on signup button', () => {
+  cy.xpath(smokeTestPageSelector.getStartedButton).click({ force: true });
+})
+
+And('New User is able to sign up successfully', () => {
+  cy.url().should('include', '/dashboard');
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+      .type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.xpath(smokeTestPageSelector.readyButton).click();
+  cy.get('.btn-skip').click({ force: true });
+})
+
+And('Visit all event page',()=>{
+  cy.xpath(eventPageSelectors.allMyEventLink).click()
+  cy.get('.eList__empty').find('p').should('have.text','There are no events yet. create a new event.')
+})
+
+And('Check alternative email pop-up',()=>{
+  cy.get(smokeTestPageSelector.headerDropdown).click()
+  cy.get(smokeTestPageSelector.settingLink).click()
+  cy.get('button').contains('add email').click()
+  cy.get(permissionsPageSelector.emailTextbox).type(randomMail);
+  cy.xpath(permissionsPageSelector.addButton).click()
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Alternative email added. Please check your email to verify.')
+  cy.get(smokeTestPageSelector.headerDropdown).click()
+  cy.get(smokeTestPageSelector.logoutButton).click()
+})
+
+Then('Verify Email from received email', () => {
+  cy.task("gmail:get-messages", {
+    options: {
+      from: "noreply@rebelbase.co",
+      subject: "Verify your email for your RebelBase account",
+      include_body: true,
+      // before: new Date(2021, 9, 24, 12, 31, 13), // Before September 24rd, 2019 12:31:13
+      //  after: new Date(2021, 7, 23) // After August 23, 2019
+    }
+  }).then(emails => {
+    assert.isAtLeast(
+      emails.length,
+      1,
+      "Expected to find at least one email, but none were found!"
+    );
+
+    const body = emails[0].body.html;
+    assert.isTrue(
+      body.indexOf(
+
+        "token="
+
+      ) >= 0,
+      "Found reset link!"
+    );
+
+    window.token = extractData(body, startStr, endStr);
+    cy.visit(
+      `auth/sign-up?type=hub_event_invitation&token=${token}&email=${randomMail}`
+    );
+    cy.get(hubGroupPageSelector.popupNotes).should('have.text','Email verified!')
+  })
+})
+
+// Decline event invitation
+Given('Navigate rebel base and login', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+})
+
+When('Visit event page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+})
+
+And('Create event for web application', () => {
+  cy.xpath(smokeTestPageSelector.newEventButton).contains('New Event').click();
+  cy.get(smokeTestPageSelector.eventNameTextbox)
+    .clear()
+    .type(eventname);
+  cy.get(smokeTestPageSelector.fromDate)
+    .clear()
+    .type('Dec 16, 2021');
+  cy.get(smokeTestPageSelector.fromTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.toDate)
+    .clear()
+    .type('Dec 06, 2022')
+  cy.get(smokeTestPageSelector.toTime)
+    .clear()
+    .type('7:30am')
+  cy.get(smokeTestPageSelector.autoCompleteTextbox)
+    .clear().type('pune');
+  cy.get(smokeTestPageSelector.locationResultInput).click();
+  cy.get('.createEvent__field__type')
+    .select('selection')
+    .should('have.value', 'selection');
+  cy.get('.createEvent').click();
+  cy.get(':nth-child(2) > .createEvent__round-choice').click();
+  cy.get(':nth-child(3) > .createEvent__round-choice').click();
+  cy.get('.createEvent > .btn-wrap > .btn-main').click();
+})
+
+And('Invite member to the event', () => {
+  cy.get('.ePage__title__name').should('have.text', eventname)
+  cy.xpath(eventPageSelectors.inviteButton).click()
+  cy.get('select').select('General');
+  cy.get(brainPageSelectors.inviteModelTextbox)
+    .clear()
+    .type(Cypress.env('username1'))
+    .type('{enter}')
+  cy.get('.btn-wrap > .btn-main').click();
+  cy.xpath(brainPageSelectors.closeModelButton).click()
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+And('Decline invitation from invited user account', function () {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.wait(3000)
+  cy.get(hubGroupPageSelector.inboxIcon).click();
+  cy.wait(1000)
+  cy.get('button').contains('decline').eq(0).click({ force: true });
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Delete the same event', function () {
+  cy.login(Cypress.env('username'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
+  cy.get('h3').contains(eventname).click()
+  cy.get(eventPageSelectors.editPen).eq(0).click()
+  cy.get('.btn-alarm').click();
+  cy.get('.react-confirm-alert-button-group > :nth-child(1)').click();
+  cy.url().should('include', '/events');
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
 })

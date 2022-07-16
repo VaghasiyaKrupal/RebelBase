@@ -6,7 +6,7 @@ import { smokeTestPageSelector } from '../../pageObject/pageSelectors/smokeTestP
 
 // Login to app staging rebelbase
 Given('User is at the login page', () => {
-    cy.visit('/',{timeout:200000})
+    cy.visit('/', { timeout: 200000 })
 })
 
 When('User enters username as {string} and password as {string}', (username, password) => {
@@ -19,7 +19,7 @@ And('User clicks on login button', () => {
 })
 
 Then('User is able to successfully login to the Website', () => {
-    cy.url().should('include', '/profile');
+    cy.url().should('include', '/dashboard');
 })
 
 // create project
@@ -28,7 +28,7 @@ Given('User is logged in', () => {
 })
 
 When('clicked on + button project and add details', () => {
-    cy.visit('project/create-project',{timeout:200000});
+    cy.visit('project/create-project', { timeout: 200000 });
     cy.get(smokeTestPageSelector.projectNameTextbox)
         .clear()
         .type(Cypress.config('randomname'));
@@ -78,8 +78,8 @@ Then('User is able to successfully create group', () => {
     cy.get(hubGroupPageSelector.projectTab).should('have.text', 'Projects');
     cy.get(hubGroupPageSelector.builderTab).should('have.text', 'Builders');
     cy.get(hubGroupPageSelector.groupMemberTab).should('have.text', 'Group Members')
-    cy.visit('hubs/26/groups',{timeout:200000});
-    cy.get(brainPageSelectors.notificationDismiss).click()
+    cy.visit('hubs/26/groups', { timeout: 200000 });
+    cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
     cy.get(smokeTestPageSelector.searchBar)
         .clear({ force: true })
         .type(Cypress.config('randomname'));
@@ -98,8 +98,8 @@ When('clicked on add activity button and add details', () => {
     cy.xpath(smokeTestPageSelector.activityLink).click();
     cy.wait(3000)
     cy.get('button')
-    .should('be.visible')
-    .contains('Add your thoughts').click({ force: true });
+        .should('be.visible')
+        .contains('Add your thoughts').click({ force: true });
     cy.wait(1000)
     cy.xpath(smokeTestPageSelector.post).click();
 })
@@ -162,7 +162,7 @@ Given('User is on signup page', () => {
     cy.visit('/');
 })
 
-When('clicked on signup button  and add details', () => {
+When('Clicked on signup button and add details', () => {
     cy.get('.login__noaccount > button').click();
     cy.get(smokeTestPageSelector.signUpFirstName)
         .clear()
@@ -187,12 +187,12 @@ And('User clicks on signup button', () => {
     cy.xpath(smokeTestPageSelector.getStartedButton).click({ force: true });
 })
 
-Then('new User is able to sign up successfully', () => {
-    cy.url().should('include', '/profile');
+Then('New User is able to sign up successfully', () => {
+    cy.url().should('include', '/dashboard');
     cy.get(smokeTestPageSelector.autoCompleteTextbox)
         .type('pune');
     cy.get(smokeTestPageSelector.locationResultInput).click();
     cy.xpath(smokeTestPageSelector.readyButton).click();
     cy.get('.btn-skip').click({ force: true });
-    cy.get('[aria-label="menu"] > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').contains('test')
+    cy.get('[aria-label="menu"] > .MuiTypography-root').contains('test')
 })

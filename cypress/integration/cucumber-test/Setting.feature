@@ -15,3 +15,10 @@ Feature: Settings
         Given Login to the rebelbase portal
         When Expand language
         Then Change language
+    
+    Scenario: Change email preference and verify
+        Given Login to the rebelbase portal
+        When Go to setting page
+        And Chnage email preference
+        And Verify saved email settings
+        Then Restore email settings

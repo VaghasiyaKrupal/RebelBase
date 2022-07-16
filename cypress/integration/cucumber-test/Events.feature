@@ -175,7 +175,7 @@ Feature: Event
     Then Logout to the account
 
   @TEST_CH-1292
-  Scenario: admin close event round and publish score and winner
+  Scenario: Admin close event round and publish score and winner
     Given Login to the rebel base
     When Go to the hub page event
     And Close round
@@ -197,3 +197,58 @@ Feature: Event
     And Create event for web application
     And Verify event title and invite member
     Then Accept event invitation from web application
+ 
+  Scenario: Check thread notification for the event
+    Given Navigate rebel base and login
+    When Visit event page
+    And Create event for web application
+    And Invite all member to the event
+    And Accept event invitation from from username1
+    And Accept event invitation from from username2
+    And Accept event invitation from from otherUser
+    And Check notification for the event thread
+    And Login to the event member account
+    Then Check notification for evenr member when post is created
+  
+  Scenario: Check notificatin for delete event
+    Given Navigate rebel base and login
+    When Visit event page
+    And Create event for web application
+    And Invite member to the event
+    And Accept invitation from from username1
+    And Delete event
+    Then Verify event deletion notification for the member
+  
+  Scenario: Chech notification when the user update event details
+    Given Navigate rebel base and login
+    When Visit event page
+    And Create event for web application
+    And Invite member to the event
+    And Accept invitation from invited user account
+    And Update event details
+    Then Verify event updation notification for the member
+ 
+  Scenario: Update event and check updated details
+    Given login to the app
+    When Visit event page
+    And Create event with full details
+    And Update Event details
+    And Check event details
+    Then Delete created event
+ 
+  Scenario: Signup new user and go to all event page
+    Given User is on signup page
+    When clicked on signup button and add details
+    And User clicks on signup button
+    And New User is able to sign up successfully
+    And Visit all event page
+    And Check alternative email pop-up
+    Then Verify Email from received email
+  
+  Scenario: Decline event invitation
+    Given Navigate rebel base and login
+    When Visit event page
+    And Create event for web application
+    And Invite member to the event
+    And Decline invitation from invited user account
+    Then Delete the same event

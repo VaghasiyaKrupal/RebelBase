@@ -29,18 +29,18 @@ Feature: Product smoke test
         And Login to the rebelbase portal
         And Go to activity page
         Then Create post
-
+    @focus
     Scenario: Create event
         Given Visit Rebelbase production url
         When Accept cookies
         And Login to the rebelbase portal
         And Go to the Event page
         And Create new event
-        Then Logout from account
-
+        Then Logout from account and verify URL
+    
     Scenario: Signup application and logout
         Given User is on signup page
         When clicked on signup button and add details
         And User clicks on signup button
         And new User is able to sign up successfully
-        Then Logout from account
+        Then Logout from account and verify URL

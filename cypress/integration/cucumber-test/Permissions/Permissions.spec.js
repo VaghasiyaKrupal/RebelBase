@@ -114,7 +114,7 @@ When('Changing basic settings', () => {
 
 And('Changing project setting', () => {
   cy.get(permissionsPageSelector.selectCypressProject1)
-  .contains('CypressTestProject01').click();
+    .contains('CypressTestProject01').click();
   cy.get(eventPageSelectors.editPen).click({ force: true });
   cy.get('.settings').click();
   cy.get(permissionsPageSelector.teamMemberTextbox)
@@ -125,17 +125,17 @@ And('Changing project setting', () => {
   cy.get(permissionsPageSelector.valueSaveButton).click();
   cy.wait(2000);
   cy.get(hubGroupPageSelector.popupNotes)
-  .should('have.text', 'Project settings saved!').click();
+    .should('have.text', 'Project settings saved!')
 })
 
 Then('Invite user to team', () => {
   cy.get(':nth-child(1) > .team__pending__actions > li > .btn-second')
-  .should('have.text', 'Resend Invite');
+    .should('have.text', 'Resend Invite');
   cy.get(':nth-child(1) > .team__pending__actions > li > .btn-second').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation resent!');
   cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
   cy.xpath(builderPageSelectors.projectBuilderLink).click();
-  cy.get('.css-g45jk2 > .MuiBox-root > [data-testid="AddIcon"]').click();
+  cy.get('.css-grmazk > .MuiBox-root > [data-testid="AddIcon"]').click();
   cy.get(smokeTestPageSelector.signUpEmail)
     .clear()
     .type('testhubadmin@rebelbase.co');
@@ -144,7 +144,7 @@ Then('Invite user to team', () => {
     .type('testhubadmin+6@rebelbase.co');
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'This email has already been sent an invitation!');
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
   cy.get(':nth-child(1) > .pending--btn-wrap > .inviteTeam__btn__nudge').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation resent!');
   cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
@@ -154,7 +154,7 @@ Then('Invite user to team', () => {
 // Check rebelbase members permissons
 Given('Login to the Rebelbase member account', () => {
   cy.login(Cypress.env('rebelbasemember'), Cypress.env('password'));
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Go to setting page', () => {
@@ -182,7 +182,7 @@ Given('Go to project page', () => {
 
 When('Verify public member permission', () => {
   cy.get('.menu__sub').contains('Problem').should('be.visible');
-  cy.get('.menu__sub').contains('Prototesting').should('be.visible');
+  cy.get('.menu__sub').contains('Prototesting').should('not.exist');
   cy.get('.menu__sub').contains('Version').should('not.exist');
 })
 
@@ -194,7 +194,7 @@ Then('Verify settings permission', () => {
 // Check Hub event member permissons
 Given('Login to event member account', () => {
   cy.login(Cypress.env('eventMember'), Cypress.env('password'));
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 When('Verify permission from settings', () => {
@@ -249,14 +249,14 @@ And('Verify setting permission', () => {
     .clear()
     .type('test6');
   cy.get(permissionsPageSelector.valueSaveButton).click();
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Account settings saved!')
   cy.get('ul > :nth-child(4) > span').should('not.exist');
   cy.get(eventPageSelectors.editPen).should('not.exist');
   cy.get('[data-testid="AddIcon"]').should('exist');
-  // cy.get('.btn-link').should('not.exist');
 })
 
-And('Creating post', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+And('Creating post from hub', () => {
+  cy.get('.sideNav__content > :nth-child(4) > .MuiList-root > .MuiButtonBase-root').contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.activityLink).click();
   cy.wait(2000)
   cy.xpath(hubActivityPageSelector.addYourThought).click({ force: true });

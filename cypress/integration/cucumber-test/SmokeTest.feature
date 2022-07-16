@@ -41,6 +41,6 @@ Feature: SmokeTest Feature
     @TEST_CH-844
     Scenario: Signup application
         Given User is on signup page
-        When  clicked on signup button  and add details
+        When Clicked on signup button and add details
         And User clicks on signup button
-        Then new User is able to sign up successfully
+        Then New User is able to sign up successfully

@@ -3,6 +3,7 @@ import { builderPageData } from '../../pageObject/pageData/builderPageData'
 import { builderPageSelectors } from '../../pageObject/pageSelectors/builderPageSelectors'
 import { brainPageSelectors } from '../../pageObject/pageSelectors/brainPageSelectors'
 import { smokeTestPageSelector } from "../../pageObject/pageSelectors/smokeTestPageSelector";
+import { parseBODYSTRUCTURE } from "emailjs-imap-client/dist/command-parser";
 
 Before(() => {
   cy.loginViaUISession(Cypress.env('username'), Cypress.env('password'));
@@ -26,19 +27,19 @@ Then('Find paragraph from answer', () => {
   cy.get(builderPageSelectors.qlEditor).find('p');
 });
 
-// Builder's answer with some text [Builder'sAnswer]
-Given('Visit builder answer page', () => {
-  cy.visit('/project/1511/builders/1/topics/43/answer');
+// // Builder's answer with some text [Builder'sAnswer]
+// Given('Visit builder answer page', () => {
+//   cy.visit('/project/1511/builders/1/topics/43/answer');
 
-})
+// })
 
-When('Close the notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
-})
+// When('Close the notification', () => {
+//   cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
+// })
 
-Then('Find Lorem Ipsum from answer', () => {
-  cy.get('.ql-editor').find('p').contains('Lorem Ipsum');
-});
+// Then('Find Lorem Ipsum from answer', () => {
+//   cy.get('.ql-editor').find('p').contains('Lorem Ipsum');
+// });
 
 // Save builder's answer with some random text [Builder'sAnswer]
 Given('Visit builder answer page', () => {
@@ -47,7 +48,7 @@ Given('Visit builder answer page', () => {
 })
 
 When('Close the notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 And('Enter builder answer with random text', () => {
@@ -78,7 +79,7 @@ Given('Visit builder topic 4 answer page', () => {
 })
 
 When('Close the notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 And('Enter builder answer with random text', () => {
@@ -112,7 +113,7 @@ Given("Visit builder topic 5 answer page", () => {
 })
 
 When('Close the notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 And('Enter builder answer with random text', () => {
@@ -147,7 +148,7 @@ Given("Visit builder topic 44 answer page", () => {
 })
 
 When('Close the notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 And('Enter random answer', () => {
@@ -196,7 +197,7 @@ When('Verify page is loaded successfully', () => {
 })
 
 And('Close the notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 And('Go to the builder page', () => {
@@ -263,7 +264,7 @@ Then('Enter answer and save it', () => {
   cy.get(':nth-child(4) > li').first().click();
   cy.get(builderPageSelectors.saveAnswerButton).click();
   cy.get('.btm-nav > .btn-main').click();
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 });
 
 // change track on builder page > it should change builders types
@@ -305,7 +306,7 @@ Then('Verify next track', () => {
 // change track on project builder page and complete one type of builder answers
 Given('Visit builder page on rebel base portal', function () {
   cy.visit('/');
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 When('Go to project builder page', () => {
@@ -338,16 +339,6 @@ And('Complete answer one type of answer', () => {
   cy.get(builderPageSelectors.qlEditor).click();
   cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
   cy.xpath(builderPageSelectors.saveAndNextButton).click();
-  cy.xpath(builderPageSelectors.goButton).click();
-  cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.saveAndNextButton).click();
 })
 
 And('Go to review and publish page and publish answer', () => {
@@ -357,7 +348,7 @@ And('Go to review and publish page and publish answer', () => {
   cy.xpath(builderPageSelectors.publishItem)
     .click();
   cy.get('.sidebar__pub__btn').click();
-  cy.get('.btn-main').click();
+  cy.get('.btn-main').contains('finish').click();
 })
 
 And('Re check answer', () => {
@@ -379,16 +370,6 @@ And('Re check answer', () => {
   cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
   cy.get(builderPageSelectors.qlEditor).click();
   cy.xpath(builderPageSelectors.saveAndNextButton).click();
-  cy.xpath(builderPageSelectors.goButton).click();
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  // cy.xpath(builderPageSelectors.gotItNextButton).click({ force: true });
-  cy.xpath(builderPageSelectors.saveAndNextButton).click();
 })
 
 Then('Re publish the answer', () => {
@@ -397,7 +378,7 @@ Then('Re publish the answer', () => {
     .click()
   cy.xpath(builderPageSelectors.publishItem)
     .click();
-  cy.get('.btn-main').click();
+  cy.get('.btn-main').contains('finish').click();
 });
 
 // Language change
@@ -406,31 +387,31 @@ Given('Login to the rebelbase portal', function () {
 })
 
 When('Expand language', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
-  cy.get('[data-testid="ArrowDropDownIcon"]').click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
+  cy.get(smokeTestPageSelector.headerDropdown).click();
   cy.get('[data-testid="ExpandMoreIcon"]').click();
 })
 
 Then('Change language and verify menu name', () => {
-  cy.get('.MuiList-root > :nth-child(5) > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').click(); // Select language
-  cy.get(':nth-child(1) > .MuiList-padding > .MuiCollapse-root > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > .nav-menu__link--builders > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('div ul li div div span').contains('Español').click(); // Select language
+  cy.wait(1000)
+  cy.get('.nav-menu__link--builders').find('div span')
     .should('have.text', 'Tus builders')
-  cy.get('.nav-menu__link--project-page > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--project-page')
     .should('have.text', 'Tu proyecto')
     cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click()
-  cy.get('.nav-menu__link--activity > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--activity')
     .should('have.text', 'Muro')
-  cy.get('.nav-menu__link--brain > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--brain')
     .should('have.text', 'Brain')
-  cy.get('.nav-menu__link--groups > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--groups')
     .should('have.text', 'Grupos')
-  cy.get('.nav-menu__link--events > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--events')
     .should('have.text', 'Eventos')
-  cy.get('.nav-menu__link--members > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--members')
     .should('have.text', 'Comunidad')
-  cy.get(':nth-child(2) > .MuiList-padding > .MuiCollapse-root > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > .MuiList-root > .nav-menu__link--builders > .MuiListItemText-root > .MuiTypography-root')
+  cy.get('.nav-menu__link--builders').last()
     .should('have.text', 'Builders')
-  cy.get('[data-testid="ArrowDropDownIcon"]').click();
-  cy.get('#more-menu > .MuiPaper-root > .MuiList-root').click({ force: true });
-  cy.get('.MuiList-root > :nth-child(4) > .css-70qvj9 > .MuiBox-root > .MuiTypography-root').click();
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get('div ul li div div span').contains('English').click()
 });

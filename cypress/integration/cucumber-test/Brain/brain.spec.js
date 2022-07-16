@@ -7,7 +7,7 @@ Before(() => {
 });
 
 After(()=>{
-  cy.wait(2000)
+  cy.wait(1000)
 })
 
 // // Send hub invitation from brain page ,delete invitation and resend invitation to user
@@ -16,7 +16,7 @@ After(()=>{
 // })
 
 // When('I send hub invitation from brain page', () => {
-//   cy.get(brainPageSelectors.notificationDismiss).click(); // Click on the Notification dismiss button
+//   cy.get(brainPageSelectors.notificationDismiss).click({multiple:true}); // Click on the Notification dismiss button
 //   cy.xpath(brainPageSelectors.inviteMemberButton).click(); // Click on invite member button
 //   cy.get(brainPageSelectors.inviteModelTextbox)
 //     .clear()
@@ -33,12 +33,12 @@ After(()=>{
 //   cy.get(brainPageSelectors.sendNudgeButton).eq(0).click(); // Click on send nudge button from pop-up
 //   cy.wait(700)
 //   cy.get(brainPageSelectors.notification).contains(brainPageData.invitationResentMessage).should('be.visible'); // Verifing notication text
-//   cy.get(brainPageSelectors.notificationDismiss).click();
+//   cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 //   cy.get(brainPageSelectors.deleteButton) // Click on the delete button from the pop-up
 //     .eq(0)
 //     .click();
 //   cy.get(brainPageSelectors.notification).contains(brainPageData.invitationDeleteMessage); // Verifing notification
-//   cy.get(brainPageSelectors.notificationDismiss).click(); // Close the notification
+//   cy.get(brainPageSelectors.notificationDismiss).click({multiple:true}); // Close the notification
 // })
 
 // And('Reend invitation', () => {
@@ -58,18 +58,18 @@ After(()=>{
 
 // And('Resend nudge', () => {
 //   cy.get(brainPageSelectors.sendNudgeButton).eq(0).click(); // Click on the send nudge button from model
-//   cy.get(brainPageSelectors.notificationDismiss).click(); // Close the notification
+//   cy.get(brainPageSelectors.notificationDismiss).click({multiple:true}); // Close the notification
 //   cy.xpath(brainPageSelectors.closeModelButton).click(); // Click on cross button to close model
 // });
 
 // Navigate through the links using loops
 Given('I access the brain section page', () => {
-  Cypress.Cookies.preserveOnce('session_id', 'remember_token')
+  // Cypress.Cookies.preserveOnce('session_id', 'remember_token')
   cy.visit(brainPageData.brainURL); // Visit Brain screen
 })
 
 When('Close Notification', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click(); // Close the notification
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true}); // Close the notification
 })
 
 And('Nevigate to RebelBase Hub 101', () => {

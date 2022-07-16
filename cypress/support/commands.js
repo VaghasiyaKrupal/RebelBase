@@ -66,12 +66,12 @@ Cypress.Commands.add('loginViaUISession', (email, password) => {
     cy.get('[name="password"]').type(password);
     cy.get('.login__btn').click();
     cy.wait(700)
-    cy.url().should("contain", "profile");
+    cy.url().should("contain", "dashboard");
   }, {
     validate() {
       cy.visit('/')
       cy.wait(700)
-      cy.url().should("contain", "profile");
+      cy.url().should("contain", "dashboard");
     }
   })
 })
@@ -115,7 +115,7 @@ Cypress.Commands.add('extractToken', extractData);
 
 import 'cypress-file-upload';
 
-const COMMAND_DELAY = 1500;
+const COMMAND_DELAY = 700;
 
 for (const command of ['visit', 'click', 'trigger', 'type', 'clear', 'reload', 'contains']) {
   Cypress.Commands.overwrite(command, (originalFn, ...args) => {

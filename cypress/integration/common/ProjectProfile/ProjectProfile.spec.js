@@ -11,6 +11,8 @@ import { hubActivityPageSelector } from "../../pageObject/pageSelectors/hubActiv
 import { permissionsPageSelector } from "../../pageObject/pageSelectors/permissionPageSelector";
 import { projectProfilePageSelector } from "../../pageObject/pageSelectors/projectProfilePageSelector";
 
+const projectName = "cypressautomation-" + Math.random().toString(36).substring(2);
+
 // Login and go to project page [Project Profile]
 Given('Login to the rebelbase portal and verify cookies', () => {
   cy.login(Cypress.env('username'), Cypress.env('password'));
@@ -19,7 +21,7 @@ Given('Login to the rebelbase portal and verify cookies', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 Then('Verify project title', () => {
@@ -34,7 +36,7 @@ Given('Login to rebel base portal and verify cookies', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -94,7 +96,7 @@ Given('Login to rebel base portal and verify cookies', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 Then('Open project logo model', () => {
@@ -104,9 +106,9 @@ Then('Open project logo model', () => {
   cy.xpath(projectProfilePageSelector.savelogoButton)
     .contains('Save logo to project page')
     .click();
-  //   since no image was selected so warning is shown
+  // since no image was selected so warning is shown
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Please select an image to upload.');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.xpath(brainPageSelectors.closeModelButton).last().click();
 });
 
@@ -118,7 +120,7 @@ Given('Login to rebel base portal and verify cookies', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 And('Change project logo', () => {
@@ -140,7 +142,7 @@ And('Change project logo', () => {
 
 Then('Verify project logo changed successfully', () => {
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Project logo uploaded!');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 });
 
 // Open backdrop modal on project page [Project Profile]
@@ -151,7 +153,7 @@ Given('Login to rebel base portal and verify cookies', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 Then('Verify warning message when no logo selected', () => {
@@ -164,7 +166,7 @@ Then('Verify warning message when no logo selected', () => {
 
   // since no image was selected so warning is shown
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Please select an image to upload.');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.xpath(brainPageSelectors.closeModelButton).last().click();
 });
 
@@ -176,7 +178,7 @@ Given('Login to rebel base portal and verify cookies', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 And('Clear about field and save it', () => {
@@ -190,15 +192,14 @@ And('Clear about field and save it', () => {
 
 And('Close about without saving it should show warning', () => {
   cy.get(eventPageSelectors.editPen).eq(1).click({ force: true });
-  // cy.get('.ReactModal__Content > .btn-x').click();
   cy.get('form > .quill > .ql-container > .ql-editor').clear();
-  //  add data in about section
+  // add data in about section
   cy.get('.overview__about').type('edit about...');
   cy.get('.btn-cancel').contains('close').click();
-  //   try to close about without saving it gives warning
+  // try to close about without saving it gives warning
   cy.get('.react-confirm-alert-body')
     .contains('Are you sure you want to close?');
-  //   go back
+  // go back
   cy.get('.react-confirm-alert-button-group')
     .contains('No, go back')
     .click();
@@ -206,22 +207,22 @@ And('Close about without saving it should show warning', () => {
   cy.get('.btn-cancel').contains('close').click();
   cy.get('.react-confirm-alert-body')
     .contains('Are you sure you want to close?');
-  //   close without saving
+  // close without saving
   cy.get('.react-confirm-alert-button-group')
     .contains('Yes, close')
     .click();
 })
 
 Then('Add data in about field', () => {
-  //   about is empty
+  // about is empty
   cy.get('.overview__about__empty');
   cy.get(eventPageSelectors.editPen).eq(1).click({ force: true });
   cy.get('form > .quill > .ql-container > .ql-editor')
     .clear()
     .type('edit about...'); // add data to about
-  //   save it
+  // save it
   cy.xpath(hubActivityPageSelector.saveButton).contains('Save').click();
-  //   get notication of about being updated
+  // get notication of about being updated
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Project about updated!');
 });
 
@@ -231,7 +232,7 @@ Given('Login to supporter account', () => {
 })
 
 When('Verify profile and cookies', () => {
-  cy.url().should('include', '/profile/2484');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
@@ -254,11 +255,11 @@ And('Verify orther user permission', () => {
 // Supporter's should only be able to edit his title and see setting's page on project page [Project Profile]
 Given('Login to supporter account', () => {
   cy.login(Cypress.env('supporter'), Cypress.env('password'));
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
 })
 
 When('Verify profile and cookies', () => {
-  cy.url().should('include', '/profile/2484');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
@@ -286,9 +287,7 @@ Then('Verify title, team and advisors edit permission', () => {
     .find('.btn-save')
     .contains('Save')
     .click();
-  // cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Title changed!').click()
   cy.get('div.person__info>p.person__role>button').click();
-  // cy.get('.person__role__edit-wrap').find('input').clear();
   cy.get('.person__role__edit-wrap').find('input').type('supporter');
   cy.get('.person__role__edit-wrap')
     .find('.btn-save')
@@ -316,7 +315,7 @@ Given('Login to member account', () => {
 })
 
 When('Verify profile url and cookies', () => {
-  cy.url().should('include', '/profile/2468');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
@@ -386,7 +385,7 @@ Given('Login to the rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -409,14 +408,14 @@ Given('Login to event member account', () => {
   cy.login(Cypress.env('eventMember'), Cypress.env('password'))
 })
 
-When('Verify profile page and cookies', () => {
-  cy.url().should('include', '/profile/4431');
+When('Verify cookies', () => {
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
 And('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -428,11 +427,7 @@ Then('Verify permission', () => {
   cy.get('.details__challenge-title')
     .should('contain', 'Target + Market');
   cy.get('.details__challenge-title')
-    .should('contain', 'Version One');
-  cy.get('.details__challenge-title')
     .should('contain', 'Competitive Landscape');
-  cy.get('.details__challenge-title')
-    .should('contain', 'Brand');
   cy.get('.details__challenge-title')
     .should('contain', 'Go-to-Market Strategy');
 });
@@ -445,13 +440,13 @@ Given('Login to event member account', () => {
 })
 
 When('Verify profile', () => {
-  cy.url().should('include', '/profile/4431');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
 And('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -463,49 +458,44 @@ Then('Verify project permission', () => {
   cy.get('.details__challenge-title')
     .should('contain', 'Target + Market');
   cy.get('.details__challenge-title')
-    .should('contain', 'Version One');
-  cy.get('.details__challenge-title')
     .should('contain', 'Competitive Landscape');
-  cy.get('.details__challenge-title')
-    .should('contain', 'Brand');
   cy.get('.details__challenge-title')
     .should('contain', 'Go-to-Market Strategy');
 });
 
-// Other user's should not be able to see builder's page of project's they are not part of  [Project Profile]
-Given('Login to rebelbase portal and verify cookies', () => {
-  cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.getCookie('token').should('exist');
-})
+// // Other user's should not be able to see builder's page of project's they are not part of  [Project Profile]
+// Given('Login to rebelbase portal and verify cookies', () => {
+//   cy.login(Cypress.env('username'), Cypress.env('password'))
+//   cy.getCookie('token').should('exist');
+// })
 
-When('Go to respective project page', () => {
-  cy.visit('/project/824');
-})
+// When('Go to respective project page', () => {
+//   cy.visit('/project/824');
+// })
 
-And('Verify title', () => {
-  cy.get('.title').should('have.text', 'HappyPaws');
-})
+// And('Verify title', () => {
+//   cy.get('.title').should('have.text', 'HappyPaws');
+// })
 
-Then(`Go to project's builder page and verify permission`, () => {
-  cy.visit('/project/824/builders');
-  cy.get(brainPageSelectors.notificationDismiss).click()
-  cy.get('.noPermission').contains('You are not permitted to view this page.')
-});
+// Then(`Go to project's builder page and verify permission`, () => {
+//   cy.visit('/project/824/builders');
+//   cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+//   cy.get('.noPermission').contains('You are not permitted to view this page.')
+// });
 
-// raise ticket for below
 // Other user's should only be able to see answer's with permission level for everyone [Project Profile]
 Given('Login to rebelbase portal', () => {
   cy.login('msuryawanshi+1@rebelbase.co', 'manoj@123')
 })
 
 When('Verify profile, cookies', () => {
-  cy.url().should('include', '/profile/4439');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
 And('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -513,7 +503,7 @@ Then('Verify permission for project', () => {
   cy.get('.details__challenge-title')
     .should('contain', 'Problem');
   cy.get('.details__challenge-title')
-    .should('not.contain', 'Ecosystem');
+    .should('contain', 'Ecosystem');
   cy.get('.details__challenge-title')
     .should('contain', 'Prototesting');
   cy.get('.details__challenge-title')
@@ -562,9 +552,9 @@ When('Verify project title', () => {
 
 Then('Verify permission from project page', () => {
   cy.get('.details__challenge-title')
-    .should('not.contain', 'Ecosystem');
+    .should('contain', 'Ecosystem');
   cy.get('.details__challenge-title')
-    .should('contain', 'Prototesting');
+    .should('not.contain', 'Prototesting');
   cy.get('.details__challenge-title')
     .should('contain', 'Target + Market');
   cy.get('.details__challenge-title')
@@ -581,7 +571,7 @@ Given('Login to rebelbase portal', () => {
 })
 
 When('Verify profile, logout from account', () => {
-  cy.url().should('include', '/profile/2867');
+  cy.url().should('include', '/dashboard');
   cy.get('[data-testid=ArrowDropDownIcon]').click({ force: true });
   cy.get('[data-testid=LogoutIcon]').click();
 })
@@ -628,7 +618,7 @@ Given('Login to team mate member account', () => {
 })
 
 When('Verify profile is as aspected and cookies', () => {
-  cy.url().should('include', '/profile/2468');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
@@ -648,7 +638,7 @@ Given('Login to product portal', () => {
 
 When('Go to project page', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 And('Add notes', () => {
@@ -705,7 +695,7 @@ Given('Login to rebelbase portal and verify cookies', () => {
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
   cy.get('.title').should('have.text', 'CypressTestProject01');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 Then('Verify section is highlighting', () => {
@@ -751,7 +741,7 @@ Given('Login to the rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -773,7 +763,7 @@ Given('Login to rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -790,7 +780,7 @@ Given('Login to rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -807,7 +797,7 @@ Then('Invite team member', () => {
   cy.get('select.form-control').select('Admin');
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation sent!')
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
   cy.xpath(brainPageSelectors.closeModelButton).click();
   cy.url().should('include', '/settings');
 });
@@ -820,7 +810,7 @@ Given('Login to rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -831,9 +821,9 @@ And('Go to setting page from project page', () => {
 })
 
 And('Send a nudge and close model', () => {
-  cy.get('.inviteTeam > :nth-child(1)').should('have.text', 'Invite a Teammate');
+  cy.get('.inviteTeam > :nth-child(1)').should('contain', 'Invite a Teammate');
   cy.get('.inviteTeam__btn__nudge').eq(0).click({ force: true });
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.xpath(brainPageSelectors.closeModelButton).click();
 })
 
@@ -852,12 +842,12 @@ Given('Login to rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
 Then('Verify default project is open', () => {
-  cy.get(':nth-child(1) > .MuiList-padding > :nth-child(2)').contains('CypressTestProject01')
+  cy.get(':nth-child(2) > .MuiList-padding > :nth-child(2)').contains('CypressTestProject01')
 });
 
 // Change defualt project and check project profile should open[Project Profile]
@@ -868,18 +858,18 @@ Given('Login to rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
 Then('Change default project', () => {
   cy.get('[data-testid="FiberManualRecordIcon"]').click()
-  cy.get('.selectProj__defaultProj').contains('CypressTestProject01').click();
-  cy.get(':nth-child(1) > .MuiList-padding > :nth-child(2) > .MuiListItemText-root > .MuiTypography-root').contains('CypressTestProject01');
+  cy.get('.selectProj__defaultProj').should('contain', 'CypressTestProject01').click();
+  cy.get(':nth-child(2) > .MuiList-padding > :nth-child(2)').should('contain', 'CypressTestProject01');
   cy.get('.nav-menu__link--builders').should('be.visible');
   cy.get('.nav-menu__link--project-page').should('be.visible')
-  cy.get(' ul >li:nth-child(2)').contains('CypressTestProject01').click();
-  cy.get(':nth-child(1) > .MuiList-padding > :nth-child(2) > .MuiListItemText-root > .MuiTypography-root').contains('CypressTestProject01');
+  cy.get(' ul >li:nth-child(2)').first().should('contain', 'CypressTestProject01').click();
+  cy.get(':nth-child(2) > .MuiList-padding > :nth-child(2)').should('contain', 'CypressTestProject01');
 });
 
 // Resend project invitation from edit project page [Project Profile]
@@ -890,7 +880,7 @@ Given('Login to rebelbase portal and verify cookies', () => {
 
 When('Go to project page and verify project title', () => {
   cy.visit('/project/1511');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.get('.title').should('have.text', 'CypressTestProject01');
 })
 
@@ -898,9 +888,9 @@ Then('Resend project invitation from edit project page', () => {
   cy.get('.title-wrap > [type="button"]').click();
   cy.get('.sideBar--selected').contains('CypressTestProject01');
   cy.get('h3').contains('Pending Invitations').should('be.visible')
-  cy.get().first().click()
+  cy.get('.btn-second').should('contain', 'Resend Invite').first().click()
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation resent!')
   cy.get('.btn-link').click();
-  cy.wait(3000);
   cy.url().should('include', '/settings');
 });
 
@@ -910,7 +900,7 @@ Given('Login to rebelbase portal', function () {
 })
 
 When('Go to project builder page', () => {
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.xpath(builderPageSelectors.projectBuilderLink).click();
   cy.get(':nth-child(4) > .index__content > :nth-child(4) > .build__cover > .build__flex > .build__info > .build__title').contains('Competitive Landscape').click();
   cy.get('.builder-head__back-btn').contains('back to all builders').click();
@@ -932,23 +922,22 @@ Then('Check for duplicate email id', () => {
     .each(($li) => {
       list.push(($li.text()))
     })
-
     .wrap(list)
-    //check for duplicate email id
     .should('not.deep.own.include', ['testhubadmin@rebelbase.co'])
 });
 
 // Profilepage
 Given('Login to rebelbase portal', function () {
   cy.login(Cypress.env('username'), Cypress.env('password'));
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 When('Edit about', () => {
-  cy.get(eventPageSelectors.editPen).eq(1).click();
-  cy.get('textarea').click();
+  cy.get('.nav-menu__link--project-page').should('contain', 'Project Page').click();
+  cy.get('.overview__about > .edit-pen__btn > .edit-pen').click({ force: true });
+  cy.get(builderPageSelectors.qlEditor).first().click();
   cy.xpath(hubActivityPageSelector.saveButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'About saved!');
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Project about updated!');
 })
 
 And('Add experience', () => {
@@ -1015,7 +1004,7 @@ And('Edit experience', () => {
     .type('cypress auto');
   cy.xpath('//button[text()="Save"]').click();
   cy.get(hubGroupPageSelector.popupNotes).should('be.visible');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
 })
 
 And('Edit social media links', () => {
@@ -1052,7 +1041,7 @@ Then('Create new project', () => {
     .type('testhubadmin+2@rebelbase.co');
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation sent!');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true });
   cy.xpath(brainPageSelectors.closeModelButton).click();
 });
 
@@ -1064,7 +1053,7 @@ Given('Login and verify cookies', () => {
 
 When('Create a project', () => {
   cy.visit('project/create-project');
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
   cy.get(smokeTestPageSelector.addProjectButton).click();
   cy.get(smokeTestPageSelector.projectNameTextbox)
     .clear()
@@ -1082,7 +1071,7 @@ When('Create a project', () => {
     .type(Cypress.env('member'));
 
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Invitation sent!')
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation sent!')
   cy.xpath(brainPageSelectors.closeModelButton).click({ force: true });
   cy.get(smokeTestPageSelector.headerDropdown).click();
   cy.get(smokeTestPageSelector.logoutButton).click();
@@ -1093,14 +1082,94 @@ And('login to the member account', () => {
   cy.getCookie('token').should('exist');
 })
 
-Then('Accept project invitation',()=>{
-  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
+Then('Accept project invitation', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
   cy.wait(5000)
   cy.get(hubGroupPageSelector.inboxIcon).click()
   cy.wait(2000)
-  cy.get('ul>div>li>div>div>span>span:nth-child(2)').eq(0).should('have.text',Cypress.config('randomname'))
+  cy.get('ul>div>li>div>div>span>span:nth-child(2)').eq(0).should('have.text', Cypress.config('randomname'))
   cy.xpath(hubGroupPageSelector.acceptButton).click()
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text','Project invitation accepted!')
+  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Project invitation accepted!')
   cy.get(smokeTestPageSelector.headerDropdown).click();
   cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+// // Decline project invitation
+// Given('Login and verify cookies', () => {
+//   cy.login(Cypress.env('username'), Cypress.env('password'))
+//   cy.getCookie('token').should('exist');
+// })
+
+// When('Create a project', () => {
+//   cy.visit('project/create-project');
+//   cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+//   cy.get(smokeTestPageSelector.addProjectButton).click();
+//   cy.get(smokeTestPageSelector.projectNameTextbox)
+//     .clear()
+//     .type(projectName);
+//   cy.get(smokeTestPageSelector.autoCompleteTextbox)
+//     .clear()
+//     .type('pune');
+//   cy.get(smokeTestPageSelector.locationResultInput).click();
+//   cy.get(smokeTestPageSelector.industryDropdown).select('2');
+//   cy.xpath(smokeTestPageSelector.createButtom).click();
+//   cy.get('h3').contains(projectName);
+//   cy.get(smokeTestPageSelector.inviteEmailTextbox)
+//     .click()
+//     .clear()
+//     .type(Cypress.env('member'));
+
+//   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
+//   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation sent!')
+//   cy.xpath(brainPageSelectors.closeModelButton).click({ force: true });
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+// })
+
+// And('login to the member account', () => {
+//   cy.login(Cypress.env('member'), Cypress.env('password'))
+//   cy.getCookie('token').should('exist');
+// })
+
+// Then('Decline project invitation', () => {
+//   cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+//   cy.wait(5000)
+//   cy.get(hubGroupPageSelector.inboxIcon).click()
+//   cy.wait(2000)
+//   cy.get('ul>div>li>div>div>span>span:nth-child(2)').eq(0).should('have.text', projectName)
+//   cy.get('button').contains('decline').click()
+//   cy.get(smokeTestPageSelector.headerDropdown).click();
+//   cy.get(smokeTestPageSelector.logoutButton).click();
+// })
+
+// Check support member should not receive notification
+Given('Login to username1 account and verify cookies', () => {
+  cy.login(Cypress.env('username1'), Cypress.env('password'))
+  cy.getCookie('token').should('exist');
+})
+
+When('Visit activity page', () => {
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.xpath(smokeTestPageSelector.activityLink).eq(0).click();
+})
+
+And('Give kudos and reply to the post', () => {
+  cy.get('.activity__nav div button').eq(2)
+    .click();
+  cy.xpath("//button[@type='button'][normalize-space()='0 Kudos']").first().click();
+  cy.xpath('//button[normalize-space()="0 Replies"]').first().click()
+  cy.get(smokeTestPageSelector.postTextbox)
+    .eq(0)
+    .type('add reply to post...');
+  cy.xpath(hubActivityPageSelector.replyButton).click();
+  cy.get(smokeTestPageSelector.headerDropdown).click();
+  cy.get(smokeTestPageSelector.logoutButton).click();
+})
+
+Then('Check support notification in support member account', () => {
+  cy.login(Cypress.env('supporter'), Cypress.env('password'))
+  cy.get(brainPageSelectors.notificationDismiss).click({ multiple: true })
+  cy.get(hubActivityPageSelector.bellIcon).click()
+  cy.get('div> div >li>a>div>div:nth-child(2)').eq(0).should('not.include.text', 'test1 test gave a kudos to your Post in the Dev Hub hub')
 })

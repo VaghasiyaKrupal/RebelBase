@@ -90,16 +90,15 @@ And('Login to the rebelbase portal', () => {
 });
 
 And('Go to group page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.get('.sideNav__content > :nth-child(2) > .MuiList-root > .MuiButtonBase-root').contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.groupLink).click();
 })
 
 And('Create group', () => {
   cy.get('.group-overview__add-btn').click();
-  cy.get(smokeTestPageSelector.groupNameTextbox)
+  cy.get(hubGroupPageSelector.groupName)
     .clear()
     .type(Cypress.config('randomname'));
-  cy.xpath(smokeTestPageSelector.selectAllButton).click();
   cy.xpath(smokeTestPageSelector.createGroupButton).click();
 })
 
@@ -136,7 +135,7 @@ And('Login to the rebelbase portal', () => {
 });
 
 And('Go to activity page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.get('.sideNav__content > :nth-child(2) > .MuiList-root > .MuiButtonBase-root').contains('Dev Hub').click();
   cy.xpath(smokeTestPageSelector.activityLink).click();
 })
 
@@ -167,7 +166,7 @@ And('Login to the rebelbase portal', () => {
 });
 
 And('Go to the Event page', () => {
-  cy.get(smokeTestPageSelector.devHub).contains('Dev Hub').click();
+  cy.get('.sideNav__content > :nth-child(2) > .MuiList-root > .MuiButtonBase-root').contains('Dev Hub').click();
   cy.wait(1000)
   cy.xpath(smokeTestPageSelector.eventLink).eq(0).click();
 })
@@ -197,11 +196,13 @@ And('Create new event', () => {
   cy.get(':nth-child(2) > .createEvent__round-choice').click();
   cy.get(':nth-child(3) > .createEvent__round-choice').click();
   cy.get('.createEvent > .btn-wrap > .btn-main').click();
+  cy.get('.ePage__title__name').should('have.text',Cypress.config('randomname'))
 })
 
 Then('Logout from account', () => {
   cy.get('[data-testid=ArrowDropDownIcon]').click();
   cy.get('[data-testid=LogoutIcon]').click();
+  cy.url().should('include', '/auth/login')
 });
 
 // Signup application and logout
@@ -243,9 +244,10 @@ And('new User is able to sign up successfully', () => {
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.xpath(smokeTestPageSelector.readyButton).click();
   cy.xpath(hubGroupPageSelector.skipForNowButton).click()
+  cy.get('h2').should('have.text','testtest sur')
 })
 
-Then('Logout from account', () => {
+Then('Logout from account and verify URL', () => {
   cy.get('[data-testid=ArrowDropDownIcon]').click();
   cy.get('[data-testid=LogoutIcon]').click();
   cy.url().should('include', '/auth/login')

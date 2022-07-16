@@ -7,7 +7,7 @@ Feature: Permissions
         And Add Alternative Email and remove it
         And Verify supporter permission
         Then Create project and redirect to project page
-    
+
     Scenario: Check project members permissons
         Given Login to the member account
         When Changing basic settings
@@ -34,7 +34,7 @@ Feature: Permissions
         Given Login to hub member account
         When Go to setting page
         And Verify setting permission
-        And Creating post
+        And Creating post from hub
         And Edit post
         Then Verify permission from event page
 
@@ -55,4 +55,3 @@ Feature: Permissions
         When Create project
         And Send invitation
         Then Go to setting page
-    

@@ -38,12 +38,12 @@ Feature: Login
         And Enter password and click on login button
         Then Verify profile url and invitation expired notification
 
-    # # Not getting invalid token notification
-    # Scenario: Log in with invalid project invitation token [loginFlowTest]
-    #     Given Visit rebelbase portal
-    #     When Enter Username, Password and login to account
-    #     And Verify landing profile url
-    #     Then Should show invalid token notification
+    # Not getting invalid token notification
+    Scenario: Log in with invalid project invitation token [loginFlowTest]
+        Given Visit rebelbase portal
+        When Enter Username, Password and login to account
+        And Verify landing profile url
+        Then Should show invalid token notification
     @TEST_CH-712
     Scenario: Autofill email address if exist in url, log in and accept event invitation
         Given Visit page url with email exist in url
@@ -73,6 +73,7 @@ Feature: Login
     #     When Login to the user account
     #     And Should redirect to the profile page
     #     Then Verify email varification notification
+
     @TEST_CH-707
     Scenario: Show popup message to complete tell-us ,until tell-us is complete
         Given Visit RebelBase URL

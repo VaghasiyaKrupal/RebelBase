@@ -41,7 +41,7 @@ const randomEmail15 = `rebelbasetesthub15+${new Date().getTime()}@gmail.com`;
 // Test Enable user to set email interval in settings
 Given('Login to the rebel base account', () => {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 When('Go to setting', () => {
@@ -51,16 +51,16 @@ When('Go to setting', () => {
 
 And('Change My Activity Updates notification', () => {
   cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(0).click()
-  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(0).should('have.css', 'color', 'rgb(25, 164, 177)')
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(0).should('have.css', 'color', 'rgb(0, 115, 128)')
   cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(1).click()
-  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(1).should('have.css', 'color', 'rgb(25, 164, 177)')
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(1).should('have.css', 'color', 'rgb(0, 115, 128)')
 })
 
 And('Change Hub Activity Updates notification', () => {
   cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(3).click()
-  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(3).should('have.css', 'color', 'rgb(25, 164, 177)')
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(3).should('have.css', 'color', 'rgb(0, 115, 128)')
   cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(4).click()
-  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(4).should('have.css', 'color', 'rgb(25, 164, 177)')
+  cy.get('.MuiFormControlLabel-root >span:nth-child(1)').eq(4).should('have.css', 'color', 'rgb(0, 115, 128)')
 })
 
 Then('Logout from account',()=>{
@@ -72,7 +72,6 @@ Then('Logout from account',()=>{
 // Sign up and try to accept invalid project invitation token
 Given('Signup user with token', () => {
   // const randomEmail = `rebelbasetesthub+${new Date().getTime()}@gmail.com`;
-
   cy.visit(`auth/sign-up?type=project_invitation&token=${Cypress.env('token1')}&email=${randomEmail}`);
   cy.get(smokeTestPageSelector.signUpFirstName)
     .clear()
@@ -95,12 +94,12 @@ When('Try to accept invalid project invitation', () => {
   cy.get(smokeTestPageSelector.autoCompleteTextbox).type('p');
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.xpath(smokeTestPageSelector.readyButton).click();
-  cy.xpath(hubGroupPageSelector.skipForNowButton).click({ force: true });
+  cy.get('.btn-x').click();
 })
 
 And('Verify invitation validation', () => {
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'This invitation has expired!');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 Then('Logout from account', () => {
@@ -115,13 +114,13 @@ Given('Login to the rebelbase portal', () => {
 })
 
 When('Verify profile and cookies', () => {
-  cy.url().should('include', '/profile/2466');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
 })
 
 And('Go to event page and send event invitation', () => {
   cy.visit('/events/1449');
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
   cy.xpath(eventPageSelectors.inviteButton).click();
   cy.get('.createEvent__title').contains('Invite Participants');
   cy.get('select').select('Competitor').should('have.value', '2');
@@ -166,7 +165,7 @@ And('Try to accept invalid project invitation', () => {
 
 And('Verify invitation validation', () => {
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'This invitation has expired!');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 Then('Logout from account', () => {
@@ -197,7 +196,6 @@ Given('Sign up user', () => {
 })
 
 When('Send invitation', () => {
-  // cy.url().should('include', 'profile');
   cy.get(smokeTestPageSelector.autoCompleteTextbox)
     .clear()
     .type('pune');
@@ -303,7 +301,6 @@ Given('Verify validation on sign-up user', () => {
   cy.get(hubGroupPageSelector.allowID).check();
   cy.get(hubGroupPageSelector.pramotionalEmailID).check();
   cy.xpath(smokeTestPageSelector.getStartedButton).click();
-
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Darn...that email address has already been taken. If this is you, log in instead.');
   cy.get(smokeTestPageSelector.signUpEmail).clear();
   cy.get(smokeTestPageSelector.signUpEmail).type(randomEmail6);
@@ -316,7 +313,7 @@ When('Verify validation on location model', () => {
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.xpath(smokeTestPageSelector.readyButton).click();
   cy.xpath(hubGroupPageSelector.skipForNowButton).click();
-  cy.url().should('contain', 'profile');
+  cy.url().should('contain', 'dashboard');
   cy.get('.btn-link').contains('Create a Project').click();
   cy.location('pathname').should('equal', '/project/create-project');
   cy.get(':nth-child(1) > :nth-child(2) > .form-control').type(randomEmail6);
@@ -324,19 +321,6 @@ When('Verify validation on location model', () => {
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.get('select').select('Energy').should('have.value','15');
   cy.xpath(smokeTestPageSelector.createButtom).click();
-
-  // // cy.visit('/way-find');
-  // // cy.wait(8000);
-  // cy.get('.indicator').contains('Browse Projects.').click();
-  // // cy.location('pathname').should('equal', '/browse');
-  // // cy.visit('/way-find');
-  // cy.get(hubGroupPageSelector.popupNotes).should('have.text',`Please verify your email address: ${randomEmail}.`);
-  // cy.get(brainPageSelectors.notificationDismiss).click();
-  // cy.get('.indicator')
-  //   .contains('Contact us to request a Hub Invite.')
-  //   .click();
-  // cy.location('pathname').should('equal', '/help');
-  // cy.visit('/way-find');
   cy.get('.btn-x').contains('button', 'x').click();
   cy.task('setUserId', randomEmail6);
 });
@@ -421,7 +405,7 @@ Then('Tell-us about your self', () => {
   cy.xpath(smokeTestPageSelector.readyButton).click();
   cy.xpath(hubGroupPageSelector.skipForNowButton).click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Project invitation accepted!')
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
   cy.url().should('include', '/builders');
 });
 
@@ -430,7 +414,8 @@ Then('Tell-us about your self', () => {
 Given('Sent invitation', () => {
   // const randomEmail = `rebelbasetesthub+${new Date().getTime()}@gmail.com`;
   cy.login(Cypress.env('emailuser'), Cypress.env('password'))
-  cy.get('div>ul>li:nth-child(3)>div>span').contains('CypressTestProject01').click()
+  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(':nth-child(4) > .MuiListItemText-root > .MuiTypography-root').contains('rebelbaseproject').click({force:true})
   cy.get('[aria-label="add teammate"]').click();
   cy.get(smokeTestPageSelector.inviteEmailTextbox)
     .clear()
@@ -438,7 +423,6 @@ Given('Sent invitation', () => {
   cy.get('select').select('Member').should('have.value','3')
   cy.xpath(smokeTestPageSelector.sendInviteButton).click();
   cy.xpath(brainPageSelectors.closeModelButton).click()
-
   cy.get('[data-testid=ArrowDropDownIcon]').click();
   cy.get('[data-testid=LogoutIcon]').click();
 })
@@ -508,17 +492,17 @@ Then('Tell-us is empty', () => {
   cy.contains(
     'Make sure you are logged in with the correct email before trying to accept an invitation!'
   );
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 });
 
 // Sign up with different email and try to accept event invitation token [signUpFlowTest]
 Given('Login and verify user token', () => {
   // const randomEmail = `rebelbasetesthub+${new Date().getTime()}@gmail.com`;
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.url().should('include', '/profile/2466');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
   cy.visit('/events/1449');
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 When('Invite participate to the event', () => {
@@ -587,7 +571,7 @@ And('Create new user account', () => {
 })
 
 Then('Fill tell-uup dailog', () => {
-  cy.url().should('include', '/profile');
+  cy.url().should('include', '/dashboard');
   cy.get(smokeTestPageSelector.autoCompleteTextbox)
     .clear()
     .type('pune');
@@ -598,99 +582,7 @@ Then('Fill tell-uup dailog', () => {
   cy.contains(
     'Make sure you are logged in with the correct email before trying to accept an invitation!'
   );
-  cy.get(brainPageSelectors.notificationDismiss).click();
-});
-
-// Sign up with different email and try to accept hub invitation token [signUpFlowTest]
-Given('Sign-up Different email', () => {
-  // const randomEmail = `rebelbasetesthub+${new Date().getTime()}@gmail.com`;
-  cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.url().should('include', '/profile/2466');
-  cy.getCookie('token').should('exist');
-  cy.visit('/hubs/26/activity');
-})
-
-When('Invite different member', () => {
-  cy.get('.hub__topHeader__dropdown__links').contains('Invite Members').click({
-    force: true
-  })
-  cy.get('.notification-dismiss').click();
-  cy.get('.modal-title-h3').contains('Invite Members to Dev Hub');
-  cy.get('.multi_email > input').type(randomEmail10);
-  cy.get('.btn-send').click()
-  cy.get('.btn-x').click();
-
-  cy.get('[data-testid=ArrowDropDownIcon]').click();
-  cy.get('[data-testid=LogoutIcon]').click();
-})
-
-And('Verify email token', () => {
-  cy.task("gmail:get-messages", {
-    options: {
-      from: "noreply@rebelbase.co",
-      subject: "test invited you to join the Dev Hub hub on RebelBase",
-      include_body: true,
-      // before: new Date(2021, 9, 24, 12, 31, 13), // Before September 24rd, 2019 12:31:13
-      //  after: new Date(2021, 7, 23) // After August 23, 2019
-    }
-  }).then(emails => {
-    assert.isAtLeast(
-      emails.length,
-      1,
-      "Expected to find at least one email, but none were found!"
-    );
-
-    const body = emails[0].body.html;
-    assert.isTrue(
-      body.indexOf(
-        "/auth/sign-up?type=hub_invitation&amp;token="
-
-      ) >= 0,
-      "Found reset link!"
-    );
-
-    window.token = extractData(body, startStr, endStr);
-
-    cy.visit(
-      `auth/sign-up?type=hub_invitation&token=${token}&email=${randomEmail10}`
-    );
-  })
-})
-
-And('Sign-up different email', () => {
-  cy.get(smokeTestPageSelector.signUpFirstName)
-    .clear()
-    .type(randomEmail10);
-  cy.get(smokeTestPageSelector.signUpLastName)
-    .clear()
-    .type(randomEmail10);
-  cy.get(smokeTestPageSelector.signUpEmail)
-    .clear()
-    .type('h' + randomEmail10)
-  cy.get('.inline-warning').contains('You will not be able to accept the invitation using this email address.');
-  cy.get(smokeTestPageSelector.signUpPassword)
-    .clear()
-    .type('testtest');
-  cy.get(smokeTestPageSelector.signUpConfirmPassword)
-    .clear()
-    .type('testtest');
-  cy.get(hubGroupPageSelector.allowID).click();
-  cy.get(hubGroupPageSelector.pramotionalEmailID).click();
-  cy.xpath(smokeTestPageSelector.getStartedButton).click();
-})
-
-Then('Verify tell-up dailog received', () => {
-  cy.url().should('include', '/profile');
-  cy.get(smokeTestPageSelector.autoCompleteTextbox)
-    .clear()
-    .type('pune');
-  cy.get(smokeTestPageSelector.locationResultInput).click();
-  cy.xpath(smokeTestPageSelector.readyButton).click();
-  cy.xpath(hubGroupPageSelector.skipForNowButton).click();
-  cy.contains(
-    'Make sure you are logged in with the correct email before trying to accept an invitation!'
-  );
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 });
 
 // new user signup and verify email account [SignUpFlowTest]
@@ -718,7 +610,7 @@ Given("New user sign-up", function () {
 })
 
 When('Fill-up tell-us dailog', () => {
-  cy.url().should('include', '/profile');
+  cy.url().should('include', '/dashboard');
   cy.get(smokeTestPageSelector.autoCompleteTextbox)
     .clear()
     .type('pune');
@@ -736,8 +628,7 @@ And('login using created user email', () => {
 And('Sent invitation to user', () => {
   cy.get('.notification > :nth-child(3) > div > button').click();
   cy.get('.notification').invoke('text').should('contain', 'A verification email has been sent to ');
-  //cy.get('.popUp__note').contains.text('A verification email has been sent to ');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
   cy.get('[data-testid=ArrowDropDownIcon]').click();
   cy.get('[data-testid=LogoutIcon]').click();
 })
@@ -815,98 +706,13 @@ Given('Verify email is auto filled into textbox', () => {
   });
 });
 
-// new user signup and accept hub invitation [Hub]
-Given("Sign Up New user", function () {
-  cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.url().should('include', '/profile/2466');
-  cy.getCookie('token').should('exist');
-  cy.visit('/hubs/26/activity');
-})
-
-When('Send Invitation To New user', () => {
-  cy.get('.hub__topHeader__dropdown__links').contains('Invite Members').click({
-    force: true
-  })
-  cy.get('.notification-dismiss').click();
-  cy.get('.modal-title-h3').contains('Invite Members to Dev Hub');
-  cy.get('.multi_email > input').type(randomEmail13);
-  cy.get('.btn-send').click()
-  cy.get('.btn-x').click();
-
-  cy.get('[data-testid=ArrowDropDownIcon]').click();
-  cy.get('[data-testid=LogoutIcon]').click();
-})
-
-And('Verify user token in the email', () => {
-  cy.task("gmail:get-messages", {
-    options: {
-      from: "noreply@rebelbase.co",
-      subject: "test invited you to join the Dev Hub hub on RebelBase",
-      include_body: true,
-      // before: new Date(2021, 9, 24, 12, 31, 13), // Before September 24rd, 2019 12:31:13
-      //  after: new Date(2021, 7, 23) // After August 23, 2019
-    }
-  }).then(emails => {
-    assert.isAtLeast(
-      emails.length,
-      1,
-      "Expected to find at least one email, but none were found!"
-    );
-
-    const body = emails[0].body.html;
-    assert.isTrue(
-      body.indexOf(
-        "/auth/sign-up?type=hub_invitation&amp;token="
-
-      ) >= 0,
-      "Found reset link!"
-    );
-
-    window.token = extractData(body, startStr, endStr);
-  })
-})
-
-And('Create New User Account', () => {
-  cy.visit(
-    `auth/sign-up?type=hub_invitation&token=${token}&email=${randomEmail13}`
-  );
-  cy.get(smokeTestPageSelector.signUpFirstName)
-    .clear()
-    .type(randomEmail13);
-  cy.get(smokeTestPageSelector.signUpLastName)
-    .clear()
-    .type(randomEmail13);
-  cy.get(smokeTestPageSelector.signUpPassword)
-    .clear()
-    .type('testtest');
-  cy.get(smokeTestPageSelector.signUpConfirmPassword)
-    .clear()
-    .type('testtest');
-  cy.get(hubGroupPageSelector.allowID).click();
-  cy.get(hubGroupPageSelector.pramotionalEmailID).click();
-  cy.xpath(smokeTestPageSelector.getStartedButton).click();
-})
-
-Then('Set location for created user', () => {
-  cy.url().should('include', '/profile');
-  cy.get(smokeTestPageSelector.autoCompleteTextbox)
-    .clear()
-    .type('pune');
-  cy.get(smokeTestPageSelector.locationResultInput).click();
-  cy.xpath(smokeTestPageSelector.readyButton).click();
-  cy.xpath(hubGroupPageSelector.skipForNowButton).click();
-  cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Invitation accepted successfully.')
-  cy.get(brainPageSelectors.notificationDismiss).click();
-});
-
-// Invite button not available
 // new user signup and accept event invitation [signUpFlowTest]
 Given("login for Invite participant", function () {
   cy.login(Cypress.env('username'), Cypress.env('password'))
-  cy.url().should('include', '/profile/2466');
+  cy.url().should('include', '/dashboard');
   cy.getCookie('token').should('exist');
   cy.visit('/events/1467', { timeout: 300000 });
-  cy.get(brainPageSelectors.notificationDismiss).click()
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true})
 })
 
 When('Invite Participant', () => {
@@ -976,12 +782,12 @@ And('Creating new user account', () => {
 })
 
 Then('Accept invitation for created user', () => {
-  cy.url().should('include', '/profile');
+  cy.url().should('include', '/dashboard');
   cy.get(smokeTestPageSelector.autoCompleteTextbox).type('pune');
   cy.get(smokeTestPageSelector.locationResultInput).click();
   cy.xpath(smokeTestPageSelector.readyButton).click();
   cy.xpath(hubGroupPageSelector.skipForNowButton).click();
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
   cy.get(hubGroupPageSelector.inboxIcon).click();
   cy.wait(2000)
   cy.xpath(hubGroupPageSelector.acceptButton).contains('accept').click({ force: true });
@@ -1000,7 +806,7 @@ Given('forget password', () => {
     .type('rebelbasetesthub+2@gmail.com')
   cy.get('.forgot-pass__btn').click();
   cy.get(hubGroupPageSelector.popupNotes).should('have.text', 'Check your email for a link to reset your password!');
-  cy.get(brainPageSelectors.notificationDismiss).click();
+  cy.get(brainPageSelectors.notificationDismiss).click({multiple:true});
 })
 
 When('Verify forgot password mail is send', () => {
